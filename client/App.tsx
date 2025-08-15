@@ -71,24 +71,11 @@ export default function App() {
               />
 
               {/* Other routes */}
-              <Route
-                path="/career-map"
-                element={
-                  <PlaceholderPage
-                    title="Interactive Career Map"
-                    description="Visual career planning tool with step-by-step guidance. Coming soon!"
-                  />
-                }
-              />
-              <Route
-                path="/vacancies"
-                element={
-                  <PlaceholderPage
-                    title="Job Vacancies"
-                    description="Latest job openings from government and private sectors. Coming soon!"
-                  />
-                }
-              />
+              <Route path="/career-map" element={<InteractiveCareerMap />} />
+              <Route path="/vacancies" element={<LatestVacancies />} />
+
+              {/* Admin route */}
+              <Route path="/admin" element={<AdminDashboard />} />
 
               {/* Catch-all route */}
               <Route path="*" element={<NotFound />} />
