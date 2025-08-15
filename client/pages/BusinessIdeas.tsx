@@ -33,6 +33,14 @@ import {
 } from "lucide-react";
 
 export default function BusinessIdeas() {
+  const {
+    careerMapData,
+    businessIdeasPage,
+    businessIdeasPerPage,
+    loadMoreBusinessIdeas,
+    getText
+  } = useDataStore();
+
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [investmentRange, setInvestmentRange] = useState("all");
