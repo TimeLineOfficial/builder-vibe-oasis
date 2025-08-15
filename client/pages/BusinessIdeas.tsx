@@ -215,7 +215,7 @@ export default function BusinessIdeas() {
   };
 
   const filteredIdeas = businessIdeas.filter(idea => {
-    if (searchTerm && !idea.title.toLowerCase().includes(searchTerm.toLowerCase()) && 
+    if (searchTerm && !idea.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
         !idea.description.toLowerCase().includes(searchTerm.toLowerCase())) return false;
     if (selectedCategory !== "all" && idea.category !== selectedCategory) return false;
     if (selectedDifficulty !== "all" && idea.difficulty.toLowerCase() !== selectedDifficulty) return false;
@@ -236,6 +236,11 @@ export default function BusinessIdeas() {
         return 0;
     }
   });
+
+  // Apply pagination
+  const totalIdeas = sortedIdeas.length;
+  const displayedIdeas = sortedIdeas.slice(0, businessIdeasPage * businessIdeasPerPage);
+  const hasMoreIdeas = displayedIdeas.length < totalIdeas;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
