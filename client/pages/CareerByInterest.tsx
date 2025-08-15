@@ -38,11 +38,13 @@ import {
 } from "lucide-react";
 
 export default function CareerByInterest() {
+  const { careerMapData, findCareersByInterests, getText } = useDataStore();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [currentStage, setCurrentStage] = useState("");
   const [showResults, setShowResults] = useState(false);
+  const [careerMatches, setCareerMatches] = useState<any[]>([]);
 
   const interestCategories = [
     {
