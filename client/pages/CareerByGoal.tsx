@@ -36,6 +36,7 @@ export default function CareerByGoal() {
   const [careerPaths, setCareerPaths] = useState<any[]>([]);
   const [careerSwitchPaths, setCareerSwitchPaths] = useState<any[]>([]);
   const [showAdvancedMapping, setShowAdvancedMapping] = useState(false);
+  const [showAdvancedCareerModal, setShowAdvancedCareerModal] = useState(false);
 
   const educationStages = getEducationStages();
 
