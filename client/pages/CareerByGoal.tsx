@@ -4,6 +4,7 @@ import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { ArrowRight, BookOpen, Target, Users, TrendingUp, Clock, DollarSign } from 'lucide-react';
+import AdvancedCareerMapping from '../components/AdvancedCareerMapping';
 
 type Step = 'stage' | 'stream' | 'course' | 'results';
 
