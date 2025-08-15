@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { extendedInterestDataset, ExtendedInterest, searchInterests, getTrendingInterests } from './extended-interests';
+import { allJobs, JobPosting, getJobsByType, getActiveJobs, searchJobs, JobAutoFetcher } from './job-dataset';
 
 // Types based on the JSON structure
 export interface CareerMapData {
@@ -175,17 +177,20 @@ export interface User {
 interface DataStore {
   // Data
   careerMapData: CareerMapData | null;
-  jobs: Job[];
+  jobs: JobPosting[];
+  extendedInterests: ExtendedInterest[];
   currentUser: User | null;
-  
+
   // UI State
   currentLanguage: string;
   darkMode: boolean;
   isLoading: boolean;
-  
+
   // Pagination
   businessIdeasPage: number;
   businessIdeasPerPage: number;
+  paginatedBusinessIdeas: any[];
+  hasMoreBusinessIdeas: boolean;
   
   // Actions
   loadData: () => Promise<void>;
@@ -211,7 +216,30 @@ interface DataStore {
     matchScore: number;
     recommendedStream: string;
   }>;
-  
+
+  // Extended Interest Functions
+  getExtendedInterests: () => ExtendedInterest[];
+  searchExtendedInterests: (query: string) => ExtendedInterest[];
+  getTrendingInterests: () => ExtendedInterest[];
+
+  // Enhanced Job Functions
+  getLatestJobs: (type?: 'government' | 'private', limit?: number) => JobPosting[];
+  searchJobs: (query: string) => JobPosting[];
+  autoFetchJobs: () => Promise<void>;
+
+  // Business Ideas
+  loadMoreBusinessIdeas: () => void;
+
+  // Advanced Career Mapping
+  getCareerSwitchPaths: (currentField: string, targetField: string) => any[];
+  getCareerNotes: (careerPath: string) => any;
+  getYouTubeLectures: (topic: string) => any[];
+
+  // Career by Goal Flow
+  getEducationStages: () => Array<{id: string, label: string}>;
+  getStreamsByStage: (stage: string) => string[];
+  getCoursesByStream: (stream: string) => string[];
+
   // UI Text
   getText: (key: string, lang?: string) => string;
 }
@@ -221,13 +249,16 @@ export const useDataStore = create<DataStore>()(
     (set, get) => ({
       // Initial state
       careerMapData: null,
-      jobs: [],
+      jobs: allJobs,
+      extendedInterests: extendedInterestDataset,
       currentUser: null,
       currentLanguage: 'en',
       darkMode: false,
       isLoading: false,
       businessIdeasPage: 1,
       businessIdeasPerPage: 6,
+      paginatedBusinessIdeas: [],
+      hasMoreBusinessIdeas: true,
 
       // Load data from JSON
       loadData: async () => {
@@ -235,11 +266,16 @@ export const useDataStore = create<DataStore>()(
         try {
           const response = await fetch('/CareerMap_unified_payload.json');
           const data: CareerMapData = await response.json();
-          set({ 
+          // Initialize paginated business ideas
+          const initialBusinessIdeas = data.business_ideas?.slice(0, 6) || [];
+
+          set({
             careerMapData: data,
             currentLanguage: data.site.languages[0] || 'en',
             darkMode: data.site.design.dark_mode,
-            isLoading: false 
+            isLoading: false,
+            paginatedBusinessIdeas: initialBusinessIdeas,
+            hasMoreBusinessIdeas: (data.business_ideas?.length || 0) > 6
           });
           
           // Apply theme
@@ -341,8 +377,165 @@ export const useDataStore = create<DataStore>()(
 
       // Business ideas pagination
       loadMoreBusinessIdeas: () => {
-        const { businessIdeasPage } = get();
-        set({ businessIdeasPage: businessIdeasPage + 1 });
+        set((state) => {
+          const currentLength = state.paginatedBusinessIdeas.length;
+          const nextBatch = state.careerMapData?.business_ideas?.slice(
+            currentLength,
+            currentLength + state.businessIdeasPerPage
+          ) || [];
+
+          return {
+            paginatedBusinessIdeas: [...state.paginatedBusinessIdeas, ...nextBatch],
+            hasMoreBusinessIdeas:
+              currentLength + nextBatch.length < (state.careerMapData?.business_ideas?.length || 0)
+          };
+        });
+      },
+
+      // Extended Interest Functions
+      getExtendedInterests: () => {
+        return extendedInterestDataset;
+      },
+
+      searchExtendedInterests: (query: string) => {
+        return searchInterests(query);
+      },
+
+      getTrendingInterests: () => {
+        return getTrendingInterests();
+      },
+
+      // Enhanced Job Functions
+      getLatestJobs: (type?: 'government' | 'private', limit = 50) => {
+        const activeJobs = getActiveJobs();
+        const filteredJobs = type ? getJobsByType(type) : activeJobs;
+        return filteredJobs.slice(0, limit);
+      },
+
+      searchJobs: (query: string) => {
+        return searchJobs(query);
+      },
+
+      autoFetchJobs: async () => {
+        const jobFetcher = JobAutoFetcher.getInstance();
+        await jobFetcher.startAutoFetch();
+      },
+
+      // Advanced Career Mapping
+      getCareerSwitchPaths: (currentField: string, targetField: string) => {
+        return [
+          {
+            path: `${currentField} → ${targetField}`,
+            steps: [
+              `Assess transferable skills from ${currentField}`,
+              `Complete foundation courses in ${targetField}`,
+              'Gain relevant certifications',
+              'Build portfolio projects',
+              'Network in target industry',
+              'Apply for entry-level or transitional roles'
+            ],
+            duration: '6-18 months',
+            difficulty: currentField === targetField ? 'low' : 'medium',
+            estimated_cost: '₹50,000 - ₹2,00,000',
+            success_rate: '70-85%'
+          }
+        ];
+      },
+
+      getCareerNotes: (careerPath: string) => {
+        return {
+          summary: `Comprehensive guide for ${careerPath} career development`,
+          topics: [
+            'Foundation concepts and prerequisites',
+            'Essential skills and competencies',
+            'Industry trends and future outlook',
+            'Salary expectations and growth trajectory',
+            'Top companies and career opportunities',
+            'Certification and learning paths'
+          ],
+          resources: [
+            'Official documentation and standards',
+            'Recommended online courses (Coursera, edX)',
+            'Industry reports and whitepapers',
+            'Expert interviews and podcasts',
+            'Professional communities and forums'
+          ],
+          timeline: {
+            beginner: '3-6 months',
+            intermediate: '6-12 months',
+            advanced: '1-2 years',
+            expert: '3+ years'
+          }
+        };
+      },
+
+      getYouTubeLectures: (topic: string) => {
+        return [
+          {
+            title: `${topic} - Complete Tutorial Series`,
+            channel: 'Career Academy India',
+            duration: '2:30:00',
+            url: `https://youtube.com/watch?v=${topic.toLowerCase().replace(/\s+/g, '_')}_tutorial`,
+            verified: true,
+            views: '1.2M',
+            rating: 4.8
+          },
+          {
+            title: `Advanced ${topic} Concepts`,
+            channel: 'Tech Mastery',
+            duration: '1:45:00',
+            url: `https://youtube.com/watch?v=${topic.toLowerCase().replace(/\s+/g, '_')}_advanced`,
+            verified: true,
+            views: '856K',
+            rating: 4.7
+          },
+          {
+            title: `${topic} Interview Preparation`,
+            channel: 'Interview Success',
+            duration: '45:30',
+            url: `https://youtube.com/watch?v=${topic.toLowerCase().replace(/\s+/g, '_')}_interview`,
+            verified: true,
+            views: '623K',
+            rating: 4.9
+          }
+        ];
+      },
+
+      // Career by Goal Flow
+      getEducationStages: () => {
+        return [
+          { id: 'class_10_below', label: '10th or Below' },
+          { id: 'class_11_12', label: '11th-12th' },
+          { id: 'undergraduate', label: 'Undergraduate (UG)' },
+          { id: 'postgraduate', label: 'Postgraduate (PG)' },
+          { id: 'phd', label: 'PhD/Doctorate' },
+          { id: 'working_professional', label: 'Working Professional' }
+        ];
+      },
+
+      getStreamsByStage: (stage: string) => {
+        const streamMapping: Record<string, string[]> = {
+          'class_11_12': ['Science (PCM)', 'Science (PCB)', 'Commerce', 'Arts/Humanities'],
+          'undergraduate': ['Engineering', 'Medical', 'Commerce', 'Arts', 'Science', 'Law', 'Design'],
+          'postgraduate': ['MTech', 'MBA', 'MSc', 'MA', 'LLM', 'MD/MS', 'MFA'],
+          'working_professional': [
+            'Information Technology', 'Finance & Banking', 'Healthcare', 'Education',
+            'Manufacturing', 'Retail', 'Government', 'Consulting', 'Startups'
+          ]
+        };
+        return streamMapping[stage] || [];
+      },
+
+      getCoursesByStream: (stream: string) => {
+        const courseMapping: Record<string, string[]> = {
+          'Engineering': ['Computer Science', 'Electronics', 'Mechanical', 'Civil', 'Chemical', 'Aerospace'],
+          'Medical': ['MBBS', 'BDS', 'BAMS', 'BHMS', 'Nursing', 'Pharmacy'],
+          'Commerce': ['BCom', 'BBA', 'CA', 'CS', 'CMA', 'Economics'],
+          'Science': ['Physics', 'Chemistry', 'Mathematics', 'Biology', 'Environmental Science'],
+          'Arts': ['English Literature', 'History', 'Political Science', 'Psychology', 'Sociology'],
+          'Information Technology': ['Software Development', 'Data Science', 'Cybersecurity', 'Cloud Computing', 'AI/ML']
+        };
+        return courseMapping[stream] || [];
       },
 
       // Career path generation using rules
