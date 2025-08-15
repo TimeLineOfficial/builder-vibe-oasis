@@ -327,8 +327,13 @@ export default function CareerByGoal() {
                   </div>
                   
                   <div className="mt-6 flex items-center gap-4">
-                    <Progress value={20} className="flex-1 h-3 bg-white/20" />
-                    <span className="text-sm">Step 1 of 5 Complete</span>
+                    <Progress
+                      value={generatedPath.length > 0 ? (1 / generatedPath.length) * 100 : 0}
+                      className="flex-1 h-3 bg-white/20"
+                    />
+                    <span className="text-sm">
+                      Step 1 of {generatedPath.length} Complete
+                    </span>
                   </div>
                 </CardContent>
               </Card>
