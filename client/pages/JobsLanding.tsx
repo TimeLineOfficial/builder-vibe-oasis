@@ -1,12 +1,18 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Target, 
-  Heart, 
-  Search, 
-  ArrowRight, 
+import {
+  Target,
+  Heart,
+  Search,
+  ArrowRight,
   MapPin,
   Briefcase,
   TrendingUp,
@@ -15,7 +21,7 @@ import {
   Star,
   Zap,
   GraduationCap,
-  Building
+  Building,
 } from "lucide-react";
 
 export default function JobsLanding() {
@@ -24,53 +30,56 @@ export default function JobsLanding() {
       icon: Target,
       title: "By Goal",
       subtitle: "Career Roadmap",
-      description: "Start with your dream job and get a personalized step-by-step roadmap from your current education stage. Our interactive career map shows you exactly what to study, which exams to take, and what skills to develop.",
+      description:
+        "Start with your dream job and get a personalized step-by-step roadmap from your current education stage. Our interactive career map shows you exactly what to study, which exams to take, and what skills to develop.",
       features: [
         "Interactive visual career mapping",
         "Stage-by-stage guidance (Class 10th to Professional)",
         "Stream and course recommendations",
         "Government exam preparation paths",
-        "Skills and certification roadmap"
+        "Skills and certification roadmap",
       ],
       color: "from-career-primary to-purple-600",
       href: "/jobs/by-goal",
       badge: "Most Popular",
-      badgeColor: "bg-career-primary"
+      badgeColor: "bg-career-primary",
     },
     {
       icon: Heart,
       title: "By Interest",
       subtitle: "Passion-Driven Careers",
-      description: "Discover career opportunities based on subjects and topics you're passionate about. From Arts to Quantum Physics, find careers that align with your interests and natural inclinations.",
+      description:
+        "Discover career opportunities based on subjects and topics you're passionate about. From Arts to Quantum Physics, find careers that align with your interests and natural inclinations.",
       features: [
         "Subject and topic-based matching",
         "Interest assessment tools",
         "Multiple career options per interest",
         "Trending fields and emerging careers",
-        "Salary and growth potential insights"
+        "Salary and growth potential insights",
       ],
       color: "from-pink-500 to-rose-500",
       href: "/jobs/by-interest",
       badge: "Personalized",
-      badgeColor: "bg-pink-500"
+      badgeColor: "bg-pink-500",
     },
     {
       icon: Search,
       title: "Latest Vacancies",
       subtitle: "Real-Time Opportunities",
-      description: "Access the latest government and private job openings with complete application guidance. Get notifications for jobs matching your profile and never miss an opportunity.",
+      description:
+        "Access the latest government and private job openings with complete application guidance. Get notifications for jobs matching your profile and never miss an opportunity.",
       features: [
         "Live job listings from 500+ sources",
         "Government jobs (SSC, UPSC, Railway, Banking)",
         "Private sector opportunities",
         "Application deadlines and fee details",
-        "Video tutorials for form filling"
+        "Video tutorials for form filling",
       ],
       color: "from-career-secondary to-green-600",
       href: "/jobs/vacancies",
       badge: "Live Updates",
-      badgeColor: "bg-career-secondary"
-    }
+      badgeColor: "bg-career-secondary",
+    },
   ];
 
   const quickStats = [
@@ -78,26 +87,26 @@ export default function JobsLanding() {
       icon: Briefcase,
       number: "15,000+",
       label: "Active Job Listings",
-      color: "text-career-primary"
+      color: "text-career-primary",
     },
     {
       icon: Users,
       number: "50K+",
       label: "Students Guided",
-      color: "text-career-secondary"
+      color: "text-career-secondary",
     },
     {
       icon: TrendingUp,
       number: "89%",
       label: "Success Rate",
-      color: "text-career-accent"
+      color: "text-career-accent",
     },
     {
       icon: Clock,
       number: "24/7",
       label: "Support Available",
-      color: "text-purple-600"
-    }
+      color: "text-purple-600",
+    },
   ];
 
   const popularCareers = [
@@ -106,7 +115,7 @@ export default function JobsLanding() {
     { name: "Digital Marketing", growth: "+20%", avg_salary: "₹5-12 LPA" },
     { name: "Civil Services", growth: "+15%", avg_salary: "₹7-12 LPA" },
     { name: "Healthcare", growth: "+22%", avg_salary: "₹6-18 LPA" },
-    { name: "Finance & Banking", growth: "+18%", avg_salary: "₹8-16 LPA" }
+    { name: "Finance & Banking", growth: "+18%", avg_salary: "₹8-16 LPA" },
   ];
 
   return (
@@ -114,17 +123,20 @@ export default function JobsLanding() {
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-background via-background to-muted/20 py-24">
         <div className="absolute inset-0 bg-gradient-to-r from-career-primary/5 via-transparent to-career-secondary/5"></div>
-        
+
         <div className="container relative px-4">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <div className="flex items-center justify-center gap-2 mb-6">
               <Briefcase className="h-10 w-10 text-career-primary" />
-              <h1 className="text-5xl md:text-6xl font-bold">Career Guidance</h1>
+              <h1 className="text-5xl md:text-6xl font-bold">
+                Career Guidance
+              </h1>
             </div>
-            
+
             <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-              Three powerful pathways to discover, plan, and achieve your ideal career. 
-              Whether you know your goal, follow your passion, or seek opportunities - we've got you covered.
+              Three powerful pathways to discover, plan, and achieve your ideal
+              career. Whether you know your goal, follow your passion, or seek
+              opportunities - we've got you covered.
             </p>
 
             <div className="flex flex-wrap justify-center gap-4 pt-4">
@@ -175,21 +187,29 @@ export default function JobsLanding() {
                 Choose Your Career Discovery Path
               </h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Each path is designed for different starting points and preferences. 
-                Pick the one that resonates with your current situation.
+                Each path is designed for different starting points and
+                preferences. Pick the one that resonates with your current
+                situation.
               </p>
             </div>
 
             <div className="space-y-8">
               {jobPathways.map((pathway, index) => (
-                <Card key={index} className="group relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${pathway.color} opacity-5 group-hover:opacity-10 transition-opacity`}></div>
-                  
+                <Card
+                  key={index}
+                  className="group relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1"
+                >
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${pathway.color} opacity-5 group-hover:opacity-10 transition-opacity`}
+                  ></div>
+
                   <div className="flex flex-col lg:flex-row">
                     {/* Left Content */}
                     <div className="flex-1 p-8 lg:p-12">
                       <div className="flex items-center gap-4 mb-6">
-                        <div className={`p-4 rounded-xl bg-gradient-to-br ${pathway.color} text-white`}>
+                        <div
+                          className={`p-4 rounded-xl bg-gradient-to-br ${pathway.color} text-white`}
+                        >
                           <pathway.icon className="h-8 w-8" />
                         </div>
                         <div>
@@ -197,7 +217,9 @@ export default function JobsLanding() {
                             <h3 className="text-2xl md:text-3xl font-bold">
                               {pathway.title}
                             </h3>
-                            <Badge className={`${pathway.badgeColor} text-white text-xs`}>
+                            <Badge
+                              className={`${pathway.badgeColor} text-white text-xs`}
+                            >
                               {pathway.badge}
                             </Badge>
                           </div>
@@ -213,7 +235,10 @@ export default function JobsLanding() {
 
                       <div className="space-y-3 mb-8">
                         {pathway.features.map((feature, featureIndex) => (
-                          <div key={featureIndex} className="flex items-center gap-3">
+                          <div
+                            key={featureIndex}
+                            className="flex items-center gap-3"
+                          >
                             <div className="w-2 h-2 rounded-full bg-career-primary"></div>
                             <span className="text-sm">{feature}</span>
                           </div>
@@ -221,8 +246,8 @@ export default function JobsLanding() {
                       </div>
 
                       <Link to={pathway.href}>
-                        <Button 
-                          size="lg" 
+                        <Button
+                          size="lg"
                           className="group/btn bg-gradient-to-r from-career-primary to-career-secondary hover:opacity-90 text-lg px-8"
                         >
                           <MapPin className="h-5 w-5 mr-2" />
@@ -235,9 +260,15 @@ export default function JobsLanding() {
                     {/* Right Visual */}
                     <div className="lg:w-80 p-8 lg:p-12 flex items-center justify-center">
                       <div className="relative">
-                        <div className={`w-32 h-32 rounded-full bg-gradient-to-br ${pathway.color} opacity-20 animate-pulse`}></div>
-                        <div className={`absolute inset-4 rounded-full bg-gradient-to-br ${pathway.color} opacity-40`}></div>
-                        <div className={`absolute inset-8 rounded-full bg-gradient-to-br ${pathway.color} flex items-center justify-center text-white`}>
+                        <div
+                          className={`w-32 h-32 rounded-full bg-gradient-to-br ${pathway.color} opacity-20 animate-pulse`}
+                        ></div>
+                        <div
+                          className={`absolute inset-4 rounded-full bg-gradient-to-br ${pathway.color} opacity-40`}
+                        ></div>
+                        <div
+                          className={`absolute inset-8 rounded-full bg-gradient-to-br ${pathway.color} flex items-center justify-center text-white`}
+                        >
                           <pathway.icon className="h-12 w-12" />
                         </div>
                       </div>
@@ -295,22 +326,31 @@ export default function JobsLanding() {
                 Start Your Career Journey Today
               </h2>
             </div>
-            
+
             <p className="text-xl opacity-90 max-w-2xl mx-auto">
-              Don't wait for the perfect moment. Every successful career starts with a single step. 
-              Take yours today and unlock unlimited possibilities.
+              Don't wait for the perfect moment. Every successful career starts
+              with a single step. Take yours today and unlock unlimited
+              possibilities.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
               <Link to="/jobs/by-goal">
-                <Button size="lg" variant="secondary" className="text-lg px-8 py-6">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="text-lg px-8 py-6"
+                >
                   <Target className="h-5 w-5 mr-2" />
                   Start Career Mapping
                 </Button>
               </Link>
-              
+
               <Link to="/jobs/by-interest">
-                <Button size="lg" variant="outline" className="text-lg px-8 py-6 text-white border-white hover:bg-white hover:text-career-primary">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="text-lg px-8 py-6 text-white border-white hover:bg-white hover:text-career-primary"
+                >
                   <Heart className="h-5 w-5 mr-2" />
                   Explore by Interest
                 </Button>

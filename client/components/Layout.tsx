@@ -7,18 +7,24 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { 
-  Menu, 
-  Moon, 
-  Sun, 
-  Globe, 
-  MapPin, 
-  Briefcase, 
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  Menu,
+  Moon,
+  Sun,
+  Globe,
+  MapPin,
+  Briefcase,
   Target,
   Search,
   Bookmark,
-  User
+  User,
 } from "lucide-react";
 
 interface LayoutProps {
@@ -46,29 +52,29 @@ export default function Layout({ children }: LayoutProps) {
   };
 
   const navItems = [
-    { 
-      label: "Jobs", 
-      href: "/jobs", 
+    {
+      label: "Jobs",
+      href: "/jobs",
       icon: Briefcase,
-      description: "Find your perfect career path"
+      description: "Find your perfect career path",
     },
-    { 
-      label: "Business", 
-      href: "/business", 
+    {
+      label: "Business",
+      href: "/business",
       icon: Target,
-      description: "Start your entrepreneurial journey"
+      description: "Start your entrepreneurial journey",
     },
-    { 
-      label: "Career Map", 
-      href: "/career-map", 
+    {
+      label: "Career Map",
+      href: "/career-map",
       icon: MapPin,
-      description: "Interactive career planning"
+      description: "Interactive career planning",
     },
-    { 
-      label: "Vacancies", 
-      href: "/vacancies", 
+    {
+      label: "Vacancies",
+      href: "/vacancies",
       icon: Search,
-      description: "Latest job openings"
+      description: "Latest job openings",
     },
   ];
 
@@ -90,8 +96,8 @@ export default function Layout({ children }: LayoutProps) {
                   ? "bg-career-primary text-white"
                   : "bg-career-primary text-white"
                 : mobile
-                ? "text-foreground"
-                : "text-muted-foreground hover:text-foreground"
+                  ? "text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
             }`}
             onClick={() => mobile && setIsMenuOpen(false)}
           >
@@ -122,7 +128,9 @@ export default function Layout({ children }: LayoutProps) {
               <div className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-career-accent"></div>
             </div>
             <div className="flex flex-col">
-              <span className="text-lg font-bold text-foreground">CareerMap</span>
+              <span className="text-lg font-bold text-foreground">
+                CareerMap
+              </span>
               <span className="text-xs text-muted-foreground leading-none">
                 Your Complete Career & Business Roadmap
               </span>
@@ -142,7 +150,9 @@ export default function Layout({ children }: LayoutProps) {
                 <Button variant="ghost" size="sm" className="gap-2">
                   <Globe className="h-4 w-4" />
                   <span className="text-lg">{selectedLanguage.flag}</span>
-                  <span className="hidden lg:inline">{selectedLanguage.name}</span>
+                  <span className="hidden lg:inline">
+                    {selectedLanguage.name}
+                  </span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -215,14 +225,19 @@ export default function Layout({ children }: LayoutProps) {
                   <div className="space-y-2">
                     <NavLinks mobile />
                   </div>
-                  
+
                   <div className="border-t pt-4 space-y-2">
                     {/* Mobile Language Selector */}
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="w-full justify-start gap-3">
+                        <Button
+                          variant="ghost"
+                          className="w-full justify-start gap-3"
+                        >
                           <Globe className="h-5 w-5" />
-                          <span className="text-lg">{selectedLanguage.flag}</span>
+                          <span className="text-lg">
+                            {selectedLanguage.flag}
+                          </span>
                           <span>{selectedLanguage.name}</span>
                         </Button>
                       </DropdownMenuTrigger>
@@ -255,13 +270,19 @@ export default function Layout({ children }: LayoutProps) {
                     </Button>
 
                     {/* Mobile User Account */}
-                    <Button variant="ghost" className="w-full justify-start gap-3">
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start gap-3"
+                    >
                       <User className="h-5 w-5" />
                       Account
                     </Button>
 
                     {/* Mobile Bookmarks */}
-                    <Button variant="ghost" className="w-full justify-start gap-3">
+                    <Button
+                      variant="ghost"
+                      className="w-full justify-start gap-3"
+                    >
                       <Bookmark className="h-5 w-5" />
                       Saved Items
                     </Button>
@@ -274,9 +295,7 @@ export default function Layout({ children }: LayoutProps) {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1">
-        {children}
-      </main>
+      <main className="flex-1">{children}</main>
 
       {/* Footer */}
       <footer className="border-t bg-muted/10">
@@ -293,49 +312,116 @@ export default function Layout({ children }: LayoutProps) {
                 <span className="font-bold">CareerMap</span>
               </div>
               <p className="text-sm text-muted-foreground">
-                Your Complete Career & Business Roadmap. Navigate your professional journey with confidence.
+                Your Complete Career & Business Roadmap. Navigate your
+                professional journey with confidence.
               </p>
             </div>
-            
+
             <div>
               <h3 className="font-semibold mb-3">Career Guidance</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link to="/jobs/by-goal" className="hover:text-foreground">By Goal</Link></li>
-                <li><Link to="/jobs/by-interest" className="hover:text-foreground">By Interest</Link></li>
-                <li><Link to="/vacancies" className="hover:text-foreground">Latest Vacancies</Link></li>
-                <li><Link to="/career-map" className="hover:text-foreground">Interactive Map</Link></li>
+                <li>
+                  <Link to="/jobs/by-goal" className="hover:text-foreground">
+                    By Goal
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/jobs/by-interest"
+                    className="hover:text-foreground"
+                  >
+                    By Interest
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/vacancies" className="hover:text-foreground">
+                    Latest Vacancies
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/career-map" className="hover:text-foreground">
+                    Interactive Map
+                  </Link>
+                </li>
               </ul>
             </div>
-            
+
             <div>
               <h3 className="font-semibold mb-3">Business</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link to="/business" className="hover:text-foreground">Business Ideas</Link></li>
-                <li><Link to="/business/guidance" className="hover:text-foreground">Start-up Guide</Link></li>
-                <li><Link to="/business/documents" className="hover:text-foreground">Documentation</Link></li>
-                <li><Link to="/business/funding" className="hover:text-foreground">Funding Options</Link></li>
+                <li>
+                  <Link to="/business" className="hover:text-foreground">
+                    Business Ideas
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/business/guidance"
+                    className="hover:text-foreground"
+                  >
+                    Start-up Guide
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/business/documents"
+                    className="hover:text-foreground"
+                  >
+                    Documentation
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/business/funding"
+                    className="hover:text-foreground"
+                  >
+                    Funding Options
+                  </Link>
+                </li>
               </ul>
             </div>
-            
+
             <div>
               <h3 className="font-semibold mb-3">Resources</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-foreground">Premium Notes</a></li>
-                <li><a href="#" className="hover:text-foreground">Video Tutorials</a></li>
-                <li><a href="#" className="hover:text-foreground">AI Assistant</a></li>
-                <li><a href="#" className="hover:text-foreground">Support</a></li>
+                <li>
+                  <a href="#" className="hover:text-foreground">
+                    Premium Notes
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-foreground">
+                    Video Tutorials
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-foreground">
+                    AI Assistant
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-foreground">
+                    Support
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t mt-8 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground">
               © 2024 CareerMap.com. All rights reserved.
             </p>
             <div className="flex gap-4 text-sm text-muted-foreground">
-              <a href="#" className="hover:text-foreground">Privacy Policy</a>
-              <a href="#" className="hover:text-foreground">Terms of Service</a>
-              <a href="#" className="hover:text-foreground">Contact</a>
+              <a href="#" className="hover:text-foreground">
+                Privacy Policy
+              </a>
+              <a href="#" className="hover:text-foreground">
+                Terms of Service
+              </a>
+              <a href="#" className="hover:text-foreground">
+                Contact
+              </a>
             </div>
           </div>
         </div>
