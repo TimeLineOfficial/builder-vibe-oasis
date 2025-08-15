@@ -346,7 +346,13 @@ export default function CareerByGoal() {
         >
           {showAdvancedMapping ? 'Hide' : 'Show'} Advanced Career Resources
         </Button>
-        <Button onClick={resetFlow}>
+        <Button
+          onClick={() => setShowAdvancedCareerModal(true)}
+          className="mr-4"
+        >
+          Get Complete Career Roadmap
+        </Button>
+        <Button onClick={resetFlow} variant="outline">
           Start Over
         </Button>
       </div>
