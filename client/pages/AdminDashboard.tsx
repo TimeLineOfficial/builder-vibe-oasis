@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { 
+import {
   Shield,
   Users,
   FileText,
@@ -33,7 +39,7 @@ import {
   DollarSign,
   Building,
   BookOpen,
-  Play
+  Play,
 } from "lucide-react";
 
 export default function AdminDashboard() {
@@ -85,7 +91,7 @@ export default function AdminDashboard() {
                 className="mt-2"
               />
             </div>
-            <Button 
+            <Button
               onClick={handleLogin}
               className="w-full bg-gradient-to-r from-career-primary to-career-secondary"
             >
@@ -104,29 +110,29 @@ export default function AdminDashboard() {
       value: "52,847",
       change: "+12.5%",
       icon: Users,
-      color: "text-blue-600"
+      color: "text-blue-600",
     },
     {
       title: "Active Jobs",
       value: "15,234",
       change: "+8.2%",
       icon: Building,
-      color: "text-green-600"
+      color: "text-green-600",
     },
     {
       title: "Business Ideas",
       value: "547",
       change: "+5.1%",
       icon: TrendingUp,
-      color: "text-yellow-600"
+      color: "text-yellow-600",
     },
     {
       title: "Revenue",
       value: "₹12.4L",
       change: "+22.1%",
       icon: DollarSign,
-      color: "text-purple-600"
-    }
+      color: "text-purple-600",
+    },
   ];
 
   const recentJobs = [
@@ -137,7 +143,7 @@ export default function AdminDashboard() {
       location: "Bangalore",
       postedDate: "2024-01-15",
       applications: 245,
-      status: "Active"
+      status: "Active",
     },
     {
       id: 2,
@@ -146,7 +152,7 @@ export default function AdminDashboard() {
       location: "Mumbai",
       postedDate: "2024-01-14",
       applications: 189,
-      status: "Active"
+      status: "Active",
     },
     {
       id: 3,
@@ -155,8 +161,8 @@ export default function AdminDashboard() {
       location: "Delhi",
       postedDate: "2024-01-13",
       applications: 167,
-      status: "Expired"
-    }
+      status: "Expired",
+    },
   ];
 
   return (
@@ -167,15 +173,17 @@ export default function AdminDashboard() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-              <p className="text-muted-foreground">Welcome back, Himesh Singh</p>
+              <p className="text-muted-foreground">
+                Welcome back, Himesh Singh
+              </p>
             </div>
             <div className="flex items-center gap-4">
               <Badge variant="secondary" className="px-3 py-1">
                 <Clock className="h-4 w-4 mr-2" />
                 Last login: Today, 2:30 PM
               </Badge>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => setIsAuthenticated(false)}
               >
                 Logout
@@ -186,7 +194,11 @@ export default function AdminDashboard() {
       </section>
 
       <div className="container px-4 py-8">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="space-y-8"
+        >
           <TabsList className="grid w-full grid-cols-6 max-w-2xl">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="jobs">Jobs</TabsTrigger>
@@ -204,9 +216,13 @@ export default function AdminDashboard() {
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-muted-foreground">{stat.title}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {stat.title}
+                        </p>
                         <p className="text-2xl font-bold">{stat.value}</p>
-                        <p className="text-sm text-green-600">{stat.change} from last month</p>
+                        <p className="text-sm text-green-600">
+                          {stat.change} from last month
+                        </p>
                       </div>
                       <stat.icon className={`h-8 w-8 ${stat.color}`} />
                     </div>
@@ -220,18 +236,31 @@ export default function AdminDashboard() {
               <Card className="border-0 shadow-lg">
                 <CardHeader>
                   <CardTitle>Recent Job Posts</CardTitle>
-                  <CardDescription>Latest job listings and their performance</CardDescription>
+                  <CardDescription>
+                    Latest job listings and their performance
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {recentJobs.map((job) => (
-                      <div key={job.id} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div
+                        key={job.id}
+                        className="flex items-center justify-between p-4 border rounded-lg"
+                      >
                         <div>
                           <h4 className="font-medium">{job.title}</h4>
-                          <p className="text-sm text-muted-foreground">{job.organization} • {job.location}</p>
-                          <p className="text-sm text-muted-foreground">{job.applications} applications</p>
+                          <p className="text-sm text-muted-foreground">
+                            {job.organization} • {job.location}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            {job.applications} applications
+                          </p>
                         </div>
-                        <Badge variant={job.status === "Active" ? "default" : "secondary"}>
+                        <Badge
+                          variant={
+                            job.status === "Active" ? "default" : "secondary"
+                          }
+                        >
                           {job.status}
                         </Badge>
                       </div>
@@ -283,13 +312,18 @@ export default function AdminDashboard() {
             <Card className="border-0 shadow-lg">
               <CardHeader>
                 <CardTitle>Add/Edit Job Posting</CardTitle>
-                <CardDescription>Create or update job listings and vacancy information</CardDescription>
+                <CardDescription>
+                  Create or update job listings and vacancy information
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <Label>Job Title</Label>
-                    <Input placeholder="e.g., Software Engineer" className="mt-2" />
+                    <Input
+                      placeholder="e.g., Software Engineer"
+                      className="mt-2"
+                    />
                   </div>
                   <div>
                     <Label>Organization</Label>
@@ -300,7 +334,10 @@ export default function AdminDashboard() {
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <Label>Location</Label>
-                    <Input placeholder="e.g., Bangalore, Karnataka" className="mt-2" />
+                    <Input
+                      placeholder="e.g., Bangalore, Karnataka"
+                      className="mt-2"
+                    />
                   </div>
                   <div>
                     <Label>Job Type</Label>
@@ -331,7 +368,7 @@ export default function AdminDashboard() {
 
                 <div>
                   <Label>Job Description</Label>
-                  <Textarea 
+                  <Textarea
                     placeholder="Detailed job description, requirements, and qualifications"
                     className="mt-2 h-32"
                   />
@@ -340,11 +377,18 @@ export default function AdminDashboard() {
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <Label>Application Fee</Label>
-                    <Input placeholder="e.g., ₹500 (Gen/OBC), ₹250 (SC/ST)" className="mt-2" />
+                    <Input
+                      placeholder="e.g., ₹500 (Gen/OBC), ₹250 (SC/ST)"
+                      className="mt-2"
+                    />
                   </div>
                   <div>
                     <Label>Number of Vacancies</Label>
-                    <Input type="number" placeholder="e.g., 150" className="mt-2" />
+                    <Input
+                      type="number"
+                      placeholder="e.g., 150"
+                      className="mt-2"
+                    />
                   </div>
                 </div>
 
@@ -379,16 +423,24 @@ export default function AdminDashboard() {
               <Card className="border-0 shadow-lg">
                 <CardHeader>
                   <CardTitle>Video Content</CardTitle>
-                  <CardDescription>Manage tutorial videos and guidance content</CardDescription>
+                  <CardDescription>
+                    Manage tutorial videos and guidance content
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
                     <Label>Video Title</Label>
-                    <Input placeholder="e.g., How to Apply for Government Jobs" className="mt-2" />
+                    <Input
+                      placeholder="e.g., How to Apply for Government Jobs"
+                      className="mt-2"
+                    />
                   </div>
                   <div>
                     <Label>Video Description</Label>
-                    <Textarea placeholder="Brief description of the video content" className="mt-2" />
+                    <Textarea
+                      placeholder="Brief description of the video content"
+                      className="mt-2"
+                    />
                   </div>
                   <div>
                     <Label>Category</Label>
@@ -397,10 +449,18 @@ export default function AdminDashboard() {
                         <SelectValue placeholder="Select category" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="career-guidance">Career Guidance</SelectItem>
-                        <SelectItem value="business-tips">Business Tips</SelectItem>
-                        <SelectItem value="application-help">Application Help</SelectItem>
-                        <SelectItem value="interview-prep">Interview Preparation</SelectItem>
+                        <SelectItem value="career-guidance">
+                          Career Guidance
+                        </SelectItem>
+                        <SelectItem value="business-tips">
+                          Business Tips
+                        </SelectItem>
+                        <SelectItem value="application-help">
+                          Application Help
+                        </SelectItem>
+                        <SelectItem value="interview-prep">
+                          Interview Preparation
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -418,12 +478,17 @@ export default function AdminDashboard() {
               <Card className="border-0 shadow-lg">
                 <CardHeader>
                   <CardTitle>PDF Resources</CardTitle>
-                  <CardDescription>Manage downloadable guides and documents</CardDescription>
+                  <CardDescription>
+                    Manage downloadable guides and documents
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
                     <Label>Document Title</Label>
-                    <Input placeholder="e.g., Complete Business Setup Guide" className="mt-2" />
+                    <Input
+                      placeholder="e.g., Complete Business Setup Guide"
+                      className="mt-2"
+                    />
                   </div>
                   <div>
                     <Label>Document Type</Label>
@@ -432,9 +497,15 @@ export default function AdminDashboard() {
                         <SelectValue placeholder="Select type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="career-guide">Career Guide</SelectItem>
-                        <SelectItem value="business-plan">Business Plan Template</SelectItem>
-                        <SelectItem value="application-form">Application Form</SelectItem>
+                        <SelectItem value="career-guide">
+                          Career Guide
+                        </SelectItem>
+                        <SelectItem value="business-plan">
+                          Business Plan Template
+                        </SelectItem>
+                        <SelectItem value="application-form">
+                          Application Form
+                        </SelectItem>
                         <SelectItem value="checklist">Checklist</SelectItem>
                       </SelectContent>
                     </Select>
@@ -448,7 +519,9 @@ export default function AdminDashboard() {
                       <SelectContent>
                         <SelectItem value="free">Free Access</SelectItem>
                         <SelectItem value="premium">Premium Only</SelectItem>
-                        <SelectItem value="registered">Registered Users</SelectItem>
+                        <SelectItem value="registered">
+                          Registered Users
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -467,25 +540,39 @@ export default function AdminDashboard() {
 
           <TabsContent value="users" className="space-y-8">
             <h2 className="text-2xl font-bold">User Management</h2>
-            
+
             <Card className="border-0 shadow-lg">
               <CardHeader>
                 <CardTitle>User Statistics</CardTitle>
-                <CardDescription>Overview of user activity and engagement</CardDescription>
+                <CardDescription>
+                  Overview of user activity and engagement
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid md:grid-cols-3 gap-6">
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-blue-600">52,847</div>
-                    <div className="text-sm text-muted-foreground">Total Users</div>
+                    <div className="text-3xl font-bold text-blue-600">
+                      52,847
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Total Users
+                    </div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-green-600">8,234</div>
-                    <div className="text-sm text-muted-foreground">Active This Month</div>
+                    <div className="text-3xl font-bold text-green-600">
+                      8,234
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      Active This Month
+                    </div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-yellow-600">1,456</div>
-                    <div className="text-sm text-muted-foreground">New Registrations</div>
+                    <div className="text-3xl font-bold text-yellow-600">
+                      1,456
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      New Registrations
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -494,19 +581,23 @@ export default function AdminDashboard() {
 
           <TabsContent value="analytics" className="space-y-8">
             <h2 className="text-2xl font-bold">Analytics & Reports</h2>
-            
+
             <div className="grid lg:grid-cols-2 gap-8">
               <Card className="border-0 shadow-lg">
                 <CardHeader>
                   <CardTitle>Traffic Analytics</CardTitle>
-                  <CardDescription>Website traffic and user engagement metrics</CardDescription>
+                  <CardDescription>
+                    Website traffic and user engagement metrics
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="h-64 bg-muted/20 rounded-lg flex items-center justify-center">
                     <div className="text-center">
                       <BarChart className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
                       <p className="text-muted-foreground">Analytics Chart</p>
-                      <p className="text-sm text-muted-foreground">Traffic visualization</p>
+                      <p className="text-sm text-muted-foreground">
+                        Traffic visualization
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -515,14 +606,18 @@ export default function AdminDashboard() {
               <Card className="border-0 shadow-lg">
                 <CardHeader>
                   <CardTitle>Revenue Analytics</CardTitle>
-                  <CardDescription>Premium subscriptions and revenue tracking</CardDescription>
+                  <CardDescription>
+                    Premium subscriptions and revenue tracking
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="h-64 bg-muted/20 rounded-lg flex items-center justify-center">
                     <div className="text-center">
                       <PieChart className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
                       <p className="text-muted-foreground">Revenue Chart</p>
-                      <p className="text-sm text-muted-foreground">Income breakdown</p>
+                      <p className="text-sm text-muted-foreground">
+                        Income breakdown
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -532,11 +627,13 @@ export default function AdminDashboard() {
 
           <TabsContent value="settings" className="space-y-8">
             <h2 className="text-2xl font-bold">Settings</h2>
-            
+
             <Card className="border-0 shadow-lg">
               <CardHeader>
                 <CardTitle>System Configuration</CardTitle>
-                <CardDescription>Manage system settings and configurations</CardDescription>
+                <CardDescription>
+                  Manage system settings and configurations
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div>

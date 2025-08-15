@@ -54,7 +54,10 @@ export default function App() {
               {/* Business routes */}
               <Route path="/business" element={<BusinessLanding />} />
               <Route path="/business/ideas" element={<BusinessIdeas />} />
-              <Route path="/business/documentation" element={<BusinessDocumentation />} />
+              <Route
+                path="/business/documentation"
+                element={<BusinessDocumentation />}
+              />
               <Route path="/business/calculator" element={<ROICalculator />} />
               <Route
                 path="/business/guidance"

@@ -1,12 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { useDataStore } from '../lib/data-service';
-import { Button } from '../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Badge } from '../components/ui/badge';
-import { ArrowRight, BookOpen, Target, Users, TrendingUp, Clock, DollarSign } from 'lucide-react';
-import AdvancedCareerMapping from '../components/AdvancedCareerMapping';
+import React, { useState, useEffect } from "react";
+import { useDataStore } from "../lib/data-service";
+import { Button } from "../components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
+import {
+  ArrowRight,
+  BookOpen,
+  Target,
+  Users,
+  TrendingUp,
+  Clock,
+  DollarSign,
+} from "lucide-react";
+import AdvancedCareerMapping from "../components/AdvancedCareerMapping";
 
-type Step = 'stage' | 'stream' | 'course' | 'results';
+type Step = "stage" | "stream" | "course" | "results";
 
 interface SelectedOptions {
   stage: string;
@@ -15,24 +29,24 @@ interface SelectedOptions {
 }
 
 export default function CareerByGoal() {
-  const { 
-    careerMapData, 
-    currentLanguage, 
-    getText, 
+  const {
+    careerMapData,
+    currentLanguage,
+    getText,
     generateCareerPath,
     getEducationStages,
     getStreamsByStage,
     getCoursesByStream,
     getCareerSwitchPaths,
     getCareerNotes,
-    getYouTubeLectures
+    getYouTubeLectures,
   } = useDataStore();
 
-  const [currentStep, setCurrentStep] = useState<Step>('stage');
+  const [currentStep, setCurrentStep] = useState<Step>("stage");
   const [selectedOptions, setSelectedOptions] = useState<SelectedOptions>({
-    stage: '',
-    stream: '',
-    course: ''
+    stage: "",
+    stream: "",
+    course: "",
   });
   const [careerPaths, setCareerPaths] = useState<any[]>([]);
   const [careerSwitchPaths, setCareerSwitchPaths] = useState<any[]>([]);
@@ -42,25 +56,30 @@ export default function CareerByGoal() {
   const educationStages = getEducationStages();
 
   const handleStageSelect = (stageId: string) => {
-    setSelectedOptions(prev => ({ ...prev, stage: stageId, stream: '', course: '' }));
-    setCurrentStep('stream');
+    setSelectedOptions((prev) => ({
+      ...prev,
+      stage: stageId,
+      stream: "",
+      course: "",
+    }));
+    setCurrentStep("stream");
   };
 
   const handleStreamSelect = (stream: string) => {
-    setSelectedOptions(prev => ({ ...prev, stream, course: '' }));
-    
+    setSelectedOptions((prev) => ({ ...prev, stream, course: "" }));
+
     // For working professionals, skip course selection and go to results
-    if (selectedOptions.stage === 'working_professional') {
-      setCurrentStep('results');
-      generateResults(selectedOptions.stage, stream, '');
+    if (selectedOptions.stage === "working_professional") {
+      setCurrentStep("results");
+      generateResults(selectedOptions.stage, stream, "");
     } else {
-      setCurrentStep('course');
+      setCurrentStep("course");
     }
   };
 
   const handleCourseSelect = (course: string) => {
-    setSelectedOptions(prev => ({ ...prev, course }));
-    setCurrentStep('results');
+    setSelectedOptions((prev) => ({ ...prev, course }));
+    setCurrentStep("results");
     generateResults(selectedOptions.stage, selectedOptions.stream, course);
   };
 
@@ -71,15 +90,15 @@ export default function CareerByGoal() {
     setCareerPaths(paths);
 
     // For working professionals, show career switch paths
-    if (stage === 'working_professional') {
-      const switchPaths = getCareerSwitchPaths(stream, 'Data Science'); // Example target
+    if (stage === "working_professional") {
+      const switchPaths = getCareerSwitchPaths(stream, "Data Science"); // Example target
       setCareerSwitchPaths(switchPaths);
     }
   };
 
   const resetFlow = () => {
-    setCurrentStep('stage');
-    setSelectedOptions({ stage: '', stream: '', course: '' });
+    setCurrentStep("stage");
+    setSelectedOptions({ stage: "", stream: "", course: "" });
     setCareerPaths([]);
     setCareerSwitchPaths([]);
     setShowAdvancedMapping(false);
@@ -87,44 +106,64 @@ export default function CareerByGoal() {
 
   const StepIndicator = () => (
     <div className="flex items-center justify-center mb-8 space-x-4">
-      {(['stage', 'stream', 'course', 'results'] as Step[]).map((step, index) => {
-        const isActive = currentStep === step;
-        const isCompleted = ['stage', 'stream', 'course', 'results'].indexOf(currentStep) > index;
-        
-        // Skip course step for working professionals
-        if (step === 'course' && selectedOptions.stage === 'working_professional') {
-          return null;
-        }
-        
-        return (
-          <React.Fragment key={step}>
-            <div className={`
+      {(["stage", "stream", "course", "results"] as Step[]).map(
+        (step, index) => {
+          const isActive = currentStep === step;
+          const isCompleted =
+            ["stage", "stream", "course", "results"].indexOf(currentStep) >
+            index;
+
+          // Skip course step for working professionals
+          if (
+            step === "course" &&
+            selectedOptions.stage === "working_professional"
+          ) {
+            return null;
+          }
+
+          return (
+            <React.Fragment key={step}>
+              <div
+                className={`
               w-10 h-10 rounded-full flex items-center justify-center font-semibold
-              ${isActive ? 'bg-blue-600 text-white' : 
-                isCompleted ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-600'}
-            `}>
-              {index + 1}
-            </div>
-            {index < 3 && step !== 'course' || (step === 'course' && selectedOptions.stage !== 'working_professional') ? (
-              <ArrowRight className="w-4 h-4 text-gray-400" />
-            ) : null}
-          </React.Fragment>
-        );
-      })}
+              ${
+                isActive
+                  ? "bg-blue-600 text-white"
+                  : isCompleted
+                    ? "bg-green-600 text-white"
+                    : "bg-gray-200 text-gray-600"
+              }
+            `}
+              >
+                {index + 1}
+              </div>
+              {(index < 3 && step !== "course") ||
+              (step === "course" &&
+                selectedOptions.stage !== "working_professional") ? (
+                <ArrowRight className="w-4 h-4 text-gray-400" />
+              ) : null}
+            </React.Fragment>
+          );
+        },
+      )}
     </div>
   );
 
   const renderStageSelection = () => (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-2xl font-bold mb-2">What's your current education level?</h2>
-        <p className="text-gray-600">Select your current stage to get personalized career guidance</p>
+        <h2 className="text-2xl font-bold mb-2">
+          What's your current education level?
+        </h2>
+        <p className="text-gray-600">
+          Select your current stage to get personalized career guidance
+        </p>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {educationStages.map((stage) => (
-          <Card 
-            key={stage.id} 
+          <Card
+            key={stage.id}
             className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:border-blue-500 group"
             onClick={() => handleStageSelect(stage.id)}
           >
@@ -134,12 +173,17 @@ export default function CareerByGoal() {
               </div>
               <h3 className="font-semibold text-lg mb-2">{stage.label}</h3>
               <p className="text-sm text-gray-600">
-                {stage.id === 'class_10_below' && 'Foundation level guidance for future planning'}
-                {stage.id === 'class_11_12' && 'Stream selection for higher education'}
-                {stage.id === 'undergraduate' && 'Course and specialization guidance'}
-                {stage.id === 'postgraduate' && 'Advanced degree and research options'}
-                {stage.id === 'phd' && 'Research and academic career paths'}
-                {stage.id === 'working_professional' && 'Career switch and upskilling options'}
+                {stage.id === "class_10_below" &&
+                  "Foundation level guidance for future planning"}
+                {stage.id === "class_11_12" &&
+                  "Stream selection for higher education"}
+                {stage.id === "undergraduate" &&
+                  "Course and specialization guidance"}
+                {stage.id === "postgraduate" &&
+                  "Advanced degree and research options"}
+                {stage.id === "phd" && "Research and academic career paths"}
+                {stage.id === "working_professional" &&
+                  "Career switch and upskilling options"}
               </p>
             </CardContent>
           </Card>
@@ -150,28 +194,26 @@ export default function CareerByGoal() {
 
   const renderStreamSelection = () => {
     const streams = getStreamsByStage(selectedOptions.stage);
-    
+
     return (
       <div className="space-y-6">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-2">
-            {selectedOptions.stage === 'working_professional' 
-              ? 'What\'s your current industry/domain?' 
-              : 'Choose your stream/field'
-            }
+            {selectedOptions.stage === "working_professional"
+              ? "What's your current industry/domain?"
+              : "Choose your stream/field"}
           </h2>
           <p className="text-gray-600">
-            {selectedOptions.stage === 'working_professional'
-              ? 'This helps us suggest relevant career transitions'
-              : 'Select the area you want to pursue or are interested in'
-            }
+            {selectedOptions.stage === "working_professional"
+              ? "This helps us suggest relevant career transitions"
+              : "Select the area you want to pursue or are interested in"}
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {streams.map((stream) => (
-            <Card 
-              key={stream} 
+            <Card
+              key={stream}
               className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:border-blue-500 group"
               onClick={() => handleStreamSelect(stream)}
             >
@@ -184,7 +226,7 @@ export default function CareerByGoal() {
             </Card>
           ))}
         </div>
-        
+
         <div className="text-center">
           <Button variant="outline" onClick={resetFlow}>
             Back to Education Level
@@ -196,18 +238,22 @@ export default function CareerByGoal() {
 
   const renderCourseSelection = () => {
     const courses = getCoursesByStream(selectedOptions.stream);
-    
+
     return (
       <div className="space-y-6">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-2">Select your specific course/specialization</h2>
-          <p className="text-gray-600">Choose the specific area within {selectedOptions.stream}</p>
+          <h2 className="text-2xl font-bold mb-2">
+            Select your specific course/specialization
+          </h2>
+          <p className="text-gray-600">
+            Choose the specific area within {selectedOptions.stream}
+          </p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {courses.map((course) => (
-            <Card 
-              key={course} 
+            <Card
+              key={course}
               className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:border-blue-500 group"
               onClick={() => handleCourseSelect(course)}
             >
@@ -220,9 +266,9 @@ export default function CareerByGoal() {
             </Card>
           ))}
         </div>
-        
+
         <div className="text-center">
-          <Button variant="outline" onClick={() => setCurrentStep('stream')}>
+          <Button variant="outline" onClick={() => setCurrentStep("stream")}>
             Back to Stream Selection
           </Button>
         </div>
@@ -233,9 +279,12 @@ export default function CareerByGoal() {
   const renderResults = () => (
     <div className="space-y-8">
       <div className="text-center">
-        <h2 className="text-2xl font-bold mb-2">Your Personalized Career Roadmap</h2>
+        <h2 className="text-2xl font-bold mb-2">
+          Your Personalized Career Roadmap
+        </h2>
         <p className="text-gray-600">
-          Based on your selection: {selectedOptions.stage} → {selectedOptions.stream} 
+          Based on your selection: {selectedOptions.stage} →{" "}
+          {selectedOptions.stream}
           {selectedOptions.course && ` → ${selectedOptions.course}`}
         </p>
       </div>
@@ -252,14 +301,17 @@ export default function CareerByGoal() {
           <CardContent>
             <div className="space-y-4">
               {careerPaths.map((step, index) => (
-                <div key={index} className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
+                <div
+                  key={index}
+                  className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg"
+                >
                   <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-semibold">
                     {index + 1}
                   </div>
                   <div className="flex-1">
                     <h4 className="font-semibold text-lg">{step.title}</h4>
                     <p className="text-gray-600 mb-2">{step.description}</p>
-                    
+
                     {step.exams && step.exams.length > 0 && (
                       <div className="mb-2">
                         <span className="text-sm font-medium">Key Exams: </span>
@@ -270,10 +322,12 @@ export default function CareerByGoal() {
                         ))}
                       </div>
                     )}
-                    
+
                     {step.courses && step.courses.length > 0 && (
                       <div>
-                        <span className="text-sm font-medium">Recommended Courses: </span>
+                        <span className="text-sm font-medium">
+                          Recommended Courses:{" "}
+                        </span>
                         {step.courses.map((course: string, i: number) => (
                           <Badge key={i} variant="secondary" className="mr-1">
                             {course}
@@ -298,7 +352,8 @@ export default function CareerByGoal() {
               Career Transition Guide
             </CardTitle>
             <CardDescription>
-              Step-by-step guide to switch from {selectedOptions.stream} to trending fields
+              Step-by-step guide to switch from {selectedOptions.stream} to
+              trending fields
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -307,20 +362,29 @@ export default function CareerByGoal() {
                 <div className="flex items-center justify-between">
                   <h4 className="font-semibold text-lg">{switchPath.path}</h4>
                   <div className="flex gap-2">
-                    <Badge variant="outline" className="flex items-center gap-1">
+                    <Badge
+                      variant="outline"
+                      className="flex items-center gap-1"
+                    >
                       <Clock className="w-3 h-3" />
                       {switchPath.duration}
                     </Badge>
-                    <Badge variant="outline" className="flex items-center gap-1">
+                    <Badge
+                      variant="outline"
+                      className="flex items-center gap-1"
+                    >
                       <DollarSign className="w-3 h-3" />
                       {switchPath.estimated_cost}
                     </Badge>
                   </div>
                 </div>
-                
+
                 <div className="grid gap-2">
                   {switchPath.steps.map((step: string, stepIndex: number) => (
-                    <div key={stepIndex} className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                    <div
+                      key={stepIndex}
+                      className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg"
+                    >
                       <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-semibold">
                         {stepIndex + 1}
                       </div>
@@ -328,10 +392,14 @@ export default function CareerByGoal() {
                     </div>
                   ))}
                 </div>
-                
+
                 <div className="flex gap-4 text-sm">
-                  <span><strong>Success Rate:</strong> {switchPath.success_rate}</span>
-                  <span><strong>Difficulty:</strong> {switchPath.difficulty}</span>
+                  <span>
+                    <strong>Success Rate:</strong> {switchPath.success_rate}
+                  </span>
+                  <span>
+                    <strong>Difficulty:</strong> {switchPath.difficulty}
+                  </span>
                 </div>
               </div>
             ))}
@@ -341,12 +409,12 @@ export default function CareerByGoal() {
 
       {/* Advanced Career Mapping Toggle */}
       <div className="text-center">
-        <Button 
+        <Button
           onClick={() => setShowAdvancedMapping(!showAdvancedMapping)}
           variant="outline"
           className="mr-4"
         >
-          {showAdvancedMapping ? 'Hide' : 'Show'} Advanced Career Resources
+          {showAdvancedMapping ? "Hide" : "Show"} Advanced Career Resources
         </Button>
         <Button
           onClick={() => setShowAdvancedCareerModal(true)}
@@ -368,11 +436,13 @@ export default function CareerByGoal() {
             </CardHeader>
             <CardContent>
               {(() => {
-                const notes = getCareerNotes(selectedOptions.course || selectedOptions.stream);
+                const notes = getCareerNotes(
+                  selectedOptions.course || selectedOptions.stream,
+                );
                 return (
                   <div className="space-y-4">
                     <p className="text-gray-600">{notes.summary}</p>
-                    
+
                     <div>
                       <h5 className="font-semibold mb-2">Key Topics:</h5>
                       <ul className="list-disc list-inside space-y-1 text-sm">
@@ -381,14 +451,23 @@ export default function CareerByGoal() {
                         ))}
                       </ul>
                     </div>
-                    
+
                     <div>
                       <h5 className="font-semibold mb-2">Learning Timeline:</h5>
                       <div className="grid grid-cols-2 gap-2 text-sm">
-                        <div><strong>Beginner:</strong> {notes.timeline.beginner}</div>
-                        <div><strong>Intermediate:</strong> {notes.timeline.intermediate}</div>
-                        <div><strong>Advanced:</strong> {notes.timeline.advanced}</div>
-                        <div><strong>Expert:</strong> {notes.timeline.expert}</div>
+                        <div>
+                          <strong>Beginner:</strong> {notes.timeline.beginner}
+                        </div>
+                        <div>
+                          <strong>Intermediate:</strong>{" "}
+                          {notes.timeline.intermediate}
+                        </div>
+                        <div>
+                          <strong>Advanced:</strong> {notes.timeline.advanced}
+                        </div>
+                        <div>
+                          <strong>Expert:</strong> {notes.timeline.expert}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -396,29 +475,41 @@ export default function CareerByGoal() {
               })()}
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <CardTitle>YouTube Lectures</CardTitle>
             </CardHeader>
             <CardContent>
               {(() => {
-                const lectures = getYouTubeLectures(selectedOptions.course || selectedOptions.stream);
+                const lectures = getYouTubeLectures(
+                  selectedOptions.course || selectedOptions.stream,
+                );
                 return (
                   <div className="space-y-3">
                     {lectures.map((lecture: any, i: number) => (
                       <div key={i} className="border rounded-lg p-3">
-                        <h6 className="font-semibold text-sm">{lecture.title}</h6>
+                        <h6 className="font-semibold text-sm">
+                          {lecture.title}
+                        </h6>
                         <div className="flex justify-between items-center text-xs text-gray-600 mt-1">
                           <span>{lecture.channel}</span>
                           <span>{lecture.duration}</span>
                         </div>
                         <div className="flex justify-between items-center mt-2">
                           <div className="flex gap-2">
-                            <Badge variant="outline" className="text-xs">{lecture.views} views</Badge>
-                            <Badge variant="outline" className="text-xs">★ {lecture.rating}</Badge>
+                            <Badge variant="outline" className="text-xs">
+                              {lecture.views} views
+                            </Badge>
+                            <Badge variant="outline" className="text-xs">
+                              ★ {lecture.rating}
+                            </Badge>
                           </div>
-                          <Button size="sm" variant="link" className="text-xs p-0">
+                          <Button
+                            size="sm"
+                            variant="link"
+                            className="text-xs p-0"
+                          >
                             Watch Now
                           </Button>
                         </div>
@@ -439,20 +530,22 @@ export default function CareerByGoal() {
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            {getText('career_by_goal_title', currentLanguage) || 'Career by Goal'}
+            {getText("career_by_goal_title", currentLanguage) ||
+              "Career by Goal"}
           </h1>
           <p className="text-xl text-gray-600">
-            {getText('career_by_goal_subtitle', currentLanguage) || 'Get personalized career guidance based on your current education level and goals'}
+            {getText("career_by_goal_subtitle", currentLanguage) ||
+              "Get personalized career guidance based on your current education level and goals"}
           </p>
         </div>
 
         <StepIndicator />
 
         <div className="bg-white rounded-xl shadow-lg p-8">
-          {currentStep === 'stage' && renderStageSelection()}
-          {currentStep === 'stream' && renderStreamSelection()}
-          {currentStep === 'course' && renderCourseSelection()}
-          {currentStep === 'results' && renderResults()}
+          {currentStep === "stage" && renderStageSelection()}
+          {currentStep === "stream" && renderStreamSelection()}
+          {currentStep === "course" && renderCourseSelection()}
+          {currentStep === "results" && renderResults()}
         </div>
 
         {/* Advanced Career Mapping Modal */}
@@ -461,14 +554,23 @@ export default function CareerByGoal() {
             <div className="bg-white rounded-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
               <div className="p-6 border-b">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-2xl font-bold">Complete Career Roadmap</h2>
-                  <Button variant="outline" onClick={() => setShowAdvancedCareerModal(false)}>
+                  <h2 className="text-2xl font-bold">
+                    Complete Career Roadmap
+                  </h2>
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowAdvancedCareerModal(false)}
+                  >
                     Close
                   </Button>
                 </div>
               </div>
               <div className="p-6">
-                <AdvancedCareerMapping selectedField={selectedOptions.course || selectedOptions.stream} />
+                <AdvancedCareerMapping
+                  selectedField={
+                    selectedOptions.course || selectedOptions.stream
+                  }
+                />
               </div>
             </div>
           </div>

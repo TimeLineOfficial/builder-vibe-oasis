@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import { useDataStore, getStageColor } from "@/lib/data-service";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { 
+import {
   MapPin,
   Target,
   Search,
@@ -27,7 +33,7 @@ import {
   ArrowRight,
   Zap,
   Building,
-  GraduationCap
+  GraduationCap,
 } from "lucide-react";
 
 export default function InteractiveCareerMap() {
@@ -38,19 +44,43 @@ export default function InteractiveCareerMap() {
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
 
   const careerFields = [
-    { value: "technology", label: "Technology & Engineering", color: "from-blue-500 to-indigo-500" },
-    { value: "healthcare", label: "Healthcare & Medicine", color: "from-red-500 to-pink-500" },
-    { value: "business", label: "Business & Finance", color: "from-yellow-500 to-orange-500" },
-    { value: "creative", label: "Creative & Design", color: "from-purple-500 to-pink-500" },
-    { value: "education", label: "Education & Research", color: "from-green-500 to-emerald-500" },
-    { value: "government", label: "Government & Public Service", color: "from-career-primary to-purple-600" }
+    {
+      value: "technology",
+      label: "Technology & Engineering",
+      color: "from-blue-500 to-indigo-500",
+    },
+    {
+      value: "healthcare",
+      label: "Healthcare & Medicine",
+      color: "from-red-500 to-pink-500",
+    },
+    {
+      value: "business",
+      label: "Business & Finance",
+      color: "from-yellow-500 to-orange-500",
+    },
+    {
+      value: "creative",
+      label: "Creative & Design",
+      color: "from-purple-500 to-pink-500",
+    },
+    {
+      value: "education",
+      label: "Education & Research",
+      color: "from-green-500 to-emerald-500",
+    },
+    {
+      value: "government",
+      label: "Government & Public Service",
+      color: "from-career-primary to-purple-600",
+    },
   ];
 
   const educationLevels = [
     { value: "school", label: "School Level (10th-12th)" },
     { value: "undergraduate", label: "Undergraduate" },
     { value: "postgraduate", label: "Postgraduate" },
-    { value: "professional", label: "Professional Level" }
+    { value: "professional", label: "Professional Level" },
   ];
 
   // Generate career nodes from dataset with radial layout
@@ -70,7 +100,7 @@ export default function InteractiveCareerMap() {
       salary: "",
       growth: "N/A" as const,
       demand: "N/A" as const,
-      description: "Your starting point for career exploration"
+      description: "Your starting point for career exploration",
     };
 
     // Convert careers to nodes with radial positioning
@@ -97,7 +127,7 @@ export default function InteractiveCareerMap() {
         growth: "High" as const,
         demand: "High" as const,
         description: getCareerDescription(career.id),
-        career: career
+        career: career,
       };
     });
 
@@ -106,32 +136,34 @@ export default function InteractiveCareerMap() {
 
   const getCareerSubtitle = (careerId: string) => {
     const subtitles: Record<string, string> = {
-      "doctor": "Heal People",
-      "software_engineer": "Build Applications",
-      "civil_services": "Serve the Nation",
-      "chartered_accountant": "Manage Finances",
-      "data_scientist": "Analyze Data",
-      "nurse": "Care for Patients",
-      "lawyer": "Practice Law",
-      "journalist": "Report News",
-      "pharmacist": "Dispense Medicine",
-      "police_officer": "Maintain Order"
+      doctor: "Heal People",
+      software_engineer: "Build Applications",
+      civil_services: "Serve the Nation",
+      chartered_accountant: "Manage Finances",
+      data_scientist: "Analyze Data",
+      nurse: "Care for Patients",
+      lawyer: "Practice Law",
+      journalist: "Report News",
+      pharmacist: "Dispense Medicine",
+      police_officer: "Maintain Order",
     };
     return subtitles[careerId] || "Professional Career";
   };
 
   const getCareerField = (stream: string) => {
-    if (stream.includes('pcb') || stream.includes('medical')) return "healthcare";
-    if (stream.includes('pcm') || stream.includes('engineering')) return "technology";
-    if (stream.includes('commerce')) return "business";
-    if (stream.includes('arts')) return "creative";
+    if (stream.includes("pcb") || stream.includes("medical"))
+      return "healthcare";
+    if (stream.includes("pcm") || stream.includes("engineering"))
+      return "technology";
+    if (stream.includes("commerce")) return "business";
+    if (stream.includes("arts")) return "creative";
     return "general";
   };
 
   const getCareerLevel = (stream: string) => {
-    if (stream.includes('school')) return "school";
-    if (stream.includes('ug_')) return "undergraduate";
-    if (stream.includes('pg')) return "postgraduate";
+    if (stream.includes("school")) return "school";
+    if (stream.includes("ug_")) return "undergraduate";
+    if (stream.includes("pg")) return "postgraduate";
     return "professional";
   };
 
@@ -143,69 +175,81 @@ export default function InteractiveCareerMap() {
       "#8E24AA": "from-purple-500 to-purple-600",
       "#F4511E": "from-orange-500 to-orange-600",
       "#00897B": "from-teal-500 to-teal-600",
-      "#C2185B": "from-pink-500 to-pink-600"
+      "#C2185B": "from-pink-500 to-pink-600",
     };
     return colorMap[hexColor] || "from-gray-500 to-gray-600";
   };
 
   const getCareerSalary = (careerId: string) => {
     const salaries: Record<string, string> = {
-      "doctor": "₹10-50 LPA",
-      "software_engineer": "₹8-25 LPA",
-      "civil_services": "₹56K-2L PM",
-      "chartered_accountant": "₹6-20 LPA",
-      "data_scientist": "₹12-35 LPA",
-      "nurse": "₹3-8 LPA",
-      "lawyer": "₹5-25 LPA",
-      "journalist": "₹4-15 LPA",
-      "pharmacist": "₹3-12 LPA",
-      "police_officer": "₹35K-1L PM"
+      doctor: "₹10-50 LPA",
+      software_engineer: "₹8-25 LPA",
+      civil_services: "₹56K-2L PM",
+      chartered_accountant: "₹6-20 LPA",
+      data_scientist: "₹12-35 LPA",
+      nurse: "₹3-8 LPA",
+      lawyer: "₹5-25 LPA",
+      journalist: "₹4-15 LPA",
+      pharmacist: "₹3-12 LPA",
+      police_officer: "₹35K-1L PM",
     };
     return salaries[careerId] || "₹5-15 LPA";
   };
 
   const getCareerDescription = (careerId: string) => {
     const descriptions: Record<string, string> = {
-      "doctor": "Diagnose, treat, and prevent illness in patients",
-      "software_engineer": "Design, develop, and maintain software applications",
-      "civil_services": "Lead administrative functions and policy implementation",
-      "chartered_accountant": "Provide accounting and financial advisory services",
-      "data_scientist": "Extract insights from complex data using analytics",
-      "nurse": "Provide patient care and support in healthcare settings",
-      "lawyer": "Represent clients and provide legal counsel",
-      "journalist": "Research, write, and report news and stories",
-      "pharmacist": "Dispense medications and provide pharmaceutical care",
-      "police_officer": "Maintain law and order and ensure public safety"
+      doctor: "Diagnose, treat, and prevent illness in patients",
+      software_engineer: "Design, develop, and maintain software applications",
+      civil_services: "Lead administrative functions and policy implementation",
+      chartered_accountant:
+        "Provide accounting and financial advisory services",
+      data_scientist: "Extract insights from complex data using analytics",
+      nurse: "Provide patient care and support in healthcare settings",
+      lawyer: "Represent clients and provide legal counsel",
+      journalist: "Research, write, and report news and stories",
+      pharmacist: "Dispense medications and provide pharmaceutical care",
+      police_officer: "Maintain law and order and ensure public safety",
     };
-    return descriptions[careerId] || "Professional role with growth opportunities";
+    return (
+      descriptions[careerId] || "Professional role with growth opportunities"
+    );
   };
 
   const careerNodes = generateCareerNodes();
 
   // Generate pathways from center to all career nodes
   const pathways = careerNodes
-    .filter(node => node.type === "career")
-    .map(node => ({
+    .filter((node) => node.type === "career")
+    .map((node) => ({
       from: "center",
       to: node.id,
-      color: `stroke-${getCareerField(node.field)}-500`
+      color: `stroke-${getCareerField(node.field)}-500`,
     }));
 
-  const filteredNodes = careerNodes.filter(node => {
+  const filteredNodes = careerNodes.filter((node) => {
     if (node.type === "center") return true;
     if (selectedField !== "all" && node.field !== selectedField) return false;
     if (selectedLevel !== "all" && node.level !== selectedLevel) return false;
-    if (searchTerm && !node.title.toLowerCase().includes(searchTerm.toLowerCase())) return false;
+    if (
+      searchTerm &&
+      !node.title.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+      return false;
     return true;
   });
 
   const getDemandColor = (demand: string) => {
     switch (demand) {
-      case "Very High": return "text-green-600 bg-green-50";
-      case "High": return "text-blue-600 bg-blue-50";
-      case "Medium": return "text-yellow-600 bg-yellow-50";
-      case "Low": return "text-red-600 bg-red-50";
-      default: return "text-gray-600 bg-gray-50";
+      case "Very High":
+        return "text-green-600 bg-green-50";
+      case "High":
+        return "text-blue-600 bg-blue-50";
+      case "Medium":
+        return "text-yellow-600 bg-yellow-50";
+      case "Low":
+        return "text-red-600 bg-red-50";
+      default:
+        return "text-gray-600 bg-gray-50";
     }
   };
 
@@ -217,11 +261,14 @@ export default function InteractiveCareerMap() {
           <div className="max-w-4xl mx-auto text-center space-y-6">
             <div className="flex items-center justify-center gap-3 mb-4">
               <MapPin className="h-10 w-10 text-career-primary" />
-              <h1 className="text-4xl md:text-5xl font-bold">Interactive Career Map</h1>
+              <h1 className="text-4xl md:text-5xl font-bold">
+                Interactive Career Map
+              </h1>
             </div>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Explore career paths visually with our interactive map. Discover connections between 
-              different roles, required skills, and progression pathways in various fields.
+              Explore career paths visually with our interactive map. Discover
+              connections between different roles, required skills, and
+              progression pathways in various fields.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Badge variant="secondary" className="px-4 py-2">
@@ -258,7 +305,9 @@ export default function InteractiveCareerMap() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium mb-2 block">Search Careers</label>
+                    <label className="text-sm font-medium mb-2 block">
+                      Search Careers
+                    </label>
                     <Input
                       placeholder="e.g., Software Engineer, Doctor"
                       value={searchTerm}
@@ -267,8 +316,13 @@ export default function InteractiveCareerMap() {
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium mb-2 block">Career Field</label>
-                    <Select value={selectedField} onValueChange={setSelectedField}>
+                    <label className="text-sm font-medium mb-2 block">
+                      Career Field
+                    </label>
+                    <Select
+                      value={selectedField}
+                      onValueChange={setSelectedField}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="All Fields" />
                       </SelectTrigger>
@@ -284,8 +338,13 @@ export default function InteractiveCareerMap() {
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium mb-2 block">Education Level</label>
-                    <Select value={selectedLevel} onValueChange={setSelectedLevel}>
+                    <label className="text-sm font-medium mb-2 block">
+                      Education Level
+                    </label>
+                    <Select
+                      value={selectedLevel}
+                      onValueChange={setSelectedLevel}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="All Levels" />
                       </SelectTrigger>
@@ -303,15 +362,27 @@ export default function InteractiveCareerMap() {
                   <div className="pt-4 border-t">
                     <h4 className="font-medium mb-3">Quick Actions</h4>
                     <div className="space-y-2">
-                      <Button variant="outline" size="sm" className="w-full justify-start">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full justify-start"
+                      >
                         <Target className="h-4 w-4 mr-2" />
                         Set Career Goal
                       </Button>
-                      <Button variant="outline" size="sm" className="w-full justify-start">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full justify-start"
+                      >
                         <Route className="h-4 w-4 mr-2" />
                         View Pathway
                       </Button>
-                      <Button variant="outline" size="sm" className="w-full justify-start">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full justify-start"
+                      >
                         <BookOpen className="h-4 w-4 mr-2" />
                         Get Guidance
                       </Button>
@@ -328,8 +399,13 @@ export default function InteractiveCareerMap() {
                 <CardContent>
                   <div className="space-y-3">
                     {careerFields.map((field) => (
-                      <div key={field.value} className="flex items-center gap-3">
-                        <div className={`w-4 h-4 rounded-full bg-gradient-to-r ${field.color}`}></div>
+                      <div
+                        key={field.value}
+                        className="flex items-center gap-3"
+                      >
+                        <div
+                          className={`w-4 h-4 rounded-full bg-gradient-to-r ${field.color}`}
+                        ></div>
                         <span className="text-sm">{field.label}</span>
                       </div>
                     ))}
@@ -356,15 +432,19 @@ export default function InteractiveCareerMap() {
                     {/* SVG for connection lines */}
                     <svg className="absolute inset-0 w-full h-full pointer-events-none">
                       {pathways.map((path, index) => {
-                        const fromNode = filteredNodes.find(n => n.id === path.from);
-                        const toNode = filteredNodes.find(n => n.id === path.to);
+                        const fromNode = filteredNodes.find(
+                          (n) => n.id === path.from,
+                        );
+                        const toNode = filteredNodes.find(
+                          (n) => n.id === path.to,
+                        );
                         if (!fromNode || !toNode) return null;
-                        
+
                         const x1 = (fromNode.x / 100) * 100;
                         const y1 = (fromNode.y / 100) * 100;
                         const x2 = (toNode.x / 100) * 100;
                         const y2 = (toNode.y / 100) * 100;
-                        
+
                         return (
                           <line
                             key={index}
@@ -388,18 +468,28 @@ export default function InteractiveCareerMap() {
                         onMouseEnter={() => setHoveredNode(node.id)}
                         onMouseLeave={() => setHoveredNode(null)}
                       >
-                        <div className={`relative ${node.color} text-white rounded-xl p-4 shadow-lg min-w-[180px] text-center ${
-                          node.type === "center" ? "w-24 h-24 flex items-center justify-center" : ""
-                        }`}>
+                        <div
+                          className={`relative ${node.color} text-white rounded-xl p-4 shadow-lg min-w-[180px] text-center ${
+                            node.type === "center"
+                              ? "w-24 h-24 flex items-center justify-center"
+                              : ""
+                          }`}
+                        >
                           {node.type === "center" ? (
                             <div>
                               <div className="text-2xl font-bold">You</div>
-                              <div className="text-xs opacity-80">Start Here</div>
+                              <div className="text-xs opacity-80">
+                                Start Here
+                              </div>
                             </div>
                           ) : (
                             <div>
-                              <h3 className="font-bold text-sm">{node.title}</h3>
-                              <p className="text-xs opacity-80">{node.subtitle}</p>
+                              <h3 className="font-bold text-sm">
+                                {node.title}
+                              </h3>
+                              <p className="text-xs opacity-80">
+                                {node.subtitle}
+                              </p>
                               {node.salary && (
                                 <div className="text-xs mt-1 bg-white/20 rounded px-2 py-1">
                                   {node.salary}
@@ -407,7 +497,7 @@ export default function InteractiveCareerMap() {
                               )}
                             </div>
                           )}
-                          
+
                           {/* Pulse animation for center node */}
                           {node.type === "center" && (
                             <div className="absolute inset-0 rounded-xl animate-ping bg-white/20"></div>
@@ -420,19 +510,27 @@ export default function InteractiveCareerMap() {
                     {hoveredNode && hoveredNode !== "center" && (
                       <div className="absolute bottom-4 left-4 right-4">
                         {(() => {
-                          const node = filteredNodes.find(n => n.id === hoveredNode);
+                          const node = filteredNodes.find(
+                            (n) => n.id === hoveredNode,
+                          );
                           if (!node) return null;
                           return (
                             <Card className="border-0 shadow-xl bg-white/95 backdrop-blur">
                               <CardContent className="p-4">
                                 <div className="flex items-start justify-between mb-2">
                                   <div>
-                                    <h3 className="font-bold text-lg">{node.title}</h3>
-                                    <p className="text-sm text-muted-foreground">{node.description}</p>
+                                    <h3 className="font-bold text-lg">
+                                      {node.title}
+                                    </h3>
+                                    <p className="text-sm text-muted-foreground">
+                                      {node.description}
+                                    </p>
                                   </div>
                                   <div className="flex gap-2">
                                     {node.demand && (
-                                      <Badge className={getDemandColor(node.demand)}>
+                                      <Badge
+                                        className={getDemandColor(node.demand)}
+                                      >
                                         {node.demand} Demand
                                       </Badge>
                                     )}
@@ -440,12 +538,20 @@ export default function InteractiveCareerMap() {
                                 </div>
                                 <div className="grid grid-cols-3 gap-4 text-sm">
                                   <div>
-                                    <span className="text-muted-foreground">Salary:</span>
-                                    <div className="font-medium">{node.salary}</div>
+                                    <span className="text-muted-foreground">
+                                      Salary:
+                                    </span>
+                                    <div className="font-medium">
+                                      {node.salary}
+                                    </div>
                                   </div>
                                   <div>
-                                    <span className="text-muted-foreground">Growth:</span>
-                                    <div className="font-medium">{node.growth}</div>
+                                    <span className="text-muted-foreground">
+                                      Growth:
+                                    </span>
+                                    <div className="font-medium">
+                                      {node.growth}
+                                    </div>
                                   </div>
                                   <div>
                                     <Button size="sm" className="w-full">
@@ -495,7 +601,8 @@ export default function InteractiveCareerMap() {
                 </div>
                 <h3 className="text-xl font-bold mb-2">Visual Exploration</h3>
                 <p className="text-muted-foreground">
-                  Discover career connections and pathways through interactive visualization
+                  Discover career connections and pathways through interactive
+                  visualization
                 </p>
               </CardContent>
             </Card>
@@ -507,7 +614,8 @@ export default function InteractiveCareerMap() {
                 </div>
                 <h3 className="text-xl font-bold mb-2">Growth Insights</h3>
                 <p className="text-muted-foreground">
-                  Understand salary ranges, growth potential, and market demand for each career
+                  Understand salary ranges, growth potential, and market demand
+                  for each career
                 </p>
               </CardContent>
             </Card>
@@ -517,9 +625,12 @@ export default function InteractiveCareerMap() {
                 <div className="w-16 h-16 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Lightbulb className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold mb-2">Smart Recommendations</h3>
+                <h3 className="text-xl font-bold mb-2">
+                  Smart Recommendations
+                </h3>
                 <p className="text-muted-foreground">
-                  Get personalized career suggestions based on your interests and background
+                  Get personalized career suggestions based on your interests
+                  and background
                 </p>
               </CardContent>
             </Card>

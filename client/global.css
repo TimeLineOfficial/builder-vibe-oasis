@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* Import mobile-first optimizations */
-@import './styles/mobile-optimizations.css';
+@import "./styles/mobile-optimizations.css";
 
 @layer base {
   /**

@@ -1,7 +1,19 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { extendedInterestDataset, ExtendedInterest, searchInterests, getTrendingInterests } from './extended-interests';
-import { allJobs, JobPosting, getJobsByType, getActiveJobs, searchJobs, JobAutoFetcher } from './job-dataset';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import {
+  extendedInterestDataset,
+  ExtendedInterest,
+  searchInterests,
+  getTrendingInterests,
+} from "./extended-interests";
+import {
+  allJobs,
+  JobPosting,
+  getJobsByType,
+  getActiveJobs,
+  searchJobs,
+  JobAutoFetcher,
+} from "./job-dataset";
 
 // Types based on the JSON structure
 export interface CareerMapData {
@@ -156,7 +168,7 @@ export interface Job {
 
 export interface SavedItem {
   id: string;
-  type: 'career_map' | 'interest' | 'business_idea' | 'job';
+  type: "career_map" | "interest" | "business_idea" | "job";
   data: any;
   saved_at: string;
 }
@@ -166,7 +178,7 @@ export interface User {
   name: string;
   email?: string;
   phone?: string;
-  provider: 'google' | 'facebook' | 'phone';
+  provider: "google" | "facebook" | "phone";
   saved_items: SavedItem[];
   preferences: {
     language: string;
@@ -191,7 +203,7 @@ interface DataStore {
   businessIdeasPerPage: number;
   paginatedBusinessIdeas: any[];
   hasMoreBusinessIdeas: boolean;
-  
+
   // Actions
   loadData: () => Promise<void>;
   setLanguage: (lang: string) => void;
@@ -200,16 +212,19 @@ interface DataStore {
   addSavedItem: (item: SavedItem) => void;
   removeSavedItem: (id: string) => void;
   loadMoreBusinessIdeas: () => void;
-  
+
   // Career Path Generation
-  generateCareerPath: (currentStage: string, goal: string) => Array<{
+  generateCareerPath: (
+    currentStage: string,
+    goal: string,
+  ) => Array<{
     stage: string;
     title: string;
     description: string;
     exams?: string[];
     courses?: string[];
   }>;
-  
+
   // Interest Matching
   findCareersByInterests: (interests: string[]) => Array<{
     career: any;
@@ -223,7 +238,10 @@ interface DataStore {
   getTrendingInterests: () => ExtendedInterest[];
 
   // Enhanced Job Functions
-  getLatestJobs: (type?: 'government' | 'private', limit?: number) => JobPosting[];
+  getLatestJobs: (
+    type?: "government" | "private",
+    limit?: number,
+  ) => JobPosting[];
   searchJobs: (query: string) => JobPosting[];
   autoFetchJobs: () => Promise<void>;
 
@@ -236,7 +254,7 @@ interface DataStore {
   getYouTubeLectures: (topic: string) => any[];
 
   // Career by Goal Flow
-  getEducationStages: () => Array<{id: string, label: string}>;
+  getEducationStages: () => Array<{ id: string; label: string }>;
   getStreamsByStage: (stage: string) => string[];
   getCoursesByStream: (stream: string) => string[];
 
@@ -252,7 +270,7 @@ export const useDataStore = create<DataStore>()(
       jobs: allJobs,
       extendedInterests: extendedInterestDataset,
       currentUser: null,
-      currentLanguage: 'en',
+      currentLanguage: "en",
       darkMode: false,
       isLoading: false,
       businessIdeasPage: 1,
@@ -264,28 +282,28 @@ export const useDataStore = create<DataStore>()(
       loadData: async () => {
         set({ isLoading: true });
         try {
-          const response = await fetch('/CareerMap_unified_payload.json');
+          const response = await fetch("/CareerMap_unified_payload.json");
           const data: CareerMapData = await response.json();
           // Initialize paginated business ideas
           const initialBusinessIdeas = data.business_ideas?.slice(0, 6) || [];
 
           set({
             careerMapData: data,
-            currentLanguage: data.site.languages[0] || 'en',
+            currentLanguage: data.site.languages[0] || "en",
             darkMode: data.site.design.dark_mode,
             isLoading: false,
             paginatedBusinessIdeas: initialBusinessIdeas,
-            hasMoreBusinessIdeas: (data.business_ideas?.length || 0) > 6
+            hasMoreBusinessIdeas: (data.business_ideas?.length || 0) > 6,
           });
-          
+
           // Apply theme
           if (data.site.design.dark_mode) {
-            document.documentElement.classList.add('dark');
+            document.documentElement.classList.add("dark");
           }
-          
-          console.log('CareerMap data loaded successfully');
+
+          console.log("CareerMap data loaded successfully");
         } catch (error) {
-          console.error('Failed to load CareerMap data:', error);
+          console.error("Failed to load CareerMap data:", error);
           set({ isLoading: false });
         }
       },
@@ -301,9 +319,9 @@ export const useDataStore = create<DataStore>()(
               ...currentUser,
               preferences: {
                 ...currentUser.preferences,
-                language: lang
-              }
-            }
+                language: lang,
+              },
+            },
           });
         }
       },
@@ -312,13 +330,13 @@ export const useDataStore = create<DataStore>()(
         const { darkMode } = get();
         const newDarkMode = !darkMode;
         set({ darkMode: newDarkMode });
-        
+
         if (newDarkMode) {
-          document.documentElement.classList.add('dark');
+          document.documentElement.classList.add("dark");
         } else {
-          document.documentElement.classList.remove('dark');
+          document.documentElement.classList.remove("dark");
         }
-        
+
         // Update user preferences if logged in
         const { currentUser } = get();
         if (currentUser) {
@@ -327,9 +345,9 @@ export const useDataStore = create<DataStore>()(
               ...currentUser,
               preferences: {
                 ...currentUser.preferences,
-                dark_mode: newDarkMode
-              }
-            }
+                dark_mode: newDarkMode,
+              },
+            },
           });
         }
       },
@@ -339,15 +357,15 @@ export const useDataStore = create<DataStore>()(
         set({ currentUser: user });
         if (user) {
           // Apply user preferences
-          set({ 
+          set({
             currentLanguage: user.preferences.language,
-            darkMode: user.preferences.dark_mode 
+            darkMode: user.preferences.dark_mode,
           });
-          
+
           if (user.preferences.dark_mode) {
-            document.documentElement.classList.add('dark');
+            document.documentElement.classList.add("dark");
           } else {
-            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.remove("dark");
           }
         }
       },
@@ -358,7 +376,7 @@ export const useDataStore = create<DataStore>()(
         if (currentUser) {
           const updatedUser = {
             ...currentUser,
-            saved_items: [...currentUser.saved_items, item]
+            saved_items: [...currentUser.saved_items, item],
           };
           set({ currentUser: updatedUser });
         }
@@ -369,7 +387,9 @@ export const useDataStore = create<DataStore>()(
         if (currentUser) {
           const updatedUser = {
             ...currentUser,
-            saved_items: currentUser.saved_items.filter(item => item.id !== id)
+            saved_items: currentUser.saved_items.filter(
+              (item) => item.id !== id,
+            ),
           };
           set({ currentUser: updatedUser });
         }
@@ -379,15 +399,20 @@ export const useDataStore = create<DataStore>()(
       loadMoreBusinessIdeas: () => {
         set((state) => {
           const currentLength = state.paginatedBusinessIdeas.length;
-          const nextBatch = state.careerMapData?.business_ideas?.slice(
-            currentLength,
-            currentLength + state.businessIdeasPerPage
-          ) || [];
+          const nextBatch =
+            state.careerMapData?.business_ideas?.slice(
+              currentLength,
+              currentLength + state.businessIdeasPerPage,
+            ) || [];
 
           return {
-            paginatedBusinessIdeas: [...state.paginatedBusinessIdeas, ...nextBatch],
+            paginatedBusinessIdeas: [
+              ...state.paginatedBusinessIdeas,
+              ...nextBatch,
+            ],
             hasMoreBusinessIdeas:
-              currentLength + nextBatch.length < (state.careerMapData?.business_ideas?.length || 0)
+              currentLength + nextBatch.length <
+              (state.careerMapData?.business_ideas?.length || 0),
           };
         });
       },
@@ -406,7 +431,7 @@ export const useDataStore = create<DataStore>()(
       },
 
       // Enhanced Job Functions
-      getLatestJobs: (type?: 'government' | 'private', limit = 50) => {
+      getLatestJobs: (type?: "government" | "private", limit = 50) => {
         const activeJobs = getActiveJobs();
         const filteredJobs = type ? getJobsByType(type) : activeJobs;
         return filteredJobs.slice(0, limit);
@@ -429,16 +454,16 @@ export const useDataStore = create<DataStore>()(
             steps: [
               `Assess transferable skills from ${currentField}`,
               `Complete foundation courses in ${targetField}`,
-              'Gain relevant certifications',
-              'Build portfolio projects',
-              'Network in target industry',
-              'Apply for entry-level or transitional roles'
+              "Gain relevant certifications",
+              "Build portfolio projects",
+              "Network in target industry",
+              "Apply for entry-level or transitional roles",
             ],
-            duration: '6-18 months',
-            difficulty: currentField === targetField ? 'low' : 'medium',
-            estimated_cost: '₹50,000 - ₹2,00,000',
-            success_rate: '70-85%'
-          }
+            duration: "6-18 months",
+            difficulty: currentField === targetField ? "low" : "medium",
+            estimated_cost: "₹50,000 - ₹2,00,000",
+            success_rate: "70-85%",
+          },
         ];
       },
 
@@ -446,26 +471,26 @@ export const useDataStore = create<DataStore>()(
         return {
           summary: `Comprehensive guide for ${careerPath} career development`,
           topics: [
-            'Foundation concepts and prerequisites',
-            'Essential skills and competencies',
-            'Industry trends and future outlook',
-            'Salary expectations and growth trajectory',
-            'Top companies and career opportunities',
-            'Certification and learning paths'
+            "Foundation concepts and prerequisites",
+            "Essential skills and competencies",
+            "Industry trends and future outlook",
+            "Salary expectations and growth trajectory",
+            "Top companies and career opportunities",
+            "Certification and learning paths",
           ],
           resources: [
-            'Official documentation and standards',
-            'Recommended online courses (Coursera, edX)',
-            'Industry reports and whitepapers',
-            'Expert interviews and podcasts',
-            'Professional communities and forums'
+            "Official documentation and standards",
+            "Recommended online courses (Coursera, edX)",
+            "Industry reports and whitepapers",
+            "Expert interviews and podcasts",
+            "Professional communities and forums",
           ],
           timeline: {
-            beginner: '3-6 months',
-            intermediate: '6-12 months',
-            advanced: '1-2 years',
-            expert: '3+ years'
-          }
+            beginner: "3-6 months",
+            intermediate: "6-12 months",
+            advanced: "1-2 years",
+            expert: "3+ years",
+          },
         };
       },
 
@@ -473,67 +498,112 @@ export const useDataStore = create<DataStore>()(
         return [
           {
             title: `${topic} - Complete Tutorial Series`,
-            channel: 'Career Academy India',
-            duration: '2:30:00',
-            url: `https://youtube.com/watch?v=${topic.toLowerCase().replace(/\s+/g, '_')}_tutorial`,
+            channel: "Career Academy India",
+            duration: "2:30:00",
+            url: `https://youtube.com/watch?v=${topic.toLowerCase().replace(/\s+/g, "_")}_tutorial`,
             verified: true,
-            views: '1.2M',
-            rating: 4.8
+            views: "1.2M",
+            rating: 4.8,
           },
           {
             title: `Advanced ${topic} Concepts`,
-            channel: 'Tech Mastery',
-            duration: '1:45:00',
-            url: `https://youtube.com/watch?v=${topic.toLowerCase().replace(/\s+/g, '_')}_advanced`,
+            channel: "Tech Mastery",
+            duration: "1:45:00",
+            url: `https://youtube.com/watch?v=${topic.toLowerCase().replace(/\s+/g, "_")}_advanced`,
             verified: true,
-            views: '856K',
-            rating: 4.7
+            views: "856K",
+            rating: 4.7,
           },
           {
             title: `${topic} Interview Preparation`,
-            channel: 'Interview Success',
-            duration: '45:30',
-            url: `https://youtube.com/watch?v=${topic.toLowerCase().replace(/\s+/g, '_')}_interview`,
+            channel: "Interview Success",
+            duration: "45:30",
+            url: `https://youtube.com/watch?v=${topic.toLowerCase().replace(/\s+/g, "_")}_interview`,
             verified: true,
-            views: '623K',
-            rating: 4.9
-          }
+            views: "623K",
+            rating: 4.9,
+          },
         ];
       },
 
       // Career by Goal Flow
       getEducationStages: () => {
         return [
-          { id: 'class_10_below', label: '10th or Below' },
-          { id: 'class_11_12', label: '11th-12th' },
-          { id: 'undergraduate', label: 'Undergraduate (UG)' },
-          { id: 'postgraduate', label: 'Postgraduate (PG)' },
-          { id: 'phd', label: 'PhD/Doctorate' },
-          { id: 'working_professional', label: 'Working Professional' }
+          { id: "class_10_below", label: "10th or Below" },
+          { id: "class_11_12", label: "11th-12th" },
+          { id: "undergraduate", label: "Undergraduate (UG)" },
+          { id: "postgraduate", label: "Postgraduate (PG)" },
+          { id: "phd", label: "PhD/Doctorate" },
+          { id: "working_professional", label: "Working Professional" },
         ];
       },
 
       getStreamsByStage: (stage: string) => {
         const streamMapping: Record<string, string[]> = {
-          'class_11_12': ['Science (PCM)', 'Science (PCB)', 'Commerce', 'Arts/Humanities'],
-          'undergraduate': ['Engineering', 'Medical', 'Commerce', 'Arts', 'Science', 'Law', 'Design'],
-          'postgraduate': ['MTech', 'MBA', 'MSc', 'MA', 'LLM', 'MD/MS', 'MFA'],
-          'working_professional': [
-            'Information Technology', 'Finance & Banking', 'Healthcare', 'Education',
-            'Manufacturing', 'Retail', 'Government', 'Consulting', 'Startups'
-          ]
+          class_11_12: [
+            "Science (PCM)",
+            "Science (PCB)",
+            "Commerce",
+            "Arts/Humanities",
+          ],
+          undergraduate: [
+            "Engineering",
+            "Medical",
+            "Commerce",
+            "Arts",
+            "Science",
+            "Law",
+            "Design",
+          ],
+          postgraduate: ["MTech", "MBA", "MSc", "MA", "LLM", "MD/MS", "MFA"],
+          working_professional: [
+            "Information Technology",
+            "Finance & Banking",
+            "Healthcare",
+            "Education",
+            "Manufacturing",
+            "Retail",
+            "Government",
+            "Consulting",
+            "Startups",
+          ],
         };
         return streamMapping[stage] || [];
       },
 
       getCoursesByStream: (stream: string) => {
         const courseMapping: Record<string, string[]> = {
-          'Engineering': ['Computer Science', 'Electronics', 'Mechanical', 'Civil', 'Chemical', 'Aerospace'],
-          'Medical': ['MBBS', 'BDS', 'BAMS', 'BHMS', 'Nursing', 'Pharmacy'],
-          'Commerce': ['BCom', 'BBA', 'CA', 'CS', 'CMA', 'Economics'],
-          'Science': ['Physics', 'Chemistry', 'Mathematics', 'Biology', 'Environmental Science'],
-          'Arts': ['English Literature', 'History', 'Political Science', 'Psychology', 'Sociology'],
-          'Information Technology': ['Software Development', 'Data Science', 'Cybersecurity', 'Cloud Computing', 'AI/ML']
+          Engineering: [
+            "Computer Science",
+            "Electronics",
+            "Mechanical",
+            "Civil",
+            "Chemical",
+            "Aerospace",
+          ],
+          Medical: ["MBBS", "BDS", "BAMS", "BHMS", "Nursing", "Pharmacy"],
+          Commerce: ["BCom", "BBA", "CA", "CS", "CMA", "Economics"],
+          Science: [
+            "Physics",
+            "Chemistry",
+            "Mathematics",
+            "Biology",
+            "Environmental Science",
+          ],
+          Arts: [
+            "English Literature",
+            "History",
+            "Political Science",
+            "Psychology",
+            "Sociology",
+          ],
+          "Information Technology": [
+            "Software Development",
+            "Data Science",
+            "Cybersecurity",
+            "Cloud Computing",
+            "AI/ML",
+          ],
         };
         return courseMapping[stream] || [];
       },
@@ -556,23 +626,25 @@ export const useDataStore = create<DataStore>()(
 
         while (currentStageId && !visitedStages.has(currentStageId)) {
           visitedStages.add(currentStageId);
-          
+
           // Find rule for current stage and goal
           const rule = careerMapData.rules.find(
-            r => r.from_stage === currentStageId && r.goal === goal
+            (r) => r.from_stage === currentStageId && r.goal === goal,
           );
 
           if (!rule) break;
 
           // Get stage info
-          const stageInfo = careerMapData.stages.find(s => s.id === currentStageId);
-          
+          const stageInfo = careerMapData.stages.find(
+            (s) => s.id === currentStageId,
+          );
+
           path.push({
             stage: currentStageId,
             title: stageInfo?.label || currentStageId,
             description: rule.recommendation,
             exams: rule.exams,
-            courses: rule.courses
+            courses: rule.courses,
           });
 
           currentStageId = rule.next_stage;
@@ -594,21 +666,24 @@ export const useDataStore = create<DataStore>()(
 
         // Map interests to streams
         const recommendedStreams = interests
-          .map(interest => careerMapData.interest_to_stream[interest])
+          .map((interest) => careerMapData.interest_to_stream[interest])
           .filter(Boolean);
 
         // Find careers that match these streams
-        careerMapData.careers.forEach(career => {
+        careerMapData.careers.forEach((career) => {
           const matchingStreams = recommendedStreams.filter(
-            stream => career.preferred_stream === stream || career.preferred_stream === 'any'
+            (stream) =>
+              career.preferred_stream === stream ||
+              career.preferred_stream === "any",
           );
-          
+
           if (matchingStreams.length > 0) {
-            const matchScore = (matchingStreams.length / interests.length) * 100;
+            const matchScore =
+              (matchingStreams.length / interests.length) * 100;
             matches.push({
               career,
               matchScore,
-              recommendedStream: matchingStreams[0] || career.preferred_stream
+              recommendedStream: matchingStreams[0] || career.preferred_stream,
             });
           }
         });
@@ -621,30 +696,34 @@ export const useDataStore = create<DataStore>()(
       getText: (key: string, lang?: string) => {
         const { careerMapData, currentLanguage } = get();
         const language = lang || currentLanguage;
-        
+
         if (careerMapData?.site.ui_text[key]) {
-          return careerMapData.site.ui_text[key][language] || careerMapData.site.ui_text[key]['en'] || key;
+          return (
+            careerMapData.site.ui_text[key][language] ||
+            careerMapData.site.ui_text[key]["en"] ||
+            key
+          );
         }
-        
+
         return key;
-      }
+      },
     }),
     {
-      name: 'careermap-store',
+      name: "careermap-store",
       partialize: (state) => ({
         currentUser: state.currentUser,
         currentLanguage: state.currentLanguage,
         darkMode: state.darkMode,
         businessIdeasPage: state.businessIdeasPage,
       }),
-    }
-  )
+    },
+  ),
 );
 
 // Job fetching service (simulated for now, would integrate with actual APIs)
 export class JobFetchService {
   private static instance: JobFetchService;
-  
+
   static getInstance(): JobFetchService {
     if (!JobFetchService.instance) {
       JobFetchService.instance = new JobFetchService();
@@ -658,53 +737,53 @@ export class JobFetchService {
 
     const mockJobs: Job[] = [
       {
-        id: 'job_1',
-        source_id: 'ssc',
-        title: 'Combined Graduate Level Examination',
-        org: 'Staff Selection Commission',
-        location: 'All India',
+        id: "job_1",
+        source_id: "ssc",
+        title: "Combined Graduate Level Examination",
+        org: "Staff Selection Commission",
+        location: "All India",
         salary_min: 25500,
         salary_max: 81100,
-        salary_notes: 'Pay Level 4 to 8',
-        allowances: 'HRA, TA, Medical',
-        start_date: '2024-02-01',
-        end_date: '2024-03-01',
-        fee_general: '₹100',
-        fee_sc: 'Nil',
-        fee_st: 'Nil',
-        fee_obc: '₹100',
-        fee_ews: 'Nil',
-        apply_url: 'https://ssc.nic.in',
-        howto_url: 'https://youtube.com/watch?v=example',
+        salary_notes: "Pay Level 4 to 8",
+        allowances: "HRA, TA, Medical",
+        start_date: "2024-02-01",
+        end_date: "2024-03-01",
+        fee_general: "₹100",
+        fee_sc: "Nil",
+        fee_st: "Nil",
+        fee_obc: "₹100",
+        fee_ews: "Nil",
+        apply_url: "https://ssc.nic.in",
+        howto_url: "https://youtube.com/watch?v=example",
         created_at: new Date().toISOString(),
-        sector: 'Government',
-        education_required: 'Graduation',
-        experience: 'Fresher'
+        sector: "Government",
+        education_required: "Graduation",
+        experience: "Fresher",
       },
       {
-        id: 'job_2',
-        source_id: 'railways_rrb',
-        title: 'Junior Engineer',
-        org: 'Railway Recruitment Board',
-        location: 'Multiple Zones',
+        id: "job_2",
+        source_id: "railways_rrb",
+        title: "Junior Engineer",
+        org: "Railway Recruitment Board",
+        location: "Multiple Zones",
         salary_min: 35400,
         salary_max: 112400,
-        salary_notes: 'Pay Level 6',
-        allowances: 'HRA, TA, Medical',
-        start_date: '2024-01-15',
-        end_date: '2024-02-15',
-        fee_general: '₹500',
-        fee_sc: '₹250',
-        fee_st: '₹250',
-        fee_obc: '₹500',
-        fee_ews: '₹250',
-        apply_url: 'https://indianrailways.gov.in',
-        howto_url: 'https://youtube.com/watch?v=example2',
+        salary_notes: "Pay Level 6",
+        allowances: "HRA, TA, Medical",
+        start_date: "2024-01-15",
+        end_date: "2024-02-15",
+        fee_general: "₹500",
+        fee_sc: "₹250",
+        fee_st: "₹250",
+        fee_obc: "₹500",
+        fee_ews: "₹250",
+        apply_url: "https://indianrailways.gov.in",
+        howto_url: "https://youtube.com/watch?v=example2",
         created_at: new Date().toISOString(),
-        sector: 'Railway',
-        education_required: 'Engineering Diploma/Degree',
-        experience: 'Fresher'
-      }
+        sector: "Railway",
+        education_required: "Engineering Diploma/Degree",
+        experience: "Fresher",
+      },
     ];
 
     return mockJobs;
@@ -722,7 +801,7 @@ export class JobFetchService {
 export const initializeCareerMapData = async () => {
   const store = useDataStore.getState();
   await store.loadData();
-  
+
   // Initialize job fetching
   const jobService = JobFetchService.getInstance();
   await jobService.scheduleAutoFetch();
@@ -731,34 +810,40 @@ export const initializeCareerMapData = async () => {
 // Helper functions
 export const getStageColor = (stageId: string): string => {
   const { careerMapData } = useDataStore.getState();
-  const stage = careerMapData?.stages.find(s => s.id === stageId);
-  return stage?.color || '#000000';
+  const stage = careerMapData?.stages.find((s) => s.id === stageId);
+  return stage?.color || "#000000";
 };
 
 export const getInterestsByCategory = () => {
   const { careerMapData } = useDataStore.getState();
   if (!careerMapData) return {};
-  
-  return careerMapData.interests.reduce((acc, interest) => {
-    if (!acc[interest.category]) {
-      acc[interest.category] = [];
-    }
-    acc[interest.category].push(interest);
-    return acc;
-  }, {} as Record<string, typeof careerMapData.interests>);
+
+  return careerMapData.interests.reduce(
+    (acc, interest) => {
+      if (!acc[interest.category]) {
+        acc[interest.category] = [];
+      }
+      acc[interest.category].push(interest);
+      return acc;
+    },
+    {} as Record<string, typeof careerMapData.interests>,
+  );
 };
 
 export const getBusinessIdeasByCategory = () => {
   const { careerMapData } = useDataStore.getState();
   if (!careerMapData) return {};
-  
-  return careerMapData.business_ideas.reduce((acc, idea) => {
-    if (!acc[idea.category]) {
-      acc[idea.category] = [];
-    }
-    acc[idea.category].push(idea);
-    return acc;
-  }, {} as Record<string, typeof careerMapData.business_ideas>);
+
+  return careerMapData.business_ideas.reduce(
+    (acc, idea) => {
+      if (!acc[idea.category]) {
+        acc[idea.category] = [];
+      }
+      acc[idea.category].push(idea);
+      return acc;
+    },
+    {} as Record<string, typeof careerMapData.business_ideas>,
+  );
 };
 
 export const formatCurrency = (amount: number): string => {

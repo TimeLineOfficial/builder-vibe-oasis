@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -11,8 +17,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { 
-  Search, 
+import {
+  Search,
   Filter,
   MapPin,
   Clock,
@@ -29,7 +35,7 @@ import {
   Building,
   GraduationCap,
   AlertCircle,
-  CheckCircle
+  CheckCircle,
 } from "lucide-react";
 
 export default function LatestVacancies() {
@@ -46,25 +52,35 @@ export default function LatestVacancies() {
     { value: "psu", label: "PSU Jobs" },
     { value: "banking", label: "Banking" },
     { value: "defence", label: "Defence" },
-    { value: "railway", label: "Railway" }
+    { value: "railway", label: "Railway" },
   ];
 
   const states = [
-    "All India", "Andhra Pradesh", "Bihar", "Delhi", "Gujarat", "Haryana",
-    "Karnataka", "Kerala", "Maharashtra", "Punjab", "Rajasthan", "Tamil Nadu",
-    "Telangana", "Uttar Pradesh", "West Bengal"
+    "All India",
+    "Andhra Pradesh",
+    "Bihar",
+    "Delhi",
+    "Gujarat",
+    "Haryana",
+    "Karnataka",
+    "Kerala",
+    "Maharashtra",
+    "Punjab",
+    "Rajasthan",
+    "Tamil Nadu",
+    "Telangana",
+    "Uttar Pradesh",
+    "West Bengal",
   ];
 
-  const categories = [
-    "General", "OBC", "SC", "ST", "EWS", "PWD"
-  ];
+  const categories = ["General", "OBC", "SC", "ST", "EWS", "PWD"];
 
   const salaryRanges = [
     { value: "0-3", label: "₹0 - ₹3 LPA" },
     { value: "3-6", label: "₹3 - ₹6 LPA" },
     { value: "6-10", label: "₹6 - ₹10 LPA" },
     { value: "10-15", label: "₹10 - ₹15 LPA" },
-    { value: "15+", label: "₹15+ LPA" }
+    { value: "15+", label: "₹15+ LPA" },
   ];
 
   const jobListings = [
@@ -89,7 +105,7 @@ export default function LatestVacancies() {
       urgent: false,
       featured: true,
       applyLink: "https://isro.gov.in/careers",
-      tutorialLink: "https://youtube.com/watch?v=example1"
+      tutorialLink: "https://youtube.com/watch?v=example1",
     },
     {
       id: 2,
@@ -112,7 +128,7 @@ export default function LatestVacancies() {
       urgent: true,
       featured: false,
       applyLink: "https://sbi.co.in/careers",
-      tutorialLink: "https://youtube.com/watch?v=example2"
+      tutorialLink: "https://youtube.com/watch?v=example2",
     },
     {
       id: 3,
@@ -135,7 +151,7 @@ export default function LatestVacancies() {
       urgent: false,
       featured: true,
       applyLink: "https://crpf.gov.in/recruitment",
-      tutorialLink: "https://youtube.com/watch?v=example3"
+      tutorialLink: "https://youtube.com/watch?v=example3",
     },
     {
       id: 4,
@@ -158,7 +174,7 @@ export default function LatestVacancies() {
       urgent: false,
       featured: false,
       applyLink: "https://rrbcdg.gov.in",
-      tutorialLink: "https://youtube.com/watch?v=example4"
+      tutorialLink: "https://youtube.com/watch?v=example4",
     },
     {
       id: 5,
@@ -181,24 +197,36 @@ export default function LatestVacancies() {
       urgent: true,
       featured: false,
       applyLink: "https://careers.techmahindra.com",
-      tutorialLink: "https://youtube.com/watch?v=example5"
-    }
+      tutorialLink: "https://youtube.com/watch?v=example5",
+    },
   ];
 
-  const filteredJobs = jobListings.filter(job => {
-    if (searchTerm && !job.title.toLowerCase().includes(searchTerm.toLowerCase()) && 
-        !job.organization.toLowerCase().includes(searchTerm.toLowerCase())) return false;
-    if (selectedSector !== "all" && job.type.toLowerCase() !== selectedSector) return false;
-    if (selectedState !== "all" && !job.location.includes(selectedState)) return false;
-    if (selectedCategories.length > 0 && 
-        !selectedCategories.some(cat => job.category.includes(cat))) return false;
+  const filteredJobs = jobListings.filter((job) => {
+    if (
+      searchTerm &&
+      !job.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      !job.organization.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+      return false;
+    if (selectedSector !== "all" && job.type.toLowerCase() !== selectedSector)
+      return false;
+    if (selectedState !== "all" && !job.location.includes(selectedState))
+      return false;
+    if (
+      selectedCategories.length > 0 &&
+      !selectedCategories.some((cat) => job.category.includes(cat))
+    )
+      return false;
     return true;
   });
 
   const sortedJobs = [...filteredJobs].sort((a, b) => {
     switch (sortBy) {
       case "deadline":
-        return new Date(a.applicationEnd).getTime() - new Date(b.applicationEnd).getTime();
+        return (
+          new Date(a.applicationEnd).getTime() -
+          new Date(b.applicationEnd).getTime()
+        );
       case "salary":
         return b.salary.localeCompare(a.salary);
       case "vacancies":
@@ -227,11 +255,14 @@ export default function LatestVacancies() {
           <div className="max-w-4xl mx-auto text-center space-y-6">
             <div className="flex items-center justify-center gap-3 mb-4">
               <Search className="h-10 w-10 text-career-secondary" />
-              <h1 className="text-4xl md:text-5xl font-bold">Latest Vacancies</h1>
+              <h1 className="text-4xl md:text-5xl font-bold">
+                Latest Vacancies
+              </h1>
             </div>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Real-time government and private job openings with complete application guidance. 
-              Never miss an opportunity with our live updates and alerts.
+              Real-time government and private job openings with complete
+              application guidance. Never miss an opportunity with our live
+              updates and alerts.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Badge variant="secondary" className="px-4 py-2">
@@ -270,7 +301,10 @@ export default function LatestVacancies() {
 
                 {/* Filter Controls */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <Select value={selectedSector} onValueChange={setSelectedSector}>
+                  <Select
+                    value={selectedSector}
+                    onValueChange={setSelectedSector}
+                  >
                     <SelectTrigger>
                       <Filter className="h-4 w-4 mr-2" />
                       <SelectValue placeholder="All Sectors" />
@@ -285,7 +319,10 @@ export default function LatestVacancies() {
                     </SelectContent>
                   </Select>
 
-                  <Select value={selectedState} onValueChange={setSelectedState}>
+                  <Select
+                    value={selectedState}
+                    onValueChange={setSelectedState}
+                  >
                     <SelectTrigger>
                       <MapPin className="h-4 w-4 mr-2" />
                       <SelectValue placeholder="All States" />
@@ -320,9 +357,15 @@ export default function LatestVacancies() {
                       <SelectValue placeholder="Sort by" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="deadline">Application Deadline</SelectItem>
-                      <SelectItem value="salary">Salary (High to Low)</SelectItem>
-                      <SelectItem value="vacancies">Number of Vacancies</SelectItem>
+                      <SelectItem value="deadline">
+                        Application Deadline
+                      </SelectItem>
+                      <SelectItem value="salary">
+                        Salary (High to Low)
+                      </SelectItem>
+                      <SelectItem value="vacancies">
+                        Number of Vacancies
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -332,19 +375,32 @@ export default function LatestVacancies() {
                   <h4 className="font-medium mb-3">Category Filters:</h4>
                   <div className="flex flex-wrap gap-4">
                     {categories.map((category) => (
-                      <div key={category} className="flex items-center space-x-2">
+                      <div
+                        key={category}
+                        className="flex items-center space-x-2"
+                      >
                         <Checkbox
                           id={category}
                           checked={selectedCategories.includes(category)}
                           onCheckedChange={(checked) => {
                             if (checked) {
-                              setSelectedCategories([...selectedCategories, category]);
+                              setSelectedCategories([
+                                ...selectedCategories,
+                                category,
+                              ]);
                             } else {
-                              setSelectedCategories(selectedCategories.filter(c => c !== category));
+                              setSelectedCategories(
+                                selectedCategories.filter(
+                                  (c) => c !== category,
+                                ),
+                              );
                             }
                           }}
                         />
-                        <label htmlFor={category} className="text-sm font-medium cursor-pointer">
+                        <label
+                          htmlFor={category}
+                          className="text-sm font-medium cursor-pointer"
+                        >
                           {category}
                         </label>
                       </div>
@@ -358,7 +414,9 @@ export default function LatestVacancies() {
           {/* Results Summary */}
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-2xl font-bold">{sortedJobs.length} Job Openings Found</h2>
+              <h2 className="text-2xl font-bold">
+                {sortedJobs.length} Job Openings Found
+              </h2>
               <p className="text-muted-foreground">Updated 2 hours ago</p>
             </div>
             <Button variant="outline" className="gap-2">
@@ -372,10 +430,10 @@ export default function LatestVacancies() {
             {sortedJobs.map((job) => {
               const daysLeft = getDaysLeft(job.applicationEnd);
               return (
-                <Card 
-                  key={job.id} 
+                <Card
+                  key={job.id}
                   className={`border-0 shadow-lg hover:shadow-xl transition-all duration-300 ${
-                    job.featured ? 'ring-2 ring-career-primary/20' : ''
+                    job.featured ? "ring-2 ring-career-primary/20" : ""
                   }`}
                 >
                   <CardContent className="p-6">
@@ -387,13 +445,17 @@ export default function LatestVacancies() {
                             <div className="flex items-center gap-3 mb-2">
                               <h3 className="text-xl font-bold">{job.title}</h3>
                               {job.featured && (
-                                <Badge className="bg-career-primary text-white">Featured</Badge>
+                                <Badge className="bg-career-primary text-white">
+                                  Featured
+                                </Badge>
                               )}
                               {job.urgent && (
                                 <Badge variant="destructive">Urgent</Badge>
                               )}
                             </div>
-                            <p className="text-lg text-muted-foreground">{job.organization}</p>
+                            <p className="text-lg text-muted-foreground">
+                              {job.organization}
+                            </p>
                             <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
                               <span className="flex items-center gap-1">
                                 <Building className="h-4 w-4" />
@@ -409,8 +471,12 @@ export default function LatestVacancies() {
                               </span>
                             </div>
                           </div>
-                          <div className={`px-3 py-1 rounded-full text-sm font-medium ${getUrgencyColor(daysLeft)}`}>
-                            {daysLeft > 0 ? `${daysLeft} days left` : 'Deadline passed'}
+                          <div
+                            className={`px-3 py-1 rounded-full text-sm font-medium ${getUrgencyColor(daysLeft)}`}
+                          >
+                            {daysLeft > 0
+                              ? `${daysLeft} days left`
+                              : "Deadline passed"}
                           </div>
                         </div>
 
@@ -422,9 +488,24 @@ export default function LatestVacancies() {
                               Salary & Benefits
                             </h4>
                             <div className="space-y-1 text-sm">
-                              <div>Package: <span className="font-medium">{job.salary}</span></div>
-                              <div>In-hand: <span className="font-medium">{job.inHandSalary}</span></div>
-                              <div>Allowances: <span className="font-medium">{job.allowances}</span></div>
+                              <div>
+                                Package:{" "}
+                                <span className="font-medium">
+                                  {job.salary}
+                                </span>
+                              </div>
+                              <div>
+                                In-hand:{" "}
+                                <span className="font-medium">
+                                  {job.inHandSalary}
+                                </span>
+                              </div>
+                              <div>
+                                Allowances:{" "}
+                                <span className="font-medium">
+                                  {job.allowances}
+                                </span>
+                              </div>
                             </div>
                           </div>
 
@@ -434,9 +515,28 @@ export default function LatestVacancies() {
                               Important Dates
                             </h4>
                             <div className="space-y-1 text-sm">
-                              <div>Apply Start: <span className="font-medium">{new Date(job.applicationStart).toLocaleDateString()}</span></div>
-                              <div>Apply End: <span className="font-medium">{new Date(job.applicationEnd).toLocaleDateString()}</span></div>
-                              <div>Exam Date: <span className="font-medium">{new Date(job.examDate).toLocaleDateString()}</span></div>
+                              <div>
+                                Apply Start:{" "}
+                                <span className="font-medium">
+                                  {new Date(
+                                    job.applicationStart,
+                                  ).toLocaleDateString()}
+                                </span>
+                              </div>
+                              <div>
+                                Apply End:{" "}
+                                <span className="font-medium">
+                                  {new Date(
+                                    job.applicationEnd,
+                                  ).toLocaleDateString()}
+                                </span>
+                              </div>
+                              <div>
+                                Exam Date:{" "}
+                                <span className="font-medium">
+                                  {new Date(job.examDate).toLocaleDateString()}
+                                </span>
+                              </div>
                             </div>
                           </div>
 
@@ -447,15 +547,25 @@ export default function LatestVacancies() {
                             </h4>
                             <div className="space-y-1 text-sm">
                               <div>{job.eligibility}</div>
-                              <div>Experience: <span className="font-medium">{job.experience}</span></div>
-                              <div>Fee: <span className="font-medium">{job.fee}</span></div>
+                              <div>
+                                Experience:{" "}
+                                <span className="font-medium">
+                                  {job.experience}
+                                </span>
+                              </div>
+                              <div>
+                                Fee:{" "}
+                                <span className="font-medium">{job.fee}</span>
+                              </div>
                             </div>
                           </div>
                         </div>
 
                         {/* Categories */}
                         <div className="mb-4">
-                          <h4 className="font-medium mb-2">Available Categories:</h4>
+                          <h4 className="font-medium mb-2">
+                            Available Categories:
+                          </h4>
                           <div className="flex flex-wrap gap-2">
                             {job.category.map((cat) => (
                               <Badge key={cat} variant="outline">
@@ -474,29 +584,39 @@ export default function LatestVacancies() {
                               <div className="text-2xl font-bold text-career-primary">
                                 {job.vacancies.toLocaleString()}
                               </div>
-                              <div className="text-sm text-muted-foreground">Total Vacancies</div>
+                              <div className="text-sm text-muted-foreground">
+                                Total Vacancies
+                              </div>
                             </div>
-                            
+
                             <div className="space-y-3">
-                              <a href={job.applyLink} target="_blank" rel="noopener noreferrer">
+                              <a
+                                href={job.applyLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
                                 <Button className="w-full bg-gradient-to-r from-career-primary to-career-secondary">
                                   <ExternalLink className="h-4 w-4 mr-2" />
                                   Apply Now
                                 </Button>
                               </a>
-                              
-                              <a href={job.tutorialLink} target="_blank" rel="noopener noreferrer">
+
+                              <a
+                                href={job.tutorialLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
                                 <Button variant="outline" className="w-full">
                                   <Play className="h-4 w-4 mr-2" />
                                   How to Apply
                                 </Button>
                               </a>
-                              
+
                               <Button variant="ghost" className="w-full">
                                 <Download className="h-4 w-4 mr-2" />
                                 Download Details
                               </Button>
-                              
+
                               <Button variant="ghost" className="w-full">
                                 <Bell className="h-4 w-4 mr-2" />
                                 Set Reminder
@@ -507,7 +627,9 @@ export default function LatestVacancies() {
 
                         <div className="flex items-center gap-2 text-sm">
                           <CheckCircle className="h-4 w-4 text-career-secondary" />
-                          <span className="text-muted-foreground">Verified Opening</span>
+                          <span className="text-muted-foreground">
+                            Verified Opening
+                          </span>
                         </div>
                       </div>
                     </div>

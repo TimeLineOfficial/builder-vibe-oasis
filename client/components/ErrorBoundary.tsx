@@ -1,7 +1,13 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { AlertTriangle, RefreshCw } from 'lucide-react';
+import React, { Component, ErrorInfo, ReactNode } from "react";
+import { Button } from "./ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { AlertTriangle, RefreshCw } from "lucide-react";
 
 interface Props {
   children: ReactNode;
@@ -16,7 +22,7 @@ interface State {
 
 export class ErrorBoundary extends Component<Props, State> {
   public state: State = {
-    hasError: false
+    hasError: false,
   };
 
   public static getDerivedStateFromError(error: Error): State {
@@ -24,7 +30,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    console.error("ErrorBoundary caught an error:", error, errorInfo);
     this.setState({ error, errorInfo });
   }
 
@@ -49,13 +55,16 @@ export class ErrorBoundary extends Component<Props, State> {
               <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <AlertTriangle className="w-8 h-8 text-red-600" />
               </div>
-              <CardTitle className="text-red-900">Something went wrong</CardTitle>
+              <CardTitle className="text-red-900">
+                Something went wrong
+              </CardTitle>
               <CardDescription>
-                We apologize for the inconvenience. An unexpected error has occurred.
+                We apologize for the inconvenience. An unexpected error has
+                occurred.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {process.env.NODE_ENV === 'development' && this.state.error && (
+              {process.env.NODE_ENV === "development" && this.state.error && (
                 <div className="bg-gray-100 p-4 rounded-lg">
                   <h4 className="font-semibold text-sm mb-2">Error Details:</h4>
                   <p className="text-sm text-red-600 font-mono">
@@ -73,9 +82,13 @@ export class ErrorBoundary extends Component<Props, State> {
                   )}
                 </div>
               )}
-              
+
               <div className="flex flex-col sm:flex-row gap-2">
-                <Button onClick={this.handleReset} variant="outline" className="flex-1">
+                <Button
+                  onClick={this.handleReset}
+                  variant="outline"
+                  className="flex-1"
+                >
                   Try Again
                 </Button>
                 <Button onClick={this.handleReload} className="flex-1">
@@ -83,7 +96,7 @@ export class ErrorBoundary extends Component<Props, State> {
                   Reload Page
                 </Button>
               </div>
-              
+
               <p className="text-sm text-gray-600 text-center">
                 If this problem persists, please contact support.
               </p>

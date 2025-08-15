@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
+import {
   Calculator,
   TrendingUp,
   DollarSign,
@@ -26,7 +32,7 @@ import {
   AlertTriangle,
   CheckCircle,
   Clock,
-  Zap
+  Zap,
 } from "lucide-react";
 
 export default function ROICalculator() {
@@ -36,7 +42,7 @@ export default function ROICalculator() {
   const [monthlyExpenses, setMonthlyExpenses] = useState("");
   const [projectionPeriod, setProjectionPeriod] = useState("12");
   const [growthRate, setGrowthRate] = useState("5");
-  
+
   const [results, setResults] = useState({
     monthlyProfit: 0,
     annualProfit: 0,
@@ -44,18 +50,58 @@ export default function ROICalculator() {
     breakEvenMonths: 0,
     totalRevenue: 0,
     totalProfit: 0,
-    profitability: "Medium"
+    profitability: "Medium",
   });
 
   const businessTypes = [
-    { value: "restaurant", label: "Restaurant/Food Business", avgRoi: "15-25%", riskLevel: "Medium" },
-    { value: "retail", label: "Retail Store", avgRoi: "20-35%", riskLevel: "Medium" },
-    { value: "ecommerce", label: "E-commerce", avgRoi: "25-40%", riskLevel: "Low" },
-    { value: "manufacturing", label: "Manufacturing", avgRoi: "18-30%", riskLevel: "High" },
-    { value: "services", label: "Service Business", avgRoi: "30-50%", riskLevel: "Low" },
-    { value: "tech", label: "Technology/Software", avgRoi: "40-70%", riskLevel: "Medium" },
-    { value: "healthcare", label: "Healthcare", avgRoi: "20-35%", riskLevel: "Low" },
-    { value: "education", label: "Education/Training", avgRoi: "25-45%", riskLevel: "Low" }
+    {
+      value: "restaurant",
+      label: "Restaurant/Food Business",
+      avgRoi: "15-25%",
+      riskLevel: "Medium",
+    },
+    {
+      value: "retail",
+      label: "Retail Store",
+      avgRoi: "20-35%",
+      riskLevel: "Medium",
+    },
+    {
+      value: "ecommerce",
+      label: "E-commerce",
+      avgRoi: "25-40%",
+      riskLevel: "Low",
+    },
+    {
+      value: "manufacturing",
+      label: "Manufacturing",
+      avgRoi: "18-30%",
+      riskLevel: "High",
+    },
+    {
+      value: "services",
+      label: "Service Business",
+      avgRoi: "30-50%",
+      riskLevel: "Low",
+    },
+    {
+      value: "tech",
+      label: "Technology/Software",
+      avgRoi: "40-70%",
+      riskLevel: "Medium",
+    },
+    {
+      value: "healthcare",
+      label: "Healthcare",
+      avgRoi: "20-35%",
+      riskLevel: "Low",
+    },
+    {
+      value: "education",
+      label: "Education/Training",
+      avgRoi: "25-45%",
+      riskLevel: "Low",
+    },
   ];
 
   const calculateROI = () => {
@@ -79,7 +125,7 @@ export default function ROICalculator() {
 
     const roi = investment > 0 ? (totalProfit / investment) * 100 : 0;
     const breakEvenMonths = monthlyProfit > 0 ? investment / monthlyProfit : 0;
-    
+
     let profitability = "Low";
     if (roi > 30) profitability = "High";
     else if (roi > 15) profitability = "Medium";
@@ -91,29 +137,43 @@ export default function ROICalculator() {
       breakEvenMonths,
       totalRevenue,
       totalProfit,
-      profitability
+      profitability,
     });
   };
 
   useEffect(() => {
     calculateROI();
-  }, [initialInvestment, monthlyRevenue, monthlyExpenses, projectionPeriod, growthRate]);
+  }, [
+    initialInvestment,
+    monthlyRevenue,
+    monthlyExpenses,
+    projectionPeriod,
+    growthRate,
+  ]);
 
   const getProfitabilityColor = (level: string) => {
     switch (level) {
-      case "High": return "text-green-600 bg-green-50";
-      case "Medium": return "text-yellow-600 bg-yellow-50";
-      case "Low": return "text-red-600 bg-red-50";
-      default: return "text-gray-600 bg-gray-50";
+      case "High":
+        return "text-green-600 bg-green-50";
+      case "Medium":
+        return "text-yellow-600 bg-yellow-50";
+      case "Low":
+        return "text-red-600 bg-red-50";
+      default:
+        return "text-gray-600 bg-gray-50";
     }
   };
 
   const getRiskColor = (risk: string) => {
     switch (risk) {
-      case "Low": return "text-green-600";
-      case "Medium": return "text-yellow-600";
-      case "High": return "text-red-600";
-      default: return "text-gray-600";
+      case "Low":
+        return "text-green-600";
+      case "Medium":
+        return "text-yellow-600";
+      case "High":
+        return "text-red-600";
+      default:
+        return "text-gray-600";
     }
   };
 
@@ -124,7 +184,7 @@ export default function ROICalculator() {
       monthlyRevenue: "₹3,50,000",
       monthlyExpenses: "₹2,80,000",
       roi: "28%",
-      breakEven: "7.2 months"
+      breakEven: "7.2 months",
     },
     {
       name: "Digital Marketing Agency",
@@ -132,7 +192,7 @@ export default function ROICalculator() {
       monthlyRevenue: "₹2,00,000",
       monthlyExpenses: "₹1,20,000",
       roi: "128%",
-      breakEven: "0.9 months"
+      breakEven: "0.9 months",
     },
     {
       name: "Organic Farm",
@@ -140,8 +200,8 @@ export default function ROICalculator() {
       monthlyRevenue: "₹1,80,000",
       monthlyExpenses: "₹1,20,000",
       roi: "18%",
-      breakEven: "13.3 months"
-    }
+      breakEven: "13.3 months",
+    },
   ];
 
   return (
@@ -155,8 +215,9 @@ export default function ROICalculator() {
               <h1 className="text-4xl md:text-5xl font-bold">ROI Calculator</h1>
             </div>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Calculate investment requirements, projected returns, and break-even analysis for your business idea. 
-              Make informed decisions with comprehensive financial projections.
+              Calculate investment requirements, projected returns, and
+              break-even analysis for your business idea. Make informed
+              decisions with comprehensive financial projections.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Badge variant="secondary" className="px-4 py-2">
@@ -201,8 +262,13 @@ export default function ROICalculator() {
                     </CardHeader>
                     <CardContent className="space-y-6">
                       <div>
-                        <Label className="text-base font-medium">Business Type</Label>
-                        <Select value={businessType} onValueChange={setBusinessType}>
+                        <Label className="text-base font-medium">
+                          Business Type
+                        </Label>
+                        <Select
+                          value={businessType}
+                          onValueChange={setBusinessType}
+                        >
                           <SelectTrigger className="mt-2">
                             <SelectValue placeholder="Select business type" />
                           </SelectTrigger>
@@ -212,10 +278,15 @@ export default function ROICalculator() {
                                 <div className="flex items-center justify-between w-full">
                                   <span>{type.label}</span>
                                   <div className="flex items-center gap-2 ml-4">
-                                    <Badge variant="outline" className="text-xs">
+                                    <Badge
+                                      variant="outline"
+                                      className="text-xs"
+                                    >
                                       {type.avgRoi}
                                     </Badge>
-                                    <span className={`text-xs ${getRiskColor(type.riskLevel)}`}>
+                                    <span
+                                      className={`text-xs ${getRiskColor(type.riskLevel)}`}
+                                    >
                                       {type.riskLevel} Risk
                                     </span>
                                   </div>
@@ -227,7 +298,10 @@ export default function ROICalculator() {
                       </div>
 
                       <div>
-                        <Label htmlFor="investment" className="text-base font-medium">
+                        <Label
+                          htmlFor="investment"
+                          className="text-base font-medium"
+                        >
                           Initial Investment (₹)
                         </Label>
                         <Input
@@ -241,7 +315,10 @@ export default function ROICalculator() {
                       </div>
 
                       <div>
-                        <Label htmlFor="revenue" className="text-base font-medium">
+                        <Label
+                          htmlFor="revenue"
+                          className="text-base font-medium"
+                        >
                           Expected Monthly Revenue (₹)
                         </Label>
                         <Input
@@ -255,7 +332,10 @@ export default function ROICalculator() {
                       </div>
 
                       <div>
-                        <Label htmlFor="expenses" className="text-base font-medium">
+                        <Label
+                          htmlFor="expenses"
+                          className="text-base font-medium"
+                        >
                           Monthly Operating Expenses (₹)
                         </Label>
                         <Input
@@ -270,8 +350,13 @@ export default function ROICalculator() {
 
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <Label className="text-base font-medium">Projection Period</Label>
-                          <Select value={projectionPeriod} onValueChange={setProjectionPeriod}>
+                          <Label className="text-base font-medium">
+                            Projection Period
+                          </Label>
+                          <Select
+                            value={projectionPeriod}
+                            onValueChange={setProjectionPeriod}
+                          >
                             <SelectTrigger className="mt-2">
                               <SelectValue />
                             </SelectTrigger>
@@ -286,7 +371,10 @@ export default function ROICalculator() {
                         </div>
 
                         <div>
-                          <Label htmlFor="growth" className="text-base font-medium">
+                          <Label
+                            htmlFor="growth"
+                            className="text-base font-medium"
+                          >
                             Annual Growth Rate (%)
                           </Label>
                           <Input
@@ -300,7 +388,7 @@ export default function ROICalculator() {
                         </div>
                       </div>
 
-                      <Button 
+                      <Button
                         onClick={calculateROI}
                         className="w-full bg-gradient-to-r from-career-secondary to-green-600"
                         size="lg"
@@ -319,14 +407,20 @@ export default function ROICalculator() {
                     <Card className="border-0 shadow-lg">
                       <CardContent className="p-6">
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-lg font-semibold">Return on Investment</h3>
+                          <h3 className="text-lg font-semibold">
+                            Return on Investment
+                          </h3>
                           <TrendingUp className="h-5 w-5 text-career-secondary" />
                         </div>
                         <div className="space-y-2">
                           <div className="text-3xl font-bold text-career-secondary">
                             {results.roi.toFixed(1)}%
                           </div>
-                          <Badge className={getProfitabilityColor(results.profitability)}>
+                          <Badge
+                            className={getProfitabilityColor(
+                              results.profitability,
+                            )}
+                          >
                             {results.profitability} Profitability
                           </Badge>
                         </div>
@@ -336,14 +430,18 @@ export default function ROICalculator() {
                     <Card className="border-0 shadow-lg">
                       <CardContent className="p-6">
                         <div className="flex items-center justify-between mb-4">
-                          <h3 className="text-lg font-semibold">Break-Even Period</h3>
+                          <h3 className="text-lg font-semibold">
+                            Break-Even Period
+                          </h3>
                           <Clock className="h-5 w-5 text-blue-600" />
                         </div>
                         <div className="space-y-2">
                           <div className="text-3xl font-bold text-blue-600">
                             {results.breakEvenMonths.toFixed(1)}
                           </div>
-                          <div className="text-sm text-muted-foreground">months</div>
+                          <div className="text-sm text-muted-foreground">
+                            months
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
@@ -363,25 +461,37 @@ export default function ROICalculator() {
                           <div className="text-2xl font-bold text-career-primary">
                             ₹{(results.monthlyProfit * 1000).toLocaleString()}
                           </div>
-                          <div className="text-sm text-muted-foreground">Monthly Profit</div>
+                          <div className="text-sm text-muted-foreground">
+                            Monthly Profit
+                          </div>
                         </div>
                         <div className="text-center">
                           <div className="text-2xl font-bold text-career-secondary">
                             ₹{(results.totalRevenue / 100000).toFixed(1)}L
                           </div>
-                          <div className="text-sm text-muted-foreground">Total Revenue</div>
+                          <div className="text-sm text-muted-foreground">
+                            Total Revenue
+                          </div>
                         </div>
                         <div className="text-center">
                           <div className="text-2xl font-bold text-green-600">
                             ₹{(results.totalProfit / 100000).toFixed(1)}L
                           </div>
-                          <div className="text-sm text-muted-foreground">Total Profit</div>
+                          <div className="text-sm text-muted-foreground">
+                            Total Profit
+                          </div>
                         </div>
                         <div className="text-center">
                           <div className="text-2xl font-bold text-yellow-600">
-                            ₹{(parseFloat(initialInvestment) / 100000).toFixed(1)}L
+                            ₹
+                            {(parseFloat(initialInvestment) / 100000).toFixed(
+                              1,
+                            )}
+                            L
                           </div>
-                          <div className="text-sm text-muted-foreground">Investment</div>
+                          <div className="text-sm text-muted-foreground">
+                            Investment
+                          </div>
                         </div>
                       </div>
                     </CardContent>
@@ -401,33 +511,42 @@ export default function ROICalculator() {
                           <div className="flex items-start gap-3 p-4 bg-green-50 rounded-lg">
                             <CheckCircle className="h-5 w-5 text-green-600 mt-0.5" />
                             <div>
-                              <div className="font-medium text-green-800">Excellent ROI</div>
+                              <div className="font-medium text-green-800">
+                                Excellent ROI
+                              </div>
                               <div className="text-sm text-green-700">
-                                Your projected ROI of {results.roi.toFixed(1)}% is above average for most businesses.
+                                Your projected ROI of {results.roi.toFixed(1)}%
+                                is above average for most businesses.
                               </div>
                             </div>
                           </div>
                         )}
-                        
+
                         {results.breakEvenMonths > 24 && (
                           <div className="flex items-start gap-3 p-4 bg-yellow-50 rounded-lg">
                             <AlertTriangle className="h-5 w-5 text-yellow-600 mt-0.5" />
                             <div>
-                              <div className="font-medium text-yellow-800">Long Break-Even Period</div>
+                              <div className="font-medium text-yellow-800">
+                                Long Break-Even Period
+                              </div>
                               <div className="text-sm text-yellow-700">
-                                Consider reducing initial investment or increasing monthly profit margins.
+                                Consider reducing initial investment or
+                                increasing monthly profit margins.
                               </div>
                             </div>
                           </div>
                         )}
-                        
+
                         {results.monthlyProfit < 0 && (
                           <div className="flex items-start gap-3 p-4 bg-red-50 rounded-lg">
                             <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5" />
                             <div>
-                              <div className="font-medium text-red-800">Negative Cash Flow</div>
+                              <div className="font-medium text-red-800">
+                                Negative Cash Flow
+                              </div>
                               <div className="text-sm text-red-700">
-                                Monthly expenses exceed revenue. Review your business model.
+                                Monthly expenses exceed revenue. Review your
+                                business model.
                               </div>
                             </div>
                           </div>
@@ -470,46 +589,75 @@ export default function ROICalculator() {
                         <div className="h-64 bg-muted/20 rounded-lg flex items-center justify-center">
                           <div className="text-center">
                             <BarChart className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                            <p className="text-muted-foreground">Revenue vs Expenses Chart</p>
-                            <p className="text-sm text-muted-foreground">Visual representation will appear here</p>
+                            <p className="text-muted-foreground">
+                              Revenue vs Expenses Chart
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              Visual representation will appear here
+                            </p>
                           </div>
                         </div>
-                        
+
                         <div className="h-64 bg-muted/20 rounded-lg flex items-center justify-center">
                           <div className="text-center">
                             <LineChart className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                            <p className="text-muted-foreground">Growth Projection</p>
-                            <p className="text-sm text-muted-foreground">Growth trend visualization</p>
+                            <p className="text-muted-foreground">
+                              Growth Projection
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              Growth trend visualization
+                            </p>
                           </div>
                         </div>
                       </div>
-                      
+
                       <div className="space-y-6">
                         <div className="h-64 bg-muted/20 rounded-lg flex items-center justify-center">
                           <div className="text-center">
                             <PieChart className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                            <p className="text-muted-foreground">Cost Breakdown</p>
-                            <p className="text-sm text-muted-foreground">Expense distribution chart</p>
+                            <p className="text-muted-foreground">
+                              Cost Breakdown
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              Expense distribution chart
+                            </p>
                           </div>
                         </div>
-                        
+
                         <Card>
                           <CardHeader>
-                            <CardTitle className="text-lg">Risk Assessment</CardTitle>
+                            <CardTitle className="text-lg">
+                              Risk Assessment
+                            </CardTitle>
                           </CardHeader>
                           <CardContent>
                             <div className="space-y-4">
                               <div className="flex justify-between items-center">
                                 <span>Market Risk</span>
-                                <Badge variant="outline" className="text-yellow-600">Medium</Badge>
+                                <Badge
+                                  variant="outline"
+                                  className="text-yellow-600"
+                                >
+                                  Medium
+                                </Badge>
                               </div>
                               <div className="flex justify-between items-center">
                                 <span>Financial Risk</span>
-                                <Badge variant="outline" className="text-green-600">Low</Badge>
+                                <Badge
+                                  variant="outline"
+                                  className="text-green-600"
+                                >
+                                  Low
+                                </Badge>
                               </div>
                               <div className="flex justify-between items-center">
                                 <span>Operational Risk</span>
-                                <Badge variant="outline" className="text-yellow-600">Medium</Badge>
+                                <Badge
+                                  variant="outline"
+                                  className="text-yellow-600"
+                                >
+                                  Medium
+                                </Badge>
                               </div>
                             </div>
                           </CardContent>
@@ -524,7 +672,9 @@ export default function ROICalculator() {
             <TabsContent value="examples">
               <div className="space-y-8">
                 <div className="text-center">
-                  <h2 className="text-3xl font-bold mb-4">Sample Business Calculations</h2>
+                  <h2 className="text-3xl font-bold mb-4">
+                    Sample Business Calculations
+                  </h2>
                   <p className="text-xl text-muted-foreground">
                     Real-world examples to help you understand the calculations
                   </p>
@@ -534,35 +684,59 @@ export default function ROICalculator() {
                   {sampleBusinesses.map((business, index) => (
                     <Card key={index} className="border-0 shadow-lg">
                       <CardHeader>
-                        <CardTitle className="text-lg">{business.name}</CardTitle>
-                        <CardDescription>Sample calculation for reference</CardDescription>
+                        <CardTitle className="text-lg">
+                          {business.name}
+                        </CardTitle>
+                        <CardDescription>
+                          Sample calculation for reference
+                        </CardDescription>
                       </CardHeader>
                       <CardContent className="space-y-4">
                         <div className="space-y-3">
                           <div className="flex justify-between">
-                            <span className="text-sm text-muted-foreground">Investment:</span>
-                            <span className="font-medium">{business.investment}</span>
+                            <span className="text-sm text-muted-foreground">
+                              Investment:
+                            </span>
+                            <span className="font-medium">
+                              {business.investment}
+                            </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-sm text-muted-foreground">Monthly Revenue:</span>
-                            <span className="font-medium">{business.monthlyRevenue}</span>
+                            <span className="text-sm text-muted-foreground">
+                              Monthly Revenue:
+                            </span>
+                            <span className="font-medium">
+                              {business.monthlyRevenue}
+                            </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-sm text-muted-foreground">Monthly Expenses:</span>
-                            <span className="font-medium">{business.monthlyExpenses}</span>
+                            <span className="text-sm text-muted-foreground">
+                              Monthly Expenses:
+                            </span>
+                            <span className="font-medium">
+                              {business.monthlyExpenses}
+                            </span>
                           </div>
                           <div className="border-t pt-3">
                             <div className="flex justify-between">
-                              <span className="text-sm text-muted-foreground">Annual ROI:</span>
-                              <span className="font-bold text-career-secondary">{business.roi}</span>
+                              <span className="text-sm text-muted-foreground">
+                                Annual ROI:
+                              </span>
+                              <span className="font-bold text-career-secondary">
+                                {business.roi}
+                              </span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-sm text-muted-foreground">Break-even:</span>
-                              <span className="font-medium">{business.breakEven}</span>
+                              <span className="text-sm text-muted-foreground">
+                                Break-even:
+                              </span>
+                              <span className="font-medium">
+                                {business.breakEven}
+                              </span>
                             </div>
                           </div>
                         </div>
-                        
+
                         <Button variant="outline" className="w-full">
                           Use This Template
                         </Button>
