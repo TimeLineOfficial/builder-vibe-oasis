@@ -162,6 +162,30 @@ export default function CareerByGoal() {
 
   const handleStartMapping = () => {
     if (currentStage && targetJob) {
+      // Find the career goal ID based on the job title
+      const careerGoal = careerMapData?.careers.find(
+        career => career.title.toLowerCase() === targetJob.toLowerCase()
+      );
+
+      if (careerGoal) {
+        // Generate real career path using the rules
+        const path = generateCareerPath(currentStage, careerGoal.id);
+        setGeneratedPath(path);
+      } else {
+        // Fallback: generate a simple path
+        setGeneratedPath([
+          {
+            stage: currentStage,
+            title: "Current Stage",
+            description: `You are currently at ${educationStages.find(s => s.value === currentStage)?.label}`,
+          },
+          {
+            stage: "future",
+            title: targetJob,
+            description: `Your goal is to become a ${targetJob}. This requires dedicated preparation and the right educational path.`,
+          }
+        ]);
+      }
       setShowRoadmap(true);
     }
   };
