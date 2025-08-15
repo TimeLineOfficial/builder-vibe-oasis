@@ -8,6 +8,9 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import JobsLanding from "./pages/JobsLanding";
 import PlaceholderPage from "./pages/PlaceholderPage";
+import CareerByGoal from "./pages/CareerByGoal";
+import CareerByInterest from "./pages/CareerByInterest";
+import LatestVacancies from "./pages/LatestVacancies";
 
 const queryClient = new QueryClient();
 
