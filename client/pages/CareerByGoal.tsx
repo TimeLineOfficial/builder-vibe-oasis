@@ -42,13 +42,27 @@ export default function CareerByGoal() {
   const [expandedStep, setExpandedStep] = useState<number | null>(null);
   const [generatedPath, setGeneratedPath] = useState<any[]>([]);
 
-  const educationStages = [
-    { value: "class10", label: "Class 10th or less", icon: BookOpen },
-    { value: "class11-12", label: "Class 11th or 12th", icon: GraduationCap },
-    { value: "graduation", label: "Graduation", icon: Award },
-    { value: "postgrad", label: "Post-Graduation or PhD", icon: Star },
-    { value: "working", label: "Already Working", icon: Briefcase }
-  ];
+  // Get education stages from data store
+  const educationStages = careerMapData?.stages
+    .filter(stage =>
+      stage.id.includes('school') ||
+      stage.id.includes('ug_') ||
+      stage.id.includes('pg') ||
+      stage.id.includes('doctorate')
+    )
+    .map(stage => ({
+      value: stage.id,
+      label: stage.label,
+      icon: getStageIcon(stage.id)
+    })) || [];
+
+  function getStageIcon(stageId: string) {
+    if (stageId.includes('school_10')) return BookOpen;
+    if (stageId.includes('school_11_12')) return GraduationCap;
+    if (stageId.includes('ug_')) return Award;
+    if (stageId.includes('pg') || stageId.includes('doctorate')) return Star;
+    return Briefcase;
+  }
 
   const streams = {
     "class11-12": [
