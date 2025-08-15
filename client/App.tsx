@@ -15,6 +15,8 @@ import BusinessLanding from "./pages/BusinessLanding";
 import BusinessIdeas from "./pages/BusinessIdeas";
 import BusinessDocumentation from "./pages/BusinessDocumentation";
 import ROICalculator from "./pages/ROICalculator";
+import InteractiveCareerMap from "./pages/InteractiveCareerMap";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
