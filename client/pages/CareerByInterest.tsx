@@ -428,7 +428,7 @@ export default function CareerByInterest() {
                       </p>
                     </div>
                     <div className="text-right">
-                      <div className="text-3xl font-bold">{sampleCareerSuggestions.length}</div>
+                      <div className="text-3xl font-bold">{getCareerSuggestions().length}</div>
                       <div className="text-sm opacity-80">Perfect Matches</div>
                     </div>
                   </div>
