@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { initializeCareerMapData } from "@/lib/data-service";
 import { initializePerformanceOptimizations } from "@/lib/performance-utils";
 import Layout from "@/components/Layout";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import JobsLanding from "./pages/JobsLanding";
