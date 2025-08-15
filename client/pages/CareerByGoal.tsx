@@ -91,74 +91,57 @@ export default function CareerByGoal() {
     "Software Engineer", "Doctor", "IAS Officer", "Teacher", "Data Scientist"
   ];
 
-  const sampleRoadmap = [
-    {
-      stage: "Current Stage",
-      title: "Class 12th (PCM)",
-      description: "Complete your 12th grade with good marks in Physics, Chemistry, and Mathematics",
-      status: "completed",
-      timeline: "Current",
-      details: [
-        "Focus on JEE preparation alongside board exams",
-        "Maintain above 85% in board exams",
-        "Strong foundation in calculus and physics"
-      ]
-    },
-    {
-      stage: "Entrance Exam",
-      title: "JEE Main & Advanced",
-      description: "Clear engineering entrance exams for admission to top engineering colleges",
-      status: "in-progress",
-      timeline: "Next 6 months",
-      details: [
-        "Target JEE Main score: 250+ (95+ percentile)",
-        "Attempt JEE Advanced if qualified",
-        "Consider state-level engineering entrance exams as backup",
-        "Practice 3-4 hours daily with mock tests"
-      ]
-    },
-    {
-      stage: "Higher Education",
-      title: "B.Tech Computer Science",
-      description: "4-year engineering degree specializing in computer science and programming",
-      status: "pending",
-      timeline: "4 years",
-      details: [
-        "Choose reputed college (IIT/NIT preferred)",
-        "Focus on programming languages: Python, Java, C++",
-        "Build projects and contribute to open source",
-        "Maintain CGPA above 8.0",
-        "Complete internships every summer"
-      ]
-    },
-    {
-      stage: "Skill Development",
-      title: "Technical Skills & Internships",
-      description: "Develop industry-relevant skills and gain practical experience",
-      status: "pending",
-      timeline: "Throughout degree",
-      details: [
-        "Master data structures and algorithms",
-        "Learn web development (React, Node.js)",
-        "Understand database management (SQL, MongoDB)",
-        "Complete 2-3 internships at tech companies",
-        "Build a strong GitHub portfolio"
-      ]
-    },
-    {
-      stage: "Career Goal",
-      title: "Software Engineer at Top Tech Company",
-      description: "Land a software engineering role at companies like Google, Microsoft, or startups",
-      status: "pending",
-      timeline: "After graduation",
-      details: [
-        "Prepare for coding interviews (LeetCode, HackerRank)",
-        "Target companies: FAANG, unicorn startups",
-        "Expected starting salary: ₹15-25 LPA",
-        "Growth path: Senior Engineer → Tech Lead → Engineering Manager"
-      ]
+  // Convert generated path to display format
+  const getRoadmapData = () => {
+    if (generatedPath.length === 0) return [];
+
+    return generatedPath.map((step, index) => ({
+      stage: step.stage,
+      title: step.title,
+      description: step.description,
+      status: index === 0 ? "completed" : index === 1 ? "in-progress" : "pending",
+      timeline: getTimeline(index, generatedPath.length),
+      details: getStepDetails(step),
+      exams: step.exams,
+      courses: step.courses
+    }));
+  };
+
+  const getTimeline = (index: number, total: number) => {
+    if (index === 0) return "Current";
+    if (index === 1) return "Next 6-12 months";
+    if (index === total - 1) return "Final Goal";
+    return `${index * 2}-${(index + 1) * 2} years`;
+  };
+
+  const getStepDetails = (step: any) => {
+    const details = [];
+
+    if (step.exams && step.exams.length > 0) {
+      step.exams.forEach((examId: string) => {
+        const exam = careerMapData?.exams.find(e => e.id === examId);
+        if (exam) {
+          details.push(`Prepare for and attempt ${exam.name}`);
+        }
+      });
     }
-  ];
+
+    if (step.courses && step.courses.length > 0) {
+      step.courses.forEach((courseId: string) => {
+        const course = careerMapData?.courses.find(c => c.id === courseId);
+        if (course) {
+          details.push(`Enroll in ${course.name} program`);
+        }
+      });
+    }
+
+    if (details.length === 0) {
+      details.push("Follow the recommended path for this stage");
+      details.push("Seek guidance from mentors and counselors");
+    }
+
+    return details;
+  };
 
   const handleStartMapping = () => {
     if (currentStage && targetJob) {
