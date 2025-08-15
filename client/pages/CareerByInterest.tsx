@@ -12,9 +12,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { 
-  Search, 
-  Heart, 
+import {
+  Search,
+  Heart,
   Filter,
   ArrowRight,
   Lightbulb,
@@ -34,7 +34,8 @@ import {
   Star,
   Clock,
   DollarSign,
-  Building
+  Building,
+  Target
 } from "lucide-react";
 
 export default function CareerByInterest() {
