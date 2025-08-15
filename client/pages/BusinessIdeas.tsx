@@ -498,15 +498,29 @@ export default function BusinessIdeas() {
           </div>
 
           {/* Load More */}
-          <div className="text-center mt-12">
-            <Button variant="outline" size="lg">
-              Load More Ideas
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </Button>
-            <p className="text-sm text-muted-foreground mt-2">
-              Showing {sortedIdeas.length} of 500+ business opportunities
-            </p>
-          </div>
+          {hasMoreIdeas && (
+            <div className="text-center mt-12">
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={loadMoreBusinessIdeas}
+              >
+                {getText('btn_load_more')}
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </Button>
+              <p className="text-sm text-muted-foreground mt-2">
+                Showing {displayedIdeas.length} of {totalIdeas} business opportunities
+              </p>
+            </div>
+          )}
+
+          {!hasMoreIdeas && totalIdeas > 0 && (
+            <div className="text-center mt-12">
+              <p className="text-muted-foreground">
+                You've seen all {totalIdeas} business ideas. Try adjusting your filters to see more options.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
