@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 
 export default function InteractiveCareerMap() {
+  const { careerMapData } = useDataStore();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedField, setSelectedField] = useState("all");
   const [selectedLevel, setSelectedLevel] = useState("all");
