@@ -34,11 +34,13 @@ import {
 } from "lucide-react";
 
 export default function CareerByGoal() {
+  const { careerMapData, generateCareerPath } = useDataStore();
   const [currentStage, setCurrentStage] = useState("");
   const [selectedStream, setSelectedStream] = useState("");
   const [targetJob, setTargetJob] = useState("");
   const [showRoadmap, setShowRoadmap] = useState(false);
   const [expandedStep, setExpandedStep] = useState<number | null>(null);
+  const [generatedPath, setGeneratedPath] = useState<any[]>([]);
 
   const educationStages = [
     { value: "class10", label: "Class 10th or less", icon: BookOpen },
