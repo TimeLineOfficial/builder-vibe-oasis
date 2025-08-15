@@ -68,134 +68,135 @@ export default function BusinessIdeas() {
     { value: "10l+", label: "₹10L+" }
   ];
 
-  const businessIdeas = [
-    {
-      id: 1,
-      title: "Cloud Kitchen",
-      category: "food",
-      description: "Start a delivery-only restaurant without dine-in space. Focus on 2-3 cuisines and optimize for delivery platforms.",
-      investment: "₹2-8 Lakh",
-      monthlyRevenue: "₹1.5-6 Lakh",
-      roi: "25-45%",
-      difficulty: "Medium",
-      timeToStart: "2-3 months",
-      popularityScore: 92,
-      successRate: 78,
-      trending: true,
-      featured: false,
-      permits: ["FSSAI License", "Fire Safety", "Local Municipal License"],
-      skills: ["Cooking", "Marketing", "Operations"],
-      marketSize: "₹4,000 Cr (Growing 15% annually)",
-      targetAudience: "Urban working professionals aged 25-40",
-      competition: "High but fragmented market",
-      scalability: "High - can expand to multiple locations"
-    },
-    {
-      id: 2,
-      title: "Digital Marketing Agency",
-      category: "tech",
-      description: "Offer social media marketing, SEO, content creation, and paid advertising services to local businesses.",
-      investment: "₹25K-1 Lakh",
-      monthlyRevenue: "₹1-8 Lakh",
-      roi: "40-60%",
-      difficulty: "Medium",
-      timeToStart: "1-2 months",
-      popularityScore: 88,
-      successRate: 82,
-      trending: true,
-      featured: true,
-      permits: ["Business Registration", "GST Registration"],
-      skills: ["Digital Marketing", "Content Creation", "Client Management"],
-      marketSize: "₹16,000 Cr (Growing 25% annually)",
-      targetAudience: "Small and medium businesses",
-      competition: "Very High",
-      scalability: "Very High - global reach possible"
-    },
-    {
-      id: 3,
-      title: "Organic Farming",
-      category: "agriculture",
-      description: "Cultivate organic vegetables, fruits, or herbs for direct sale to consumers, restaurants, and organic stores.",
-      investment: "₹3-12 Lakh",
-      monthlyRevenue: "₹80K-4 Lakh",
-      roi: "20-35%",
-      difficulty: "Hard",
-      timeToStart: "6-12 months",
-      popularityScore: 75,
-      successRate: 65,
-      trending: false,
-      featured: false,
-      permits: ["Organic Certification", "Land Records", "Water Rights"],
-      skills: ["Agriculture Knowledge", "Marketing", "Supply Chain"],
-      marketSize: "₹7,000 Cr (Growing 20% annually)",
-      targetAudience: "Health-conscious urban consumers",
-      competition: "Low to Medium",
-      scalability: "Medium - limited by land availability"
-    },
-    {
-      id: 4,
-      title: "Online Tutoring Platform",
-      category: "education",
-      description: "Create an online platform connecting students with tutors for personalized learning sessions.",
-      investment: "₹1.5-6 Lakh",
-      monthlyRevenue: "₹1-5 Lakh",
-      roi: "30-50%",
-      difficulty: "Medium",
-      timeToStart: "3-4 months",
-      popularityScore: 85,
-      successRate: 71,
-      trending: true,
-      featured: false,
-      permits: ["Business Registration", "Educational License"],
-      skills: ["Technology", "Education", "Platform Management"],
-      marketSize: "₹3,500 Cr (Growing 30% annually)",
-      targetAudience: "Students and parents",
-      competition: "High",
-      scalability: "Very High - can scale globally"
-    },
-    {
-      id: 5,
-      title: "Handmade Jewelry Business",
-      category: "fashion",
-      description: "Design and create unique handmade jewelry pieces for online and offline sales.",
-      investment: "₹15K-80K",
-      monthlyRevenue: "₹30K-2 Lakh",
-      roi: "35-65%",
-      difficulty: "Easy",
-      timeToStart: "1 month",
-      popularityScore: 70,
-      successRate: 68,
-      trending: false,
-      featured: false,
-      permits: ["GST Registration", "Hallmark Certification (for gold)"],
-      skills: ["Jewelry Making", "Design", "Online Marketing"],
-      marketSize: "₹2,500 Cr (Growing 12% annually)",
-      targetAudience: "Fashion-conscious women aged 20-45",
-      competition: "Medium",
-      scalability: "High - can expand product lines"
-    },
-    {
-      id: 6,
-      title: "Fitness Coaching App",
-      category: "health",
-      description: "Develop a mobile app offering personalized fitness plans, nutrition guidance, and virtual coaching.",
-      investment: "₹5-15 Lakh",
-      monthlyRevenue: "₹2-10 Lakh",
-      roi: "45-70%",
-      difficulty: "Hard",
-      timeToStart: "4-8 months",
-      popularityScore: 89,
-      successRate: 75,
-      trending: true,
-      featured: true,
-      permits: ["App Store Registration", "Health Compliance"],
-      skills: ["App Development", "Fitness Knowledge", "Marketing"],
-      marketSize: "₹1,200 Cr (Growing 35% annually)",
-      targetAudience: "Health-conscious individuals aged 25-45",
-      competition: "Very High",
-      scalability: "Very High - global market"
-    }
-  ];
+  // Get business ideas from the data store
+  const businessIdeasByCategory = getBusinessIdeasByCategory();
+
+  // Convert to the expected format and add additional properties
+  const businessIdeas = Object.values(businessIdeasByCategory)
+    .flat()
+    .map((idea, index) => ({
+      id: index + 1,
+      title: idea.name,
+      category: idea.category.toLowerCase(),
+      description: getBusinessDescription(idea.id),
+      investment: formatCurrency(idea.min_capital_inr),
+      monthlyRevenue: getEstimatedRevenue(idea.min_capital_inr),
+      roi: getEstimatedROI(idea.category),
+      difficulty: getDifficulty(idea.min_capital_inr),
+      timeToStart: getTimeToStart(idea.category),
+      popularityScore: Math.floor(Math.random() * 30) + 70,
+      successRate: Math.floor(Math.random() * 20) + 60,
+      trending: Math.random() > 0.7,
+      featured: Math.random() > 0.8,
+      permits: idea.documents,
+      skills: getRequiredSkills(idea.category),
+      marketSize: getMarketSize(idea.category),
+      targetAudience: getTargetAudience(idea.category),
+      competition: getCompetitionLevel(idea.category),
+      scalability: getScalability(idea.category)
+    }));
+
+  // Helper functions for additional business data
+  const getBusinessDescription = (ideaId: string) => {
+    const descriptions: Record<string, string> = {
+      "diag_centre": "Start a diagnostic center offering medical tests, imaging, and health checkup services.",
+      "pharmacy_store": "Open a retail pharmacy selling medicines, healthcare products, and wellness items.",
+      "coaching_center": "Establish a coaching institute for competitive exams and academic subjects.",
+      "ecom_private_label": "Create your own brand and sell products through e-commerce platforms.",
+      "uiux_agency": "Provide UI/UX design services for websites, apps, and digital products.",
+      "cloud_kitchen": "Start a delivery-only restaurant without dine-in space."
+    };
+    return descriptions[ideaId] || "A promising business opportunity with good growth potential.";
+  };
+
+  const getEstimatedRevenue = (investment: number) => {
+    const monthlyMultiplier = 0.3; // Assuming 30% of investment as monthly revenue
+    const monthly = investment * monthlyMultiplier;
+    return `${formatCurrency(Math.floor(monthly * 0.5))}-${formatCurrency(Math.floor(monthly * 1.5))}`;
+  };
+
+  const getEstimatedROI = (category: string) => {
+    const roiRanges: Record<string, string> = {
+      "Healthcare": "20-35%",
+      "Education": "25-40%",
+      "E-commerce": "30-50%",
+      "Services": "35-60%",
+      "Food": "25-45%"
+    };
+    return roiRanges[category] || "20-40%";
+  };
+
+  const getDifficulty = (investment: number) => {
+    if (investment < 300000) return "Easy";
+    if (investment < 1000000) return "Medium";
+    return "Hard";
+  };
+
+  const getTimeToStart = (category: string) => {
+    const timeRanges: Record<string, string> = {
+      "Healthcare": "3-6 months",
+      "Education": "2-4 months",
+      "E-commerce": "1-3 months",
+      "Services": "1-2 months",
+      "Food": "2-4 months"
+    };
+    return timeRanges[category] || "2-4 months";
+  };
+
+  const getRequiredSkills = (category: string) => {
+    const skills: Record<string, string[]> = {
+      "Healthcare": ["Medical Knowledge", "Patient Care", "Business Management"],
+      "Education": ["Teaching", "Curriculum Design", "Student Management"],
+      "E-commerce": ["Digital Marketing", "Inventory Management", "Customer Service"],
+      "Services": ["Technical Skills", "Client Management", "Project Management"],
+      "Food": ["Cooking", "Food Safety", "Supply Chain Management"]
+    };
+    return skills[category] || ["Business Management", "Marketing", "Operations"];
+  };
+
+  const getMarketSize = (category: string) => {
+    const sizes: Record<string, string> = {
+      "Healthcare": "₹8,000 Cr (Growing 18% annually)",
+      "Education": "₹4,500 Cr (Growing 25% annually)",
+      "E-commerce": "₹12,000 Cr (Growing 30% annually)",
+      "Services": "₹6,000 Cr (Growing 22% annually)",
+      "Food": "₹5,500 Cr (Growing 20% annually)"
+    };
+    return sizes[category] || "₹3,000 Cr (Growing 15% annually)";
+  };
+
+  const getTargetAudience = (category: string) => {
+    const audiences: Record<string, string> = {
+      "Healthcare": "Health-conscious individuals and families",
+      "Education": "Students and parents",
+      "E-commerce": "Online shoppers across age groups",
+      "Services": "Businesses and professionals",
+      "Food": "Urban working professionals and families"
+    };
+    return audiences[category] || "General consumers";
+  };
+
+  const getCompetitionLevel = (category: string) => {
+    const levels: Record<string, string> = {
+      "Healthcare": "Medium",
+      "Education": "High",
+      "E-commerce": "Very High",
+      "Services": "High",
+      "Food": "High"
+    };
+    return levels[category] || "Medium";
+  };
+
+  const getScalability = (category: string) => {
+    const scalabilities: Record<string, string> = {
+      "Healthcare": "Medium - location dependent",
+      "Education": "High - can expand online",
+      "E-commerce": "Very High - global reach",
+      "Services": "High - can scale virtually",
+      "Food": "Medium - location and logistics dependent"
+    };
+    return scalabilities[category] || "Medium - depends on execution";
+  };
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty.toLowerCase()) {
