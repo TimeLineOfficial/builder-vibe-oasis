@@ -18,6 +18,7 @@ import {
   Target
 } from 'lucide-react';
 import { ExtendedInterest } from '../lib/extended-interests';
+import AdvancedCareerMapping from '../components/AdvancedCareerMapping';
 
 export default function CareerByInterest() {
   const { 
@@ -35,6 +36,8 @@ export default function CareerByInterest() {
   const [careerMatches, setCareerMatches] = useState<any[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [showResults, setShowResults] = useState(false);
+  const [showAdvancedMapping, setShowAdvancedMapping] = useState(false);
+  const [selectedCareerForMapping, setSelectedCareerForMapping] = useState<string>('');
 
   const allInterests = getExtendedInterests();
   const trendingInterests = getTrendingInterests();
@@ -209,7 +212,13 @@ export default function CareerByInterest() {
             <BookOpen className="w-4 h-4 mr-1" />
             Learn More
           </Button>
-          <Button size="sm">
+          <Button
+            size="sm"
+            onClick={() => {
+              setSelectedCareerForMapping(match.path);
+              setShowAdvancedMapping(true);
+            }}
+          >
             <ArrowRight className="w-4 h-4 mr-1" />
             Get Roadmap
           </Button>
@@ -255,6 +264,25 @@ export default function CareerByInterest() {
               <Button onClick={() => setShowResults(false)}>
                 Try Different Interests
               </Button>
+            </div>
+          )}
+
+          {/* Advanced Career Mapping Modal */}
+          {showAdvancedMapping && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+              <div className="bg-white rounded-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+                <div className="p-6 border-b">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-2xl font-bold">Advanced Career Mapping</h2>
+                    <Button variant="outline" onClick={() => setShowAdvancedMapping(false)}>
+                      Close
+                    </Button>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <AdvancedCareerMapping selectedCareer={selectedCareerForMapping} />
+                </div>
+              </div>
             </div>
           )}
         </div>
