@@ -27,33 +27,9 @@ export default function App() {
               <Route path="/jobs" element={<JobsLanding />} />
 
               {/* Jobs sub-routes */}
-              <Route
-                path="/jobs/by-goal"
-                element={
-                  <PlaceholderPage
-                    title="Career Map by Goal"
-                    description="Interactive career roadmap from your current stage to your dream job. Coming soon!"
-                  />
-                }
-              />
-              <Route
-                path="/jobs/by-interest"
-                element={
-                  <PlaceholderPage
-                    title="Career by Interest"
-                    description="Discover careers based on your passions and interests. Coming soon!"
-                  />
-                }
-              />
-              <Route
-                path="/jobs/vacancies"
-                element={
-                  <PlaceholderPage
-                    title="Latest Vacancies"
-                    description="Real-time government and private job openings. Coming soon!"
-                  />
-                }
-              />
+              <Route path="/jobs/by-goal" element={<CareerByGoal />} />
+              <Route path="/jobs/by-interest" element={<CareerByInterest />} />
+              <Route path="/jobs/vacancies" element={<LatestVacancies />} />
 
               {/* Business routes */}
               <Route
