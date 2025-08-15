@@ -13,6 +13,7 @@ import PlaceholderPage from "./pages/PlaceholderPage";
 import CareerByGoal from "./pages/CareerByGoal";
 import CareerByInterest from "./pages/CareerByInterest";
 import LatestVacancies from "./pages/LatestVacancies";
+import LatestJobs from "./pages/LatestJobs";
 import BusinessLanding from "./pages/BusinessLanding";
 import BusinessIdeas from "./pages/BusinessIdeas";
 import BusinessDocumentation from "./pages/BusinessDocumentation";
@@ -43,6 +44,7 @@ export default function App() {
               <Route path="/jobs/by-goal" element={<CareerByGoal />} />
               <Route path="/jobs/by-interest" element={<CareerByInterest />} />
               <Route path="/jobs/vacancies" element={<LatestVacancies />} />
+              <Route path="/latest-jobs" element={<LatestJobs />} />
 
               {/* Business routes */}
               <Route path="/business" element={<BusinessLanding />} />
