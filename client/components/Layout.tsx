@@ -139,10 +139,10 @@ export default function Layout({ children }: LayoutProps) {
             </div>
             <div className="flex flex-col">
               <span className="text-lg font-bold text-foreground">
-                CareerMap
+                {siteTitle}
               </span>
               <span className="text-xs text-muted-foreground leading-none">
-                Your Complete Career & Business Roadmap
+                {siteTagline}
               </span>
             </div>
           </Link>
