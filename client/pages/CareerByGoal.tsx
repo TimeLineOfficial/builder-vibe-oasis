@@ -321,9 +321,9 @@ export default function CareerByGoal() {
                       </p>
                     </div>
                     <div className="text-right">
-                      <div className="text-3xl font-bold">5</div>
-                      <div className="text-sm opacity-80">Steps to Success</div>
-                    </div>
+                    <div className="text-3xl font-bold">{generatedPath.length}</div>
+                    <div className="text-sm opacity-80">Steps to Success</div>
+                  </div>
                   </div>
                   
                   <div className="mt-6 flex items-center gap-4">
