@@ -120,38 +120,126 @@ export default function CareerByInterest() {
     }
   };
 
-  const sampleCareerSuggestions = [
-    {
-      title: "Software Engineer",
-      match: 95,
-      salary: "₹8-25 LPA",
-      growth: "25%",
-      skills: ["Programming", "Problem Solving", "Algorithms"],
-      education: "B.Tech/B.E. Computer Science",
-      companies: ["Google", "Microsoft", "Amazon", "Flipkart"],
-      description: "Design and develop software applications, systems, and solutions."
-    },
-    {
-      title: "UX/UI Designer",
-      match: 89,
-      salary: "₹6-18 LPA",
-      growth: "22%",
-      skills: ["Design Thinking", "Prototyping", "User Research"],
-      education: "Design degree or relevant certification",
-      companies: ["Adobe", "Figma", "Zomato", "Paytm"],
-      description: "Create user-friendly interfaces and experiences for digital products."
-    },
-    {
-      title: "Data Scientist",
-      match: 87,
-      salary: "₹10-30 LPA",
-      growth: "28%",
-      skills: ["Statistics", "Machine Learning", "Python"],
-      education: "B.Tech/M.Tech + Data Science certification",
-      companies: ["Netflix", "Uber", "Swiggy", "PhonePe"],
-      description: "Analyze complex data to help organizations make informed decisions."
+  // Generate career suggestions based on real data
+  const getCareerSuggestions = () => {
+    if (careerMatches.length === 0) {
+      return [];
     }
-  ];
+
+    return careerMatches.slice(0, 3).map(match => ({
+      title: match.career.title,
+      match: Math.round(match.matchScore),
+      salary: getSalaryRange(match.career.id),
+      growth: getGrowthRate(match.career.id),
+      skills: getRequiredSkills(match.career.id),
+      education: getEducationRequirement(match.career),
+      companies: getTopCompanies(match.career.id),
+      description: getCareerDescription(match.career.id),
+      recommendedStream: match.recommendedStream
+    }));
+  };
+
+  // Helper functions to get additional career data (mock for now, would be in the dataset)
+  const getSalaryRange = (careerId: string) => {
+    const ranges: Record<string, string> = {
+      "doctor": "₹10-50 LPA",
+      "software_engineer": "₹8-25 LPA",
+      "civil_services": "₹56K-2L PM",
+      "chartered_accountant": "₹6-20 LPA",
+      "data_scientist": "₹10-30 LPA",
+      "nurse": "₹3-8 LPA",
+      "lawyer": "₹5-25 LPA",
+      "journalist": "₹4-15 LPA",
+      "pharmacist": "₹3-12 LPA",
+      "police_officer": "₹35K-1L PM"
+    };
+    return ranges[careerId] || "₹5-15 LPA";
+  };
+
+  const getGrowthRate = (careerId: string) => {
+    const rates: Record<string, string> = {
+      "doctor": "15%",
+      "software_engineer": "25%",
+      "civil_services": "8%",
+      "chartered_accountant": "18%",
+      "data_scientist": "30%",
+      "nurse": "12%",
+      "lawyer": "20%",
+      "journalist": "10%",
+      "pharmacist": "15%",
+      "police_officer": "8%"
+    };
+    return rates[careerId] || "15%";
+  };
+
+  const getRequiredSkills = (careerId: string) => {
+    const skills: Record<string, string[]> = {
+      "doctor": ["Medical Knowledge", "Patient Care", "Diagnosis"],
+      "software_engineer": ["Programming", "Problem Solving", "Algorithms"],
+      "civil_services": ["Public Administration", "Leadership", "Policy Making"],
+      "chartered_accountant": ["Accounting", "Taxation", "Financial Analysis"],
+      "data_scientist": ["Statistics", "Machine Learning", "Python"],
+      "nurse": ["Patient Care", "Medical Procedures", "Compassion"],
+      "lawyer": ["Legal Research", "Advocacy", "Critical Thinking"],
+      "journalist": ["Writing", "Research", "Communication"],
+      "pharmacist": ["Drug Knowledge", "Patient Counseling", "Accuracy"],
+      "police_officer": ["Law Enforcement", "Physical Fitness", "Investigation"]
+    };
+    return skills[careerId] || ["Professional Skills", "Communication", "Problem Solving"];
+  };
+
+  const getEducationRequirement = (career: any) => {
+    if (career.primary_courses && career.primary_courses.length > 0) {
+      const courseMap: Record<string, string> = {
+        "mbbs": "MBBS",
+        "bds": "BDS",
+        "bhms": "BHMS",
+        "bams": "BAMS",
+        "bsc_nursing": "B.Sc Nursing",
+        "bpharm": "B.Pharm",
+        "btech_cs": "B.Tech Computer Science",
+        "btech_me": "B.Tech Mechanical",
+        "bca": "BCA",
+        "ca_program": "Chartered Accountancy",
+        "ba_llb": "BA LLB",
+        "ba_journalism": "BA Journalism"
+      };
+      return courseMap[career.primary_courses[0]] || "Relevant Degree";
+    }
+    return "Graduation in relevant field";
+  };
+
+  const getTopCompanies = (careerId: string) => {
+    const companies: Record<string, string[]> = {
+      "doctor": ["AIIMS", "Apollo", "Fortis", "Max Healthcare"],
+      "software_engineer": ["Google", "Microsoft", "Amazon", "Flipkart"],
+      "civil_services": ["IAS", "IPS", "IFS", "Government of India"],
+      "chartered_accountant": ["Big 4", "Deloitte", "EY", "KPMG"],
+      "data_scientist": ["Netflix", "Uber", "Swiggy", "PhonePe"],
+      "nurse": ["AIIMS", "Apollo", "Fortis", "Government Hospitals"],
+      "lawyer": ["Supreme Court", "High Courts", "Law Firms", "Corporate Legal"],
+      "journalist": ["Times Group", "India Today", "NDTV", "CNN"],
+      "pharmacist": ["Sun Pharma", "Dr. Reddy's", "Cipla", "Apollo Pharmacy"],
+      "police_officer": ["State Police", "Central Forces", "IPS", "CBI"]
+    };
+    return companies[careerId] || ["Top Organizations", "Government", "Private Sector", "MNCs"];
+  };
+
+  const getCareerDescription = (careerId: string) => {
+    const descriptions: Record<string, string> = {
+      "doctor": "Diagnose, treat, and prevent illness in patients across various medical specializations.",
+      "software_engineer": "Design, develop, and maintain software applications and systems.",
+      "civil_services": "Serve the nation through administrative roles in government and public policy.",
+      "chartered_accountant": "Provide accounting, taxation, and financial advisory services.",
+      "data_scientist": "Analyze complex data to extract insights and drive business decisions.",
+      "nurse": "Provide patient care and support in healthcare settings.",
+      "lawyer": "Represent clients in legal matters and provide legal advice.",
+      "journalist": "Research, write, and report news and stories for various media outlets.",
+      "pharmacist": "Dispense medications and provide pharmaceutical care to patients.",
+      "police_officer": "Maintain law and order, investigate crimes, and ensure public safety."
+    };
+    return descriptions[careerId] || "Professional role in this field with growth opportunities.";
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
