@@ -312,7 +312,7 @@ export default function CareerByInterest() {
                         size="lg"
                       >
                         <MapPin className="h-5 w-5 mr-2" />
-                        Find Career Matches
+                        {getText('btn_find_matches')}
                         <ArrowRight className="h-5 w-5 ml-2" />
                       </Button>
                     </div>
