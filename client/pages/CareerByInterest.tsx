@@ -46,104 +46,44 @@ export default function CareerByInterest() {
   const [showResults, setShowResults] = useState(false);
   const [careerMatches, setCareerMatches] = useState<any[]>([]);
 
-  const interestCategories = [
-    {
-      id: "creative",
-      name: "Creative Arts",
-      icon: Palette,
-      color: "from-pink-500 to-rose-500",
-      interests: [
-        { id: "graphic-design", name: "Graphic Design", popularity: 85 },
-        { id: "photography", name: "Photography", popularity: 78 },
-        { id: "music", name: "Music & Audio", popularity: 72 },
-        { id: "writing", name: "Creative Writing", popularity: 68 },
-        { id: "animation", name: "Animation & VFX", popularity: 82 },
-        { id: "fashion", name: "Fashion Design", popularity: 65 },
-        { id: "interior", name: "Interior Design", popularity: 70 },
-        { id: "film", name: "Film & Video", popularity: 75 }
-      ]
-    },
-    {
-      id: "technology",
-      name: "Technology",
-      icon: Code,
-      color: "from-blue-500 to-indigo-500",
-      interests: [
-        { id: "programming", name: "Programming", popularity: 92 },
-        { id: "ai-ml", name: "AI & Machine Learning", popularity: 88 },
-        { id: "cybersecurity", name: "Cybersecurity", popularity: 85 },
-        { id: "web-dev", name: "Web Development", popularity: 87 },
-        { id: "mobile-dev", name: "Mobile Development", popularity: 83 },
-        { id: "data-science", name: "Data Science", popularity: 89 },
-        { id: "blockchain", name: "Blockchain", popularity: 78 },
-        { id: "robotics", name: "Robotics", popularity: 80 }
-      ]
-    },
-    {
-      id: "science",
-      name: "Science & Research",
-      icon: Atom,
-      color: "from-green-500 to-emerald-500",
-      interests: [
-        { id: "physics", name: "Physics", popularity: 75 },
-        { id: "chemistry", name: "Chemistry", popularity: 73 },
-        { id: "biology", name: "Biology", popularity: 78 },
-        { id: "mathematics", name: "Mathematics", popularity: 82 },
-        { id: "astronomy", name: "Astronomy", popularity: 70 },
-        { id: "genetics", name: "Genetics", popularity: 76 },
-        { id: "environmental", name: "Environmental Science", popularity: 74 },
-        { id: "psychology", name: "Psychology", popularity: 81 }
-      ]
-    },
-    {
-      id: "healthcare",
-      name: "Healthcare",
-      icon: Stethoscope,
-      color: "from-red-500 to-pink-500",
-      interests: [
-        { id: "medicine", name: "Medicine", popularity: 85 },
-        { id: "nursing", name: "Nursing", popularity: 78 },
-        { id: "physiotherapy", name: "Physiotherapy", popularity: 72 },
-        { id: "pharmacy", name: "Pharmacy", popularity: 75 },
-        { id: "dentistry", name: "Dentistry", popularity: 73 },
-        { id: "nutrition", name: "Nutrition", popularity: 70 },
-        { id: "mental-health", name: "Mental Health", popularity: 79 },
-        { id: "medical-research", name: "Medical Research", popularity: 77 }
-      ]
-    },
-    {
-      id: "business",
-      name: "Business & Finance",
-      icon: TrendingUp,
-      color: "from-yellow-500 to-orange-500",
-      interests: [
-        { id: "entrepreneurship", name: "Entrepreneurship", popularity: 88 },
-        { id: "finance", name: "Finance", popularity: 85 },
-        { id: "marketing", name: "Marketing", popularity: 83 },
-        { id: "management", name: "Management", popularity: 82 },
-        { id: "economics", name: "Economics", popularity: 78 },
-        { id: "accounting", name: "Accounting", popularity: 75 },
-        { id: "consulting", name: "Business Consulting", popularity: 80 },
-        { id: "investment", name: "Investment Banking", popularity: 77 }
-      ]
-    },
-    {
-      id: "social",
-      name: "Social Sciences",
-      icon: Users,
-      color: "from-purple-500 to-violet-500",
-      interests: [
-        { id: "education", name: "Education & Teaching", popularity: 82 },
-        { id: "social-work", name: "Social Work", popularity: 75 },
-        { id: "law", name: "Law & Legal Studies", popularity: 80 },
-        { id: "journalism", name: "Journalism", popularity: 73 },
-        { id: "public-policy", name: "Public Policy", popularity: 72 },
-        { id: "international-relations", name: "International Relations", popularity: 76 },
-        { id: "anthropology", name: "Anthropology", popularity: 68 },
-        { id: "political-science", name: "Political Science", popularity: 74 }
-      ]
-    }
-  ];
+  // Get interests organized by category from the data store
+  const interestsByCategory = getInterestsByCategory();
+
+  // Map categories to display properties
+  const getCategoryDisplayProps = (categoryName: string) => {
+    const categoryMap: Record<string, { icon: any, color: string }> = {
+      "Science": { icon: Atom, color: "from-green-500 to-emerald-500" },
+      "Technology": { icon: Code, color: "from-blue-500 to-indigo-500" },
+      "Engineering": { icon: Building, color: "from-indigo-500 to-purple-500" },
+      "Commerce": { icon: TrendingUp, color: "from-yellow-500 to-orange-500" },
+      "Humanities": { icon: Users, color: "from-purple-500 to-violet-500" },
+      "Arts": { icon: Palette, color: "from-pink-500 to-rose-500" },
+      "Physical Education": { icon: Target, color: "from-red-500 to-pink-500" },
+      "Applied Sciences": { icon: Lightbulb, color: "from-emerald-500 to-teal-500" },
+      "Healthcare": { icon: Stethoscope, color: "from-red-500 to-pink-500" },
+      "Government": { icon: Building, color: "from-career-primary to-purple-600" },
+      "Social Science": { icon: Users, color: "from-purple-500 to-violet-500" },
+      "Design": { icon: Palette, color: "from-pink-500 to-rose-500" }
+    };
+
+    return categoryMap[categoryName] || { icon: Lightbulb, color: "from-gray-500 to-gray-600" };
+  };
+
+  // Convert to the expected format for rendering
+  const interestCategories = Object.entries(interestsByCategory).map(([categoryName, interests]) => {
+    const displayProps = getCategoryDisplayProps(categoryName);
+    return {
+      id: categoryName.toLowerCase().replace(/\s+/g, '_'),
+      name: categoryName,
+      icon: displayProps.icon,
+      color: displayProps.color,
+      interests: interests.map(interest => ({
+        id: interest.id,
+        name: interest.name,
+        popularity: Math.floor(Math.random() * 30) + 70 // Random popularity for now
+      }))
+    };
+  });
 
   const educationStages = [
     { value: "class10", label: "Class 10th or less" },
