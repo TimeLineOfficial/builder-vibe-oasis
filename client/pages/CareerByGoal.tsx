@@ -335,7 +335,7 @@ export default function CareerByGoal() {
 
               {/* Roadmap Steps */}
               <div className="space-y-6">
-                {sampleRoadmap.map((step, index) => (
+                {getRoadmapData().map((step, index) => (
                   <Card 
                     key={index} 
                     className={`border-2 transition-all duration-300 hover:shadow-lg ${getStatusColor(step.status)}`}
