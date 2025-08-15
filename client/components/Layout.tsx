@@ -32,7 +32,7 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-const languages = [
+const getLanguageData = () => [
   { code: "en", name: "English", flag: "🇺🇸" },
   { code: "hi", name: "हिंदी", flag: "🇮🇳" },
   { code: "bn", name: "বাংলা", flag: "🇧🇩" },
