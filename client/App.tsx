@@ -28,6 +28,9 @@ export default function App() {
   useEffect(() => {
     // Initialize CareerMap data on app startup
     initializeCareerMapData();
+
+    // Initialize performance optimizations
+    initializePerformanceOptimizations();
   }, []);
 
   return (
