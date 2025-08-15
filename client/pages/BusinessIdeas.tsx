@@ -1,527 +1,476 @@
-import { useState, useEffect } from "react";
-import { useDataStore, getBusinessIdeasByCategory, formatCurrency } from "@/lib/data-service";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import React, { useEffect, useState } from 'react';
+import { useDataStore } from '../lib/data-service';
+import { Button } from '../components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { Badge } from '../components/ui/badge';
+import { Input } from '../components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { 
+  DollarSign, 
   Search, 
-  Filter,
-  Lightbulb,
+  Filter, 
+  Play, 
+  BookOpen, 
   TrendingUp,
-  DollarSign,
-  Clock,
   Users,
-  Star,
-  BookOpen,
-  Play,
-  ExternalLink,
-  ArrowRight,
-  Building,
-  Zap,
+  Clock,
   Target,
-  Award,
-  Rocket,
-  PieChart
-} from "lucide-react";
+  FileText,
+  Video,
+  ExternalLink
+} from 'lucide-react';
 
 export default function BusinessIdeas() {
-  const {
-    careerMapData,
-    businessIdeasPage,
-    businessIdeasPerPage,
+  const { 
+    careerMapData, 
+    paginatedBusinessIdeas,
+    hasMoreBusinessIdeas,
     loadMoreBusinessIdeas,
-    getText
+    getText, 
+    currentLanguage 
   } = useDataStore();
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [investmentRange, setInvestmentRange] = useState("all");
-  const [selectedDifficulty, setSelectedDifficulty] = useState("all");
-  const [sortBy, setSortBy] = useState("popularity");
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [filteredIdeas, setFilteredIdeas] = useState<any[]>([]);
+  const [selectedIdea, setSelectedIdea] = useState<any>(null);
+  const [showIdeaDetails, setShowIdeaDetails] = useState(false);
 
-  const categories = [
-    { value: "ecommerce", label: "E-commerce & Retail", icon: "🛒" },
-    { value: "food", label: "Food & Beverage", icon: "🍕" },
-    { value: "tech", label: "Technology & Apps", icon: "💻" },
-    { value: "services", label: "Service Business", icon: "🔧" },
-    { value: "health", label: "Health & Wellness", icon: "💪" },
-    { value: "education", label: "Education & Training", icon: "📚" },
-    { value: "manufacturing", label: "Manufacturing", icon: "🏭" },
-    { value: "agriculture", label: "Agriculture & Farming", icon: "🌾" },
-    { value: "fashion", label: "Fashion & Beauty", icon: "👗" },
-    { value: "travel", label: "Travel & Tourism", icon: "✈️" }
-  ];
+  const businessIdeas = careerMapData?.business_ideas || [];
+  const categories = ['all', ...Array.from(new Set(businessIdeas.map(idea => idea.category)))];
 
-  const investmentRanges = [
-    { value: "0-50k", label: "₹0 - ₹50K" },
-    { value: "50k-2l", label: "₹50K - ₹2L" },
-    { value: "2l-5l", label: "₹2L - ₹5L" },
-    { value: "5l-10l", label: "₹5L - ₹10L" },
-    { value: "10l+", label: "₹10L+" }
-  ];
+  useEffect(() => {
+    let ideas = paginatedBusinessIdeas;
+    
+    // Filter by search query
+    if (searchQuery.trim()) {
+      ideas = ideas.filter(idea => 
+        idea.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        idea.category.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    
+    // Filter by category
+    if (selectedCategory !== 'all') {
+      ideas = ideas.filter(idea => idea.category === selectedCategory);
+    }
+    
+    setFilteredIdeas(ideas);
+  }, [searchQuery, selectedCategory, paginatedBusinessIdeas]);
 
-  // Get business ideas from the data store
-  const businessIdeasByCategory = getBusinessIdeasByCategory();
-
-  // Convert to the expected format and add additional properties
-  const businessIdeas = Object.values(businessIdeasByCategory)
-    .flat()
-    .map((idea, index) => ({
-      id: index + 1,
-      title: idea.name,
-      category: idea.category.toLowerCase(),
-      description: getBusinessDescription(idea.id),
-      investment: formatCurrency(idea.min_capital_inr),
-      monthlyRevenue: getEstimatedRevenue(idea.min_capital_inr),
-      roi: getEstimatedROI(idea.category),
-      difficulty: getDifficulty(idea.min_capital_inr),
-      timeToStart: getTimeToStart(idea.category),
-      popularityScore: Math.floor(Math.random() * 30) + 70,
-      successRate: Math.floor(Math.random() * 20) + 60,
-      trending: Math.random() > 0.7,
-      featured: Math.random() > 0.8,
-      permits: idea.documents,
-      skills: getRequiredSkills(idea.category),
-      marketSize: getMarketSize(idea.category),
-      targetAudience: getTargetAudience(idea.category),
-      competition: getCompetitionLevel(idea.category),
-      scalability: getScalability(idea.category)
-    }));
-
-  // Helper functions for additional business data
-  const getBusinessDescription = (ideaId: string) => {
-    const descriptions: Record<string, string> = {
-      "diag_centre": "Start a diagnostic center offering medical tests, imaging, and health checkup services.",
-      "pharmacy_store": "Open a retail pharmacy selling medicines, healthcare products, and wellness items.",
-      "coaching_center": "Establish a coaching institute for competitive exams and academic subjects.",
-      "ecom_private_label": "Create your own brand and sell products through e-commerce platforms.",
-      "uiux_agency": "Provide UI/UX design services for websites, apps, and digital products.",
-      "cloud_kitchen": "Start a delivery-only restaurant without dine-in space."
-    };
-    return descriptions[ideaId] || "A promising business opportunity with good growth potential.";
-  };
-
-  const getEstimatedRevenue = (investment: number) => {
-    const monthlyMultiplier = 0.3; // Assuming 30% of investment as monthly revenue
-    const monthly = investment * monthlyMultiplier;
-    return `${formatCurrency(Math.floor(monthly * 0.5))}-${formatCurrency(Math.floor(monthly * 1.5))}`;
-  };
-
-  const getEstimatedROI = (category: string) => {
-    const roiRanges: Record<string, string> = {
-      "Healthcare": "20-35%",
-      "Education": "25-40%",
-      "E-commerce": "30-50%",
-      "Services": "35-60%",
-      "Food": "25-45%"
-    };
-    return roiRanges[category] || "20-40%";
-  };
-
-  const getDifficulty = (investment: number) => {
-    if (investment < 300000) return "Easy";
-    if (investment < 1000000) return "Medium";
-    return "Hard";
-  };
-
-  const getTimeToStart = (category: string) => {
-    const timeRanges: Record<string, string> = {
-      "Healthcare": "3-6 months",
-      "Education": "2-4 months",
-      "E-commerce": "1-3 months",
-      "Services": "1-2 months",
-      "Food": "2-4 months"
-    };
-    return timeRanges[category] || "2-4 months";
-  };
-
-  const getRequiredSkills = (category: string) => {
-    const skills: Record<string, string[]> = {
-      "Healthcare": ["Medical Knowledge", "Patient Care", "Business Management"],
-      "Education": ["Teaching", "Curriculum Design", "Student Management"],
-      "E-commerce": ["Digital Marketing", "Inventory Management", "Customer Service"],
-      "Services": ["Technical Skills", "Client Management", "Project Management"],
-      "Food": ["Cooking", "Food Safety", "Supply Chain Management"]
-    };
-    return skills[category] || ["Business Management", "Marketing", "Operations"];
-  };
-
-  const getMarketSize = (category: string) => {
-    const sizes: Record<string, string> = {
-      "Healthcare": "₹8,000 Cr (Growing 18% annually)",
-      "Education": "₹4,500 Cr (Growing 25% annually)",
-      "E-commerce": "₹12,000 Cr (Growing 30% annually)",
-      "Services": "₹6,000 Cr (Growing 22% annually)",
-      "Food": "₹5,500 Cr (Growing 20% annually)"
-    };
-    return sizes[category] || "₹3,000 Cr (Growing 15% annually)";
-  };
-
-  const getTargetAudience = (category: string) => {
-    const audiences: Record<string, string> = {
-      "Healthcare": "Health-conscious individuals and families",
-      "Education": "Students and parents",
-      "E-commerce": "Online shoppers across age groups",
-      "Services": "Businesses and professionals",
-      "Food": "Urban working professionals and families"
-    };
-    return audiences[category] || "General consumers";
-  };
-
-  const getCompetitionLevel = (category: string) => {
-    const levels: Record<string, string> = {
-      "Healthcare": "Medium",
-      "Education": "High",
-      "E-commerce": "Very High",
-      "Services": "High",
-      "Food": "High"
-    };
-    return levels[category] || "Medium";
-  };
-
-  const getScalability = (category: string) => {
-    const scalabilities: Record<string, string> = {
-      "Healthcare": "Medium - location dependent",
-      "Education": "High - can expand online",
-      "E-commerce": "Very High - global reach",
-      "Services": "High - can scale virtually",
-      "Food": "Medium - location and logistics dependent"
-    };
-    return scalabilities[category] || "Medium - depends on execution";
-  };
-
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty.toLowerCase()) {
-      case "easy": return "bg-green-100 text-green-800";
-      case "medium": return "bg-yellow-100 text-yellow-800";
-      case "hard": return "bg-red-100 text-red-800";
-      default: return "bg-gray-100 text-gray-800";
+  const formatCurrency = (amount: number): string => {
+    if (amount >= 10000000) {
+      return `₹${(amount / 10000000).toFixed(1)}Cr`;
+    } else if (amount >= 100000) {
+      return `₹${(amount / 100000).toFixed(1)}L`;
+    } else if (amount >= 1000) {
+      return `₹${(amount / 1000).toFixed(1)}K`;
+    } else {
+      return `₹${amount}`;
     }
   };
 
-  const getPopularityStars = (score: number) => {
-    const stars = Math.floor(score / 20);
-    return Array.from({ length: 5 }, (_, i) => (
-      <Star key={i} className={`h-4 w-4 ${i < stars ? 'text-yellow-500 fill-current' : 'text-gray-300'}`} />
-    ));
+  const getBusinessVideoGuide = (businessName: string) => {
+    // Mock video guide data - in real implementation, this would come from the dataset
+    return {
+      title: `How to Start ${businessName} - Complete Guide`,
+      duration: '15:30',
+      thumbnail: '/placeholder.svg',
+      url: `https://youtube.com/watch?v=${businessName.toLowerCase().replace(/\s+/g, '_')}_guide`,
+      channel: 'Business Startup Guide',
+      views: '125K'
+    };
   };
 
-  const filteredIdeas = businessIdeas.filter(idea => {
-    if (searchTerm && !idea.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        !idea.description.toLowerCase().includes(searchTerm.toLowerCase())) return false;
-    if (selectedCategory !== "all" && idea.category !== selectedCategory) return false;
-    if (selectedDifficulty !== "all" && idea.difficulty.toLowerCase() !== selectedDifficulty) return false;
-    return true;
-  });
+  const getBusinessNotes = (businessName: string) => {
+    // Mock business notes - in real implementation, this would come from the dataset
+    return {
+      summary: `Complete setup guide for ${businessName} business`,
+      requirements: [
+        'Business registration and licenses',
+        'Initial capital and funding',
+        'Location and infrastructure',
+        'Market research and planning',
+        'Legal compliance'
+      ],
+      steps: [
+        'Market Research & Validation',
+        'Business Plan Development',
+        'Legal Registration & Licenses',
+        'Funding & Capital Arrangement',
+        'Setup & Infrastructure',
+        'Marketing & Launch'
+      ],
+      timeline: '2-6 months',
+      success_tips: [
+        'Start with minimum viable product',
+        'Focus on customer feedback',
+        'Keep detailed financial records',
+        'Build strong supplier relationships',
+        'Invest in digital marketing'
+      ]
+    };
+  };
 
-  const sortedIdeas = [...filteredIdeas].sort((a, b) => {
-    switch (sortBy) {
-      case "popularity":
-        return b.popularityScore - a.popularityScore;
-      case "investment":
-        return a.investment.localeCompare(b.investment);
-      case "roi":
-        return parseInt(b.roi) - parseInt(a.roi);
-      case "success":
-        return b.successRate - a.successRate;
-      default:
-        return 0;
-    }
-  });
-
-  // Apply pagination
-  const totalIdeas = sortedIdeas.length;
-  const displayedIdeas = sortedIdeas.slice(0, businessIdeasPage * businessIdeasPerPage);
-  const hasMoreIdeas = displayedIdeas.length < totalIdeas;
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
-      {/* Header */}
-      <section className="py-12 bg-gradient-to-r from-yellow-500/10 to-orange-500/10">
-        <div className="container px-4">
-          <div className="max-w-4xl mx-auto text-center space-y-6">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <Lightbulb className="h-10 w-10 text-yellow-600" />
-              <h1 className="text-4xl md:text-5xl font-bold">Business Ideas</h1>
+  const BusinessIdeaCard = ({ idea, onClick }: { idea: any; onClick: () => void }) => (
+    <Card 
+      className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 group hover:border-blue-300"
+      onClick={onClick}
+    >
+      <CardContent className="p-6">
+        <div className="flex items-start justify-between mb-4">
+          <div className="flex-1">
+            <h3 className="font-bold text-lg text-gray-900 group-hover:text-blue-900 mb-2">
+              {idea.name}
+            </h3>
+            <Badge variant="outline" className="mb-3">
+              {idea.category}
+            </Badge>
+          </div>
+          <div className="text-right">
+            <div className="flex items-center gap-1 text-green-600 font-semibold">
+              <DollarSign className="w-4 h-4" />
+              <span>{formatCurrency(idea.min_capital_inr)}</span>
             </div>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Discover profitable business opportunities with complete guidance, investment analysis, 
-              and step-by-step implementation strategies.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Badge variant="secondary" className="px-4 py-2">
-                <Rocket className="h-4 w-4 mr-2" />
-                500+ Curated Ideas
-              </Badge>
-              <Badge variant="secondary" className="px-4 py-2">
-                <Target className="h-4 w-4 mr-2" />
-                ROI Calculator
-              </Badge>
-              <Badge variant="secondary" className="px-4 py-2">
-                <Award className="h-4 w-4 mr-2" />
-                Success Stories
-              </Badge>
-            </div>
+            <p className="text-xs text-gray-500">min. capital</p>
           </div>
         </div>
-      </section>
 
-      <div className="container px-4 py-12">
-        <div className="max-w-7xl mx-auto">
-          {/* Filters */}
-          <Card className="border-0 shadow-lg mb-8">
-            <CardContent className="p-6">
-              <div className="space-y-6">
-                {/* Search Bar */}
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <Input
-                    placeholder="Search business ideas by name, category, or keywords..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 h-12 text-base"
-                  />
-                </div>
+        <div className="space-y-3">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <FileText className="w-4 h-4" />
+            <span>{idea.documents?.length || 0} documents required</span>
+          </div>
+          
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <Users className="w-4 h-4" />
+            <span>
+              {idea.min_capital_inr < 100000 ? 'Solo/Small team' : 
+               idea.min_capital_inr < 1000000 ? 'Small business' : 'Medium business'}
+            </span>
+          </div>
+          
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <Target className="w-4 h-4" />
+            <span>
+              {idea.min_capital_inr < 50000 ? 'Low risk' : 
+               idea.min_capital_inr < 500000 ? 'Medium risk' : 'High potential'}
+            </span>
+          </div>
+        </div>
 
-                {/* Filter Controls */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                    <SelectTrigger>
-                      <Filter className="h-4 w-4 mr-2" />
-                      <SelectValue placeholder="All Categories" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Categories</SelectItem>
-                      {categories.map((category) => (
-                        <SelectItem key={category.value} value={category.value}>
-                          {category.icon} {category.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-
-                  <Select value={investmentRange} onValueChange={setInvestmentRange}>
-                    <SelectTrigger>
-                      <DollarSign className="h-4 w-4 mr-2" />
-                      <SelectValue placeholder="Investment Range" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Investment Ranges</SelectItem>
-                      {investmentRanges.map((range) => (
-                        <SelectItem key={range.value} value={range.value}>
-                          {range.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-
-                  <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Difficulty Level" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Difficulty Levels</SelectItem>
-                      <SelectItem value="easy">Easy</SelectItem>
-                      <SelectItem value="medium">Medium</SelectItem>
-                      <SelectItem value="hard">Hard</SelectItem>
-                    </SelectContent>
-                  </Select>
-
-                  <Select value={sortBy} onValueChange={setSortBy}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Sort by" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="popularity">Popularity</SelectItem>
-                      <SelectItem value="investment">Investment (Low to High)</SelectItem>
-                      <SelectItem value="roi">ROI (High to Low)</SelectItem>
-                      <SelectItem value="success">Success Rate</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Results Summary */}
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-2xl font-bold">{totalIdeas} Business Ideas Found</h2>
-              <p className="text-muted-foreground">
-                Showing {displayedIdeas.length} of {totalIdeas} curated opportunities
-              </p>
-            </div>
-            <Button variant="outline" className="gap-2">
-              <BookOpen className="h-4 w-4" />
-              Business Plan Templates
+        <div className="mt-4 pt-4 border-t border-gray-100">
+          <div className="flex gap-2">
+            <Button size="sm" variant="outline" className="flex-1 group-hover:border-blue-500">
+              <Video className="w-4 h-4 mr-1" />
+              Video Guide
             </Button>
+            <Button size="sm" variant="outline" className="flex-1 group-hover:border-blue-500">
+              <BookOpen className="w-4 h-4 mr-1" />
+              Setup Notes
+            </Button>
+          </div>
+        </div>
+
+        <div className="mt-3">
+          <div className="text-xs text-gray-500">Required documents:</div>
+          <div className="flex flex-wrap gap-1 mt-1">
+            {(idea.documents || []).slice(0, 3).map((doc: string, i: number) => (
+              <Badge key={i} variant="secondary" className="text-xs">
+                {doc}
+              </Badge>
+            ))}
+            {(idea.documents || []).length > 3 && (
+              <Badge variant="secondary" className="text-xs">
+                +{idea.documents.length - 3} more
+              </Badge>
+            )}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  const BusinessDetailsModal = ({ idea, onClose }: { idea: any; onClose: () => void }) => {
+    const videoGuide = getBusinessVideoGuide(idea.name);
+    const businessNotes = getBusinessNotes(idea.name);
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="p-6 border-b">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">{idea.name}</h2>
+                <p className="text-gray-600">{idea.category} Business</p>
+              </div>
+              <Button variant="outline" onClick={onClose}>
+                Close
+              </Button>
+            </div>
+          </div>
+
+          <div className="p-6">
+            <Tabs defaultValue="overview" className="w-full">
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="video">Video Guide</TabsTrigger>
+                <TabsTrigger value="notes">Setup Notes</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="overview" className="mt-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <DollarSign className="w-5 h-5 text-green-600" />
+                        Investment Details
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        <div>
+                          <span className="text-sm text-gray-600">Minimum Capital Required:</span>
+                          <p className="text-2xl font-bold text-green-600">
+                            {formatCurrency(idea.min_capital_inr)}
+                          </p>
+                        </div>
+                        <div>
+                          <span className="text-sm text-gray-600">Business Type:</span>
+                          <p className="font-semibold">{idea.category}</p>
+                        </div>
+                        <div>
+                          <span className="text-sm text-gray-600">Risk Level:</span>
+                          <Badge variant={
+                            idea.min_capital_inr < 50000 ? "default" : 
+                            idea.min_capital_inr < 500000 ? "secondary" : "destructive"
+                          }>
+                            {idea.min_capital_inr < 50000 ? 'Low Risk' : 
+                             idea.min_capital_inr < 500000 ? 'Medium Risk' : 'High Potential'}
+                          </Badge>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <FileText className="w-5 h-5 text-blue-600" />
+                        Required Documents
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-2">
+                        {(idea.documents || []).map((doc: string, i: number) => (
+                          <div key={i} className="flex items-center gap-2 p-2 bg-gray-50 rounded">
+                            <FileText className="w-4 h-4 text-gray-600" />
+                            <span className="text-sm">{doc}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="video" className="mt-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Play className="w-5 h-5 text-red-600" />
+                      Video Tutorial
+                    </CardTitle>
+                    <CardDescription>
+                      Complete step-by-step guide to start your {idea.name} business
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center">
+                        <div className="text-center">
+                          <Play className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                          <h3 className="font-semibold text-lg mb-2">{videoGuide.title}</h3>
+                          <p className="text-gray-600 mb-4">Duration: {videoGuide.duration}</p>
+                          <Button className="gap-2">
+                            <ExternalLink className="w-4 h-4" />
+                            Watch on YouTube
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between text-sm text-gray-600">
+                        <span>Channel: {videoGuide.channel}</span>
+                        <span>{videoGuide.views} views</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              
+              <TabsContent value="notes" className="mt-6">
+                <div className="space-y-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Business Setup Overview</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-700 mb-4">{businessNotes.summary}</p>
+                      <div className="flex items-center gap-4 text-sm">
+                        <div className="flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          <span>Setup Timeline: {businessNotes.timeline}</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Setup Steps</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <ol className="space-y-3">
+                          {businessNotes.steps.map((step: string, i: number) => (
+                            <li key={i} className="flex items-start gap-3">
+                              <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                                {i + 1}
+                              </div>
+                              <span className="text-sm">{step}</span>
+                            </li>
+                          ))}
+                        </ol>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Success Tips</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <ul className="space-y-2">
+                          {businessNotes.success_tips.map((tip: string, i: number) => (
+                            <li key={i} className="flex items-start gap-2">
+                              <TrendingUp className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                              <span className="text-sm">{tip}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="container mx-auto px-4 max-w-6xl">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            {getText('business_ideas_title', currentLanguage) || 'Business Ideas'}
+          </h1>
+          <p className="text-xl text-gray-600">
+            {getText('business_ideas_subtitle', currentLanguage) || 'Discover profitable business opportunities with complete setup guides'}
+          </p>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+          {/* Search and Filters */}
+          <div className="space-y-4 mb-6">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                placeholder="Search business ideas..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            
+            <div className="flex items-center gap-2 overflow-x-auto pb-2">
+              <Filter className="w-4 h-4 text-gray-600 flex-shrink-0" />
+              {categories.map((category) => (
+                <Button
+                  key={category}
+                  variant={selectedCategory === category ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedCategory(category)}
+                  className="whitespace-nowrap"
+                >
+                  {category === 'all' ? 'All Categories' : category}
+                </Button>
+              ))}
+            </div>
           </div>
 
           {/* Business Ideas Grid */}
-          <div className="grid lg:grid-cols-2 gap-8">
-            {displayedIdeas.map((idea) => (
-              <Card 
-                key={idea.id} 
-                className={`border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${
-                  idea.featured ? 'ring-2 ring-yellow-500/20' : ''
-                }`}
-              >
-                <CardContent className="p-8">
-                  <div className="space-y-6">
-                    {/* Header */}
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-2xl font-bold">{idea.title}</h3>
-                          {idea.trending && (
-                            <Badge className="bg-gradient-to-r from-career-primary to-purple-600 text-white">
-                              <TrendingUp className="h-3 w-3 mr-1" />
-                              Trending
-                            </Badge>
-                          )}
-                          {idea.featured && (
-                            <Badge className="bg-yellow-500 text-white">
-                              <Star className="h-3 w-3 mr-1" />
-                              Featured
-                            </Badge>
-                          )}
-                        </div>
-                        <p className="text-muted-foreground mb-4">{idea.description}</p>
-                        
-                        <div className="flex items-center gap-4 mb-4">
-                          <div className="flex items-center gap-1">
-                            {getPopularityStars(idea.popularityScore)}
-                          </div>
-                          <span className="text-sm text-muted-foreground">
-                            {idea.popularityScore}% popularity
-                          </span>
-                        </div>
-                      </div>
-                      
-                      <Badge className={getDifficultyColor(idea.difficulty)}>
-                        {idea.difficulty}
-                      </Badge>
-                    </div>
-
-                    {/* Key Metrics */}
-                    <div className="grid grid-cols-2 gap-6">
-                      <div className="space-y-4">
-                        <div>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
-                            <DollarSign className="h-4 w-4" />
-                            Investment Required
-                          </div>
-                          <div className="font-bold text-lg">{idea.investment}</div>
-                        </div>
-                        
-                        <div>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
-                            <TrendingUp className="h-4 w-4" />
-                            Expected ROI
-                          </div>
-                          <div className="font-bold text-lg text-career-secondary">{idea.roi}</div>
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-4">
-                        <div>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
-                            <Target className="h-4 w-4" />
-                            Monthly Revenue
-                          </div>
-                          <div className="font-bold text-lg">{idea.monthlyRevenue}</div>
-                        </div>
-                        
-                        <div>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
-                            <Clock className="h-4 w-4" />
-                            Time to Start
-                          </div>
-                          <div className="font-bold text-lg">{idea.timeToStart}</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Success Rate */}
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium">Success Rate</span>
-                        <span className="text-sm font-bold">{idea.successRate}%</span>
-                      </div>
-                      <div className="h-2 bg-muted rounded-full overflow-hidden">
-                        <div 
-                          className="h-full bg-gradient-to-r from-career-secondary to-green-500 rounded-full transition-all duration-500"
-                          style={{ width: `${idea.successRate}%` }}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Required Skills */}
-                    <div>
-                      <h4 className="font-medium mb-2">Required Skills:</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {idea.skills.map((skill) => (
-                          <Badge key={skill} variant="outline">
-                            {skill}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                      <Button className="flex-1 bg-gradient-to-r from-yellow-500 to-orange-500">
-                        <BookOpen className="h-4 w-4 mr-2" />
-                        View Complete Guide
-                      </Button>
-                      <Button variant="outline" className="flex-1">
-                        <PieChart className="h-4 w-4 mr-2" />
-                        Calculate ROI
-                      </Button>
-                      <Button variant="ghost" size="sm">
-                        <Play className="h-4 w-4 mr-2" />
-                        Watch Video
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredIdeas.map((idea) => (
+              <BusinessIdeaCard
+                key={idea.id}
+                idea={idea}
+                onClick={() => {
+                  setSelectedIdea(idea);
+                  setShowIdeaDetails(true);
+                }}
+              />
             ))}
           </div>
 
-          {/* Load More */}
-          {hasMoreIdeas && (
-            <div className="text-center mt-12">
-              <Button
-                variant="outline"
-                size="lg"
+          {/* Load More Button */}
+          {hasMoreBusinessIdeas && filteredIdeas.length > 0 && (
+            <div className="text-center mt-8">
+              <Button 
                 onClick={loadMoreBusinessIdeas}
+                size="lg"
+                className="gap-2"
               >
-                {getText('btn_load_more')}
-                <ArrowRight className="h-4 w-4 ml-2" />
+                <TrendingUp className="w-4 h-4" />
+                Load More Ideas
               </Button>
-              <p className="text-sm text-muted-foreground mt-2">
-                Showing {displayedIdeas.length} of {totalIdeas} business opportunities
+              <p className="text-sm text-gray-600 mt-2">
+                Showing {paginatedBusinessIdeas.length} of {businessIdeas.length} business ideas
               </p>
             </div>
           )}
 
-          {!hasMoreIdeas && totalIdeas > 0 && (
-            <div className="text-center mt-12">
-              <p className="text-muted-foreground">
-                You've seen all {totalIdeas} business ideas. Try adjusting your filters to see more options.
+          {/* No Results */}
+          {filteredIdeas.length === 0 && (
+            <div className="text-center py-12">
+              <div className="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                <Search className="w-12 h-12 text-gray-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">No business ideas found</h3>
+              <p className="text-gray-600 mb-4">
+                Try different search terms or browse all categories
               </p>
+              <Button onClick={() => {
+                setSearchQuery('');
+                setSelectedCategory('all');
+              }}>
+                Clear Filters
+              </Button>
             </div>
           )}
         </div>
+
+        {/* Business Details Modal */}
+        {showIdeaDetails && selectedIdea && (
+          <BusinessDetailsModal
+            idea={selectedIdea}
+            onClose={() => {
+              setShowIdeaDetails(false);
+              setSelectedIdea(null);
+            }}
+          />
+        )}
       </div>
     </div>
   );
