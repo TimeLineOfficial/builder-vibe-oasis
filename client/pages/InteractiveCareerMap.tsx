@@ -177,16 +177,14 @@ export default function InteractiveCareerMap() {
 
   const careerNodes = generateCareerNodes();
 
-  const pathways = [
-    { from: "center", to: "tech1", color: "stroke-blue-500" },
-    { from: "center", to: "tech2", color: "stroke-purple-500" },
-    { from: "center", to: "health1", color: "stroke-red-500" },
-    { from: "center", to: "health2", color: "stroke-pink-500" },
-    { from: "center", to: "business1", color: "stroke-yellow-500" },
-    { from: "center", to: "gov1", color: "stroke-career-primary" },
-    { from: "center", to: "creative1", color: "stroke-purple-500" },
-    { from: "center", to: "edu1", color: "stroke-green-500" }
-  ];
+  // Generate pathways from center to all career nodes
+  const pathways = careerNodes
+    .filter(node => node.type === "career")
+    .map(node => ({
+      from: "center",
+      to: node.id,
+      color: `stroke-${getCareerField(node.field)}-500`
+    }));
 
   const filteredNodes = careerNodes.filter(node => {
     if (node.type === "center") return true;
