@@ -113,6 +113,9 @@ export default function CareerByInterest() {
 
   const generateCareerSuggestions = () => {
     if (selectedInterests.length > 0 && currentStage) {
+      // Use the data store's function to find career matches
+      const matches = findCareersByInterests(selectedInterests);
+      setCareerMatches(matches);
       setShowResults(true);
     }
   };
