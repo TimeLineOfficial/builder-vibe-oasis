@@ -436,7 +436,7 @@ export default function CareerByInterest() {
 
               {/* Career Cards */}
               <div className="space-y-6">
-                {sampleCareerSuggestions.map((career, index) => (
+                {getCareerSuggestions().map((career, index) => (
                   <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                     <CardContent className="p-8">
                       <div className="flex flex-col lg:flex-row gap-6">
