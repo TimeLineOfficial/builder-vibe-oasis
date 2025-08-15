@@ -186,21 +186,45 @@ export const adaptiveLoad = (fastContent: () => void, slowContent: () => void) =
 // Bundle size analyzer (development only)
 export const analyzeBundleSize = () => {
   if (process.env.NODE_ENV === 'development') {
-    const scripts = Array.from(document.scripts);
-    scripts.forEach((script) => {
-      if (script.src) {
-        fetch(script.src, { method: 'HEAD' })
-          .then((response) => {
-            const size = response.headers.get('content-length');
-            if (size) {
-              console.log(`Script ${script.src}: ${(parseInt(size) / 1024).toFixed(2)} KB`);
-            }
-          })
-          .catch(() => {
-            // Ignore errors for external scripts
-          });
-      }
-    });
+    try {
+      const scripts = Array.from(document.scripts);
+      const totalScripts = scripts.length;
+      let analyzedScripts = 0;
+
+      console.log(`Found ${totalScripts} scripts to analyze`);
+
+      scripts.forEach((script) => {
+        if (script.src && script.src.startsWith(window.location.origin)) {
+          // Only try to fetch scripts from the same origin to avoid CORS issues
+          try {
+            fetch(script.src, { method: 'HEAD' })
+              .then((response) => {
+                const size = response.headers.get('content-length');
+                if (size) {
+                  console.log(`Script ${script.src.split('/').pop()}: ${(parseInt(size) / 1024).toFixed(2)} KB`);
+                }
+                analyzedScripts++;
+              })
+              .catch((error) => {
+                // Silently handle fetch errors for development
+                analyzedScripts++;
+              });
+          } catch (error) {
+            // Handle any synchronous errors
+            analyzedScripts++;
+          }
+        } else {
+          // For external scripts, just log them without fetching
+          if (script.src) {
+            console.log(`External script: ${script.src.split('/').pop() || script.src}`);
+          }
+          analyzedScripts++;
+        }
+      });
+    } catch (error) {
+      // Silently handle any errors in development mode
+      console.warn('Bundle analysis skipped due to environment constraints');
+    }
   }
 };
 
@@ -278,12 +302,16 @@ export const initializePerformanceOptimizations = () => {
   // Monitor performance in development
   if (process.env.NODE_ENV === 'development') {
     setTimeout(() => {
-      const metrics = collectPerformanceMetrics();
-      if (metrics) {
-        console.log('Performance Metrics:', metrics);
+      try {
+        const metrics = collectPerformanceMetrics();
+        if (metrics) {
+          console.log('Performance Metrics:', metrics);
+        }
+        monitorMemoryUsage();
+        analyzeBundleSize();
+      } catch (error) {
+        console.warn('Performance monitoring skipped:', error.message);
       }
-      monitorMemoryUsage();
-      analyzeBundleSize();
     }, 5000);
   }
 };
