@@ -64,23 +64,27 @@ export default function CareerByGoal() {
     return Briefcase;
   }
 
-  const streams = {
-    "class11-12": [
-      { value: "pcm", label: "PCM (Physics, Chemistry, Math)" },
-      { value: "pcb", label: "PCB (Physics, Chemistry, Biology)" },
-      { value: "pcmb", label: "PCMB (Physics, Chemistry, Math, Biology)" },
-      { value: "commerce", label: "Commerce" },
-      { value: "arts", label: "Arts/Humanities" }
-    ],
-    "graduation": [
-      { value: "engineering", label: "Engineering" },
-      { value: "medicine", label: "Medicine" },
-      { value: "science", label: "Science" },
-      { value: "commerce", label: "Commerce/Business" },
-      { value: "arts", label: "Arts/Humanities" },
-      { value: "law", label: "Law" }
-    ]
+  // Get streams based on stages from data store
+  const getStreamsForStage = (stageId: string) => {
+    if (!careerMapData) return [];
+
+    return careerMapData.stages
+      .filter(stage => {
+        if (stageId === "school_10") {
+          return stage.id.includes('school_11_12');
+        }
+        if (stageId.includes('school_11_12')) {
+          return stage.id.includes('ug_');
+        }
+        return false;
+      })
+      .map(stage => ({
+        value: stage.id,
+        label: stage.label
+      }));
   };
+
+  const streams = currentStage ? { [currentStage]: getStreamsForStage(currentStage) } : {};
 
   const popularJobs = [
     "Software Engineer", "Doctor", "IAS Officer", "Teacher", "Data Scientist",
