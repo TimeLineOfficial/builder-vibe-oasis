@@ -36,42 +36,10 @@ export default function App() {
               <Route path="/jobs/vacancies" element={<LatestVacancies />} />
 
               {/* Business routes */}
-              <Route
-                path="/business"
-                element={
-                  <PlaceholderPage
-                    title="Business Opportunities"
-                    description="Explore categorized business ideas with complete startup guides. Coming soon!"
-                  />
-                }
-              />
-              <Route
-                path="/business/ideas"
-                element={
-                  <PlaceholderPage
-                    title="Business Ideas"
-                    description="Categorized business opportunities with startup guides. Coming soon!"
-                  />
-                }
-              />
-              <Route
-                path="/business/documentation"
-                element={
-                  <PlaceholderPage
-                    title="Business Documentation"
-                    description="Required permits, licenses, and legal documentation guidance. Coming soon!"
-                  />
-                }
-              />
-              <Route
-                path="/business/calculator"
-                element={
-                  <PlaceholderPage
-                    title="ROI Calculator"
-                    description="Investment requirements and projected returns calculator. Coming soon!"
-                  />
-                }
-              />
+              <Route path="/business" element={<BusinessLanding />} />
+              <Route path="/business/ideas" element={<BusinessIdeas />} />
+              <Route path="/business/documentation" element={<BusinessDocumentation />} />
+              <Route path="/business/calculator" element={<ROICalculator />} />
               <Route
                 path="/business/guidance"
                 element={
