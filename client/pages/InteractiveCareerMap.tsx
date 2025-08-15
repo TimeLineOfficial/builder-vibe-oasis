@@ -63,8 +63,13 @@ export default function InteractiveCareerMap() {
       subtitle: "Start Your Journey",
       x: 50,
       y: 50,
-      type: "center",
+      type: "center" as const,
+      field: "center",
+      level: "center",
       color: "bg-gradient-to-r from-career-primary to-career-secondary",
+      salary: "",
+      growth: "N/A" as const,
+      demand: "N/A" as const,
       description: "Your starting point for career exploration"
     };
 
