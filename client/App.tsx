@@ -11,6 +11,10 @@ import PlaceholderPage from "./pages/PlaceholderPage";
 import CareerByGoal from "./pages/CareerByGoal";
 import CareerByInterest from "./pages/CareerByInterest";
 import LatestVacancies from "./pages/LatestVacancies";
+import BusinessLanding from "./pages/BusinessLanding";
+import BusinessIdeas from "./pages/BusinessIdeas";
+import BusinessDocumentation from "./pages/BusinessDocumentation";
+import ROICalculator from "./pages/ROICalculator";
 
 const queryClient = new QueryClient();
 
