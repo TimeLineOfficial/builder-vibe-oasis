@@ -42,10 +42,20 @@ const getLanguageData = () => [
 ];
 
 export default function Layout({ children }: LayoutProps) {
-  const [darkMode, setDarkMode] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
+  const {
+    careerMapData,
+    currentLanguage,
+    darkMode,
+    setLanguage,
+    toggleDarkMode,
+    getText
+  } = useDataStore();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+
+  const languages = getLanguageData();
+  const selectedLanguage = languages.find(lang => lang.code === currentLanguage) || languages[0];
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
