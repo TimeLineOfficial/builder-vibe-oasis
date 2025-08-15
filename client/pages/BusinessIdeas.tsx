@@ -367,7 +367,7 @@ export default function BusinessIdeas() {
 
           {/* Business Ideas Grid */}
           <div className="grid lg:grid-cols-2 gap-8">
-            {sortedIdeas.map((idea) => (
+            {displayedIdeas.map((idea) => (
               <Card 
                 key={idea.id} 
                 className={`border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${
