@@ -86,10 +86,9 @@ export default function CareerByGoal() {
 
   const streams = currentStage ? { [currentStage]: getStreamsForStage(currentStage) } : {};
 
-  const popularJobs = [
-    "Software Engineer", "Doctor", "IAS Officer", "Teacher", "Data Scientist",
-    "Digital Marketer", "Chartered Accountant", "Lawyer", "Civil Engineer",
-    "Business Analyst", "Content Creator", "Research Scientist"
+  // Get popular careers from data store
+  const popularJobs = careerMapData?.careers.map(career => career.title) || [
+    "Software Engineer", "Doctor", "IAS Officer", "Teacher", "Data Scientist"
   ];
 
   const sampleRoadmap = [
