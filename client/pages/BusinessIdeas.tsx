@@ -354,8 +354,10 @@ export default function BusinessIdeas() {
           {/* Results Summary */}
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-bold">{sortedIdeas.length} Business Ideas Found</h2>
-              <p className="text-muted-foreground">Curated opportunities with complete guidance</p>
+              <h2 className="text-2xl font-bold">{totalIdeas} Business Ideas Found</h2>
+              <p className="text-muted-foreground">
+                Showing {displayedIdeas.length} of {totalIdeas} curated opportunities
+              </p>
             </div>
             <Button variant="outline" className="gap-2">
               <BookOpen className="h-4 w-4" />
