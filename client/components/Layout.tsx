@@ -57,10 +57,9 @@ export default function Layout({ children }: LayoutProps) {
   const languages = getLanguageData();
   const selectedLanguage = languages.find(lang => lang.code === currentLanguage) || languages[0];
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    document.documentElement.classList.toggle("dark");
-  };
+  // Site title and tagline from data
+  const siteTitle = careerMapData?.site.name || "CareerMap";
+  const siteTagline = careerMapData?.site.tagline || "Your Complete Career & Business Roadmap";
 
   const navItems = [
     {
