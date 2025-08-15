@@ -23,6 +23,11 @@ import AdminDashboard from "./pages/AdminDashboard";
 const queryClient = new QueryClient();
 
 export default function App() {
+  useEffect(() => {
+    // Initialize CareerMap data on app startup
+    initializeCareerMapData();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
