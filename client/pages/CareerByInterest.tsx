@@ -1,0 +1,515 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { 
+  Search, 
+  Heart, 
+  Filter,
+  ArrowRight,
+  Lightbulb,
+  Palette,
+  Calculator,
+  Atom,
+  Globe,
+  Music,
+  Camera,
+  Code,
+  Stethoscope,
+  Gavel,
+  TrendingUp,
+  Users,
+  BookOpen,
+  MapPin,
+  Star,
+  Clock,
+  DollarSign,
+  Building
+} from "lucide-react";
+
+export default function CareerByInterest() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+  const [currentStage, setCurrentStage] = useState("");
+  const [showResults, setShowResults] = useState(false);
+
+  const interestCategories = [
+    {
+      id: "creative",
+      name: "Creative Arts",
+      icon: Palette,
+      color: "from-pink-500 to-rose-500",
+      interests: [
+        { id: "graphic-design", name: "Graphic Design", popularity: 85 },
+        { id: "photography", name: "Photography", popularity: 78 },
+        { id: "music", name: "Music & Audio", popularity: 72 },
+        { id: "writing", name: "Creative Writing", popularity: 68 },
+        { id: "animation", name: "Animation & VFX", popularity: 82 },
+        { id: "fashion", name: "Fashion Design", popularity: 65 },
+        { id: "interior", name: "Interior Design", popularity: 70 },
+        { id: "film", name: "Film & Video", popularity: 75 }
+      ]
+    },
+    {
+      id: "technology",
+      name: "Technology",
+      icon: Code,
+      color: "from-blue-500 to-indigo-500",
+      interests: [
+        { id: "programming", name: "Programming", popularity: 92 },
+        { id: "ai-ml", name: "AI & Machine Learning", popularity: 88 },
+        { id: "cybersecurity", name: "Cybersecurity", popularity: 85 },
+        { id: "web-dev", name: "Web Development", popularity: 87 },
+        { id: "mobile-dev", name: "Mobile Development", popularity: 83 },
+        { id: "data-science", name: "Data Science", popularity: 89 },
+        { id: "blockchain", name: "Blockchain", popularity: 78 },
+        { id: "robotics", name: "Robotics", popularity: 80 }
+      ]
+    },
+    {
+      id: "science",
+      name: "Science & Research",
+      icon: Atom,
+      color: "from-green-500 to-emerald-500",
+      interests: [
+        { id: "physics", name: "Physics", popularity: 75 },
+        { id: "chemistry", name: "Chemistry", popularity: 73 },
+        { id: "biology", name: "Biology", popularity: 78 },
+        { id: "mathematics", name: "Mathematics", popularity: 82 },
+        { id: "astronomy", name: "Astronomy", popularity: 70 },
+        { id: "genetics", name: "Genetics", popularity: 76 },
+        { id: "environmental", name: "Environmental Science", popularity: 74 },
+        { id: "psychology", name: "Psychology", popularity: 81 }
+      ]
+    },
+    {
+      id: "healthcare",
+      name: "Healthcare",
+      icon: Stethoscope,
+      color: "from-red-500 to-pink-500",
+      interests: [
+        { id: "medicine", name: "Medicine", popularity: 85 },
+        { id: "nursing", name: "Nursing", popularity: 78 },
+        { id: "physiotherapy", name: "Physiotherapy", popularity: 72 },
+        { id: "pharmacy", name: "Pharmacy", popularity: 75 },
+        { id: "dentistry", name: "Dentistry", popularity: 73 },
+        { id: "nutrition", name: "Nutrition", popularity: 70 },
+        { id: "mental-health", name: "Mental Health", popularity: 79 },
+        { id: "medical-research", name: "Medical Research", popularity: 77 }
+      ]
+    },
+    {
+      id: "business",
+      name: "Business & Finance",
+      icon: TrendingUp,
+      color: "from-yellow-500 to-orange-500",
+      interests: [
+        { id: "entrepreneurship", name: "Entrepreneurship", popularity: 88 },
+        { id: "finance", name: "Finance", popularity: 85 },
+        { id: "marketing", name: "Marketing", popularity: 83 },
+        { id: "management", name: "Management", popularity: 82 },
+        { id: "economics", name: "Economics", popularity: 78 },
+        { id: "accounting", name: "Accounting", popularity: 75 },
+        { id: "consulting", name: "Business Consulting", popularity: 80 },
+        { id: "investment", name: "Investment Banking", popularity: 77 }
+      ]
+    },
+    {
+      id: "social",
+      name: "Social Sciences",
+      icon: Users,
+      color: "from-purple-500 to-violet-500",
+      interests: [
+        { id: "education", name: "Education & Teaching", popularity: 82 },
+        { id: "social-work", name: "Social Work", popularity: 75 },
+        { id: "law", name: "Law & Legal Studies", popularity: 80 },
+        { id: "journalism", name: "Journalism", popularity: 73 },
+        { id: "public-policy", name: "Public Policy", popularity: 72 },
+        { id: "international-relations", name: "International Relations", popularity: 76 },
+        { id: "anthropology", name: "Anthropology", popularity: 68 },
+        { id: "political-science", name: "Political Science", popularity: 74 }
+      ]
+    }
+  ];
+
+  const educationStages = [
+    { value: "class10", label: "Class 10th or less" },
+    { value: "class11-12", label: "Class 11th or 12th" },
+    { value: "graduation", label: "Graduation" },
+    { value: "postgrad", label: "Post-Graduation" },
+    { value: "working", label: "Already Working" }
+  ];
+
+  const filteredCategories = interestCategories.filter(category => {
+    if (selectedCategory !== "all" && category.id !== selectedCategory) return false;
+    if (searchTerm) {
+      return category.interests.some(interest => 
+        interest.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    return true;
+  });
+
+  const handleInterestToggle = (interestId: string) => {
+    setSelectedInterests(prev =>
+      prev.includes(interestId)
+        ? prev.filter(id => id !== interestId)
+        : [...prev, interestId]
+    );
+  };
+
+  const generateCareerSuggestions = () => {
+    if (selectedInterests.length > 0 && currentStage) {
+      setShowResults(true);
+    }
+  };
+
+  const sampleCareerSuggestions = [
+    {
+      title: "Software Engineer",
+      match: 95,
+      salary: "₹8-25 LPA",
+      growth: "25%",
+      skills: ["Programming", "Problem Solving", "Algorithms"],
+      education: "B.Tech/B.E. Computer Science",
+      companies: ["Google", "Microsoft", "Amazon", "Flipkart"],
+      description: "Design and develop software applications, systems, and solutions."
+    },
+    {
+      title: "UX/UI Designer",
+      match: 89,
+      salary: "₹6-18 LPA",
+      growth: "22%",
+      skills: ["Design Thinking", "Prototyping", "User Research"],
+      education: "Design degree or relevant certification",
+      companies: ["Adobe", "Figma", "Zomato", "Paytm"],
+      description: "Create user-friendly interfaces and experiences for digital products."
+    },
+    {
+      title: "Data Scientist",
+      match: 87,
+      salary: "₹10-30 LPA",
+      growth: "28%",
+      skills: ["Statistics", "Machine Learning", "Python"],
+      education: "B.Tech/M.Tech + Data Science certification",
+      companies: ["Netflix", "Uber", "Swiggy", "PhonePe"],
+      description: "Analyze complex data to help organizations make informed decisions."
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
+      {/* Header */}
+      <section className="py-12 bg-gradient-to-r from-pink-500/10 to-purple-500/10">
+        <div className="container px-4">
+          <div className="max-w-4xl mx-auto text-center space-y-6">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Heart className="h-10 w-10 text-pink-500" />
+              <h1 className="text-4xl md:text-5xl font-bold">Career by Interest</h1>
+            </div>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Discover career paths that align with your passions and interests. 
+              Select subjects and topics you love, and we'll show you perfect career matches.
+            </p>
+            <Badge variant="secondary" className="px-4 py-2">
+              <Lightbulb className="h-4 w-4 mr-2" />
+              Passion-Driven Career Discovery
+            </Badge>
+          </div>
+        </div>
+      </section>
+
+      <div className="container px-4 py-12">
+        <div className="max-w-7xl mx-auto">
+          {!showResults ? (
+            <div className="space-y-8">
+              {/* Search and Filters */}
+              <Card className="border-0 shadow-lg">
+                <CardContent className="p-6">
+                  <div className="flex flex-col lg:flex-row gap-4">
+                    <div className="flex-1">
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                        <Input
+                          placeholder="Search interests (e.g., Programming, Photography, Medicine...)"
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                          className="pl-10 h-12"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex gap-4">
+                      <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                        <SelectTrigger className="w-48 h-12">
+                          <Filter className="h-4 w-4 mr-2" />
+                          <SelectValue placeholder="All Categories" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">All Categories</SelectItem>
+                          {interestCategories.map((category) => (
+                            <SelectItem key={category.id} value={category.id}>
+                              {category.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <Select value={currentStage} onValueChange={setCurrentStage}>
+                        <SelectTrigger className="w-48 h-12">
+                          <SelectValue placeholder="Your Education Stage" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {educationStages.map((stage) => (
+                            <SelectItem key={stage.value} value={stage.value}>
+                              {stage.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Interest Categories */}
+              <div className="space-y-8">
+                {filteredCategories.map((category) => (
+                  <Card key={category.id} className="border-0 shadow-lg overflow-hidden">
+                    <CardHeader className={`bg-gradient-to-r ${category.color} text-white p-6`}>
+                      <div className="flex items-center gap-3">
+                        <category.icon className="h-8 w-8" />
+                        <div>
+                          <CardTitle className="text-2xl">{category.name}</CardTitle>
+                          <CardDescription className="text-white/80">
+                            {category.interests.length} interests available
+                          </CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="p-6">
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {category.interests
+                          .filter(interest => 
+                            !searchTerm || interest.name.toLowerCase().includes(searchTerm.toLowerCase())
+                          )
+                          .map((interest) => (
+                          <div key={interest.id} className="space-y-3">
+                            <div className="flex items-center space-x-3">
+                              <Checkbox
+                                id={interest.id}
+                                checked={selectedInterests.includes(interest.id)}
+                                onCheckedChange={() => handleInterestToggle(interest.id)}
+                              />
+                              <label
+                                htmlFor={interest.id}
+                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                              >
+                                {interest.name}
+                              </label>
+                            </div>
+                            <div className="ml-6">
+                              <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
+                                <span>Popularity</span>
+                                <span>{interest.popularity}%</span>
+                              </div>
+                              <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+                                <div 
+                                  className={`h-full bg-gradient-to-r ${category.color} rounded-full transition-all duration-500`}
+                                  style={{ width: `${interest.popularity}%` }}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+
+              {/* Selected Interests Summary */}
+              {selectedInterests.length > 0 && (
+                <Card className="border-2 border-career-primary/20 bg-career-primary/5">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-lg font-semibold mb-2">Selected Interests</h3>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedInterests.slice(0, 6).map((interestId) => {
+                            const interest = interestCategories
+                              .flatMap(c => c.interests)
+                              .find(i => i.id === interestId);
+                            return (
+                              <Badge key={interestId} variant="secondary">
+                                {interest?.name}
+                              </Badge>
+                            );
+                          })}
+                          {selectedInterests.length > 6 && (
+                            <Badge variant="outline">+{selectedInterests.length - 6} more</Badge>
+                          )}
+                        </div>
+                      </div>
+                      <Button
+                        onClick={generateCareerSuggestions}
+                        disabled={!currentStage}
+                        className="bg-gradient-to-r from-career-primary to-purple-600"
+                        size="lg"
+                      >
+                        <MapPin className="h-5 w-5 mr-2" />
+                        Find Career Matches
+                        <ArrowRight className="h-5 w-5 ml-2" />
+                      </Button>
+                    </div>
+                    {!currentStage && (
+                      <p className="text-sm text-muted-foreground mt-2">
+                        Please select your education stage to continue
+                      </p>
+                    )}
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          ) : (
+            /* Career Suggestions Results */
+            <div className="space-y-8">
+              {/* Results Header */}
+              <Card className="border-0 shadow-lg bg-gradient-to-r from-career-primary to-purple-600 text-white">
+                <CardContent className="p-8">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-3xl font-bold mb-2">Your Career Matches</h2>
+                      <p className="text-lg opacity-90">
+                        Based on {selectedInterests.length} interests and your education stage
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-3xl font-bold">{sampleCareerSuggestions.length}</div>
+                      <div className="text-sm opacity-80">Perfect Matches</div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Career Cards */}
+              <div className="space-y-6">
+                {sampleCareerSuggestions.map((career, index) => (
+                  <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+                    <CardContent className="p-8">
+                      <div className="flex flex-col lg:flex-row gap-6">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-4 mb-4">
+                            <h3 className="text-2xl font-bold">{career.title}</h3>
+                            <div className="flex items-center gap-2">
+                              <Star className="h-5 w-5 text-yellow-500 fill-current" />
+                              <span className="text-lg font-semibold text-career-primary">
+                                {career.match}% Match
+                              </span>
+                            </div>
+                          </div>
+                          
+                          <p className="text-muted-foreground mb-6">{career.description}</p>
+                          
+                          <div className="grid md:grid-cols-2 gap-6">
+                            <div>
+                              <h4 className="font-semibold mb-2 flex items-center gap-2">
+                                <BookOpen className="h-4 w-4" />
+                                Required Skills
+                              </h4>
+                              <div className="flex flex-wrap gap-2">
+                                {career.skills.map((skill) => (
+                                  <Badge key={skill} variant="outline">
+                                    {skill}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                            
+                            <div>
+                              <h4 className="font-semibold mb-2 flex items-center gap-2">
+                                <Building className="h-4 w-4" />
+                                Top Companies
+                              </h4>
+                              <div className="flex flex-wrap gap-2">
+                                {career.companies.map((company) => (
+                                  <Badge key={company} variant="secondary">
+                                    {company}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="lg:w-80 space-y-4">
+                          <Card className="bg-muted/50">
+                            <CardContent className="p-4 space-y-3">
+                              <div className="flex items-center justify-between">
+                                <span className="flex items-center gap-2 text-sm font-medium">
+                                  <DollarSign className="h-4 w-4" />
+                                  Salary Range
+                                </span>
+                                <span className="font-semibold">{career.salary}</span>
+                              </div>
+                              
+                              <div className="flex items-center justify-between">
+                                <span className="flex items-center gap-2 text-sm font-medium">
+                                  <TrendingUp className="h-4 w-4" />
+                                  Growth Rate
+                                </span>
+                                <span className="font-semibold text-career-secondary">{career.growth}</span>
+                              </div>
+                              
+                              <div className="pt-2 border-t">
+                                <span className="text-sm font-medium">Education Required:</span>
+                                <p className="text-sm text-muted-foreground mt-1">{career.education}</p>
+                              </div>
+                            </CardContent>
+                          </Card>
+                          
+                          <div className="space-y-2">
+                            <Button className="w-full" size="lg">
+                              <MapPin className="h-4 w-4 mr-2" />
+                              View Career Roadmap
+                            </Button>
+                            <Button variant="outline" className="w-full">
+                              <Clock className="h-4 w-4 mr-2" />
+                              Save for Later
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+
+              {/* Actions */}
+              <div className="text-center space-y-4">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={() => setShowResults(false)}
+                >
+                  Explore More Interests
+                </Button>
+                <p className="text-sm text-muted-foreground">
+                  Want to refine your results? Go back and adjust your interest selections.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
