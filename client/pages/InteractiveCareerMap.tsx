@@ -53,8 +53,11 @@ export default function InteractiveCareerMap() {
     { value: "professional", label: "Professional Level" }
   ];
 
-  const careerNodes = [
-    {
+  // Generate career nodes from dataset with radial layout
+  const generateCareerNodes = () => {
+    if (!careerMapData) return [];
+
+    const centerNode = {
       id: "center",
       title: "You",
       subtitle: "Start Your Journey",
@@ -63,128 +66,116 @@ export default function InteractiveCareerMap() {
       type: "center",
       color: "bg-gradient-to-r from-career-primary to-career-secondary",
       description: "Your starting point for career exploration"
-    },
-    {
-      id: "tech1",
-      title: "Software Engineer",
-      subtitle: "Build Applications",
-      x: 75,
-      y: 25,
-      type: "career",
-      field: "technology",
-      level: "undergraduate",
-      color: "bg-gradient-to-r from-blue-500 to-indigo-500",
-      salary: "₹8-25 LPA",
-      growth: "High",
-      demand: "Very High",
-      description: "Design, develop, and maintain software applications and systems"
-    },
-    {
-      id: "tech2",
-      title: "Data Scientist",
-      subtitle: "Analyze Data",
-      x: 85,
-      y: 40,
-      type: "career",
-      field: "technology",
-      level: "postgraduate",
-      color: "bg-gradient-to-r from-blue-600 to-purple-600",
-      salary: "₹12-35 LPA",
-      growth: "Very High",
-      demand: "High",
-      description: "Extract insights from complex data using statistical and ML techniques"
-    },
-    {
-      id: "health1",
-      title: "Doctor",
-      subtitle: "Heal People",
-      x: 25,
-      y: 20,
-      type: "career",
-      field: "healthcare",
-      level: "professional",
-      color: "bg-gradient-to-r from-red-500 to-pink-500",
-      salary: "₹10-50 LPA",
-      growth: "High",
-      demand: "High",
-      description: "Diagnose, treat, and prevent illness in patients"
-    },
-    {
-      id: "health2",
-      title: "Nurse",
-      subtitle: "Care for Patients",
-      x: 15,
-      y: 35,
-      type: "career",
-      field: "healthcare",
-      level: "undergraduate",
-      color: "bg-gradient-to-r from-pink-500 to-rose-500",
-      salary: "₹3-8 LPA",
-      growth: "Medium",
-      demand: "High",
-      description: "Provide patient care and support in healthcare settings"
-    },
-    {
-      id: "business1",
-      title: "Business Analyst",
-      subtitle: "Solve Business Problems",
-      x: 75,
-      y: 70,
-      type: "career",
-      field: "business",
-      level: "undergraduate",
-      color: "bg-gradient-to-r from-yellow-500 to-orange-500",
-      salary: "₹6-18 LPA",
-      growth: "High",
-      demand: "High",
-      description: "Analyze business processes and recommend improvements"
-    },
-    {
-      id: "gov1",
-      title: "IAS Officer",
-      subtitle: "Serve the Nation",
-      x: 25,
-      y: 75,
-      type: "career",
-      field: "government",
-      level: "undergraduate",
-      color: "bg-gradient-to-r from-career-primary to-purple-600",
-      salary: "₹56K-2L PM",
-      growth: "High",
-      demand: "Medium",
-      description: "Lead administrative functions and policy implementation"
-    },
-    {
-      id: "creative1",
-      title: "UX Designer",
-      subtitle: "Design Experiences",
-      x: 60,
-      y: 15,
-      type: "career",
-      field: "creative",
-      level: "undergraduate",
-      color: "bg-gradient-to-r from-purple-500 to-pink-500",
-      salary: "₹4-15 LPA",
-      growth: "Very High",
-      demand: "High",
-      description: "Create user-friendly digital experiences and interfaces"
-    },
-    {
-      id: "edu1",
-      title: "Professor",
-      subtitle: "Teach & Research",
-      x: 40,
-      y: 80,
-      type: "career",
-      field: "education",
-      level: "postgraduate",
-      color: "bg-gradient-to-r from-green-500 to-emerald-500",
-      salary: "₹6-20 LPA",
-      growth: "Medium",
-      demand: "Medium",
-      description: "Conduct research and educate students in higher education"
-    }
-  ];
+    };
+
+    // Convert careers to nodes with radial positioning
+    const careerNodes = careerMapData.careers.map((career, index) => {
+      const angle = (index * 2 * Math.PI) / careerMapData.careers.length;
+      const radius = 35; // Distance from center
+      const x = 50 + radius * Math.cos(angle);
+      const y = 50 + radius * Math.sin(angle);
+
+      // Get stage color for the career's preferred stream
+      const stageColor = getStageColor(career.preferred_stream);
+
+      return {
+        id: career.id,
+        title: career.title,
+        subtitle: getCareerSubtitle(career.id),
+        x: Math.max(10, Math.min(90, x)), // Keep within bounds
+        y: Math.max(10, Math.min(90, y)), // Keep within bounds
+        type: "career",
+        field: getCareerField(career.preferred_stream),
+        level: getCareerLevel(career.preferred_stream),
+        color: `bg-gradient-to-r ${getGradientFromColor(stageColor)}`,
+        salary: getCareerSalary(career.id),
+        growth: "High",
+        demand: "High",
+        description: getCareerDescription(career.id),
+        career: career
+      };
+    });
+
+    return [centerNode, ...careerNodes];
+  };
+
+  const getCareerSubtitle = (careerId: string) => {
+    const subtitles: Record<string, string> = {
+      "doctor": "Heal People",
+      "software_engineer": "Build Applications",
+      "civil_services": "Serve the Nation",
+      "chartered_accountant": "Manage Finances",
+      "data_scientist": "Analyze Data",
+      "nurse": "Care for Patients",
+      "lawyer": "Practice Law",
+      "journalist": "Report News",
+      "pharmacist": "Dispense Medicine",
+      "police_officer": "Maintain Order"
+    };
+    return subtitles[careerId] || "Professional Career";
+  };
+
+  const getCareerField = (stream: string) => {
+    if (stream.includes('pcb') || stream.includes('medical')) return "healthcare";
+    if (stream.includes('pcm') || stream.includes('engineering')) return "technology";
+    if (stream.includes('commerce')) return "business";
+    if (stream.includes('arts')) return "creative";
+    return "general";
+  };
+
+  const getCareerLevel = (stream: string) => {
+    if (stream.includes('school')) return "school";
+    if (stream.includes('ug_')) return "undergraduate";
+    if (stream.includes('pg')) return "postgraduate";
+    return "professional";
+  };
+
+  const getGradientFromColor = (hexColor: string) => {
+    // Convert hex to gradient classes (simplified)
+    const colorMap: Record<string, string> = {
+      "#1E88E5": "from-blue-500 to-blue-600",
+      "#43A047": "from-green-500 to-green-600",
+      "#8E24AA": "from-purple-500 to-purple-600",
+      "#F4511E": "from-orange-500 to-orange-600",
+      "#00897B": "from-teal-500 to-teal-600",
+      "#C2185B": "from-pink-500 to-pink-600"
+    };
+    return colorMap[hexColor] || "from-gray-500 to-gray-600";
+  };
+
+  const getCareerSalary = (careerId: string) => {
+    const salaries: Record<string, string> = {
+      "doctor": "₹10-50 LPA",
+      "software_engineer": "₹8-25 LPA",
+      "civil_services": "₹56K-2L PM",
+      "chartered_accountant": "₹6-20 LPA",
+      "data_scientist": "₹12-35 LPA",
+      "nurse": "₹3-8 LPA",
+      "lawyer": "₹5-25 LPA",
+      "journalist": "₹4-15 LPA",
+      "pharmacist": "₹3-12 LPA",
+      "police_officer": "₹35K-1L PM"
+    };
+    return salaries[careerId] || "₹5-15 LPA";
+  };
+
+  const getCareerDescription = (careerId: string) => {
+    const descriptions: Record<string, string> = {
+      "doctor": "Diagnose, treat, and prevent illness in patients",
+      "software_engineer": "Design, develop, and maintain software applications",
+      "civil_services": "Lead administrative functions and policy implementation",
+      "chartered_accountant": "Provide accounting and financial advisory services",
+      "data_scientist": "Extract insights from complex data using analytics",
+      "nurse": "Provide patient care and support in healthcare settings",
+      "lawyer": "Represent clients and provide legal counsel",
+      "journalist": "Research, write, and report news and stories",
+      "pharmacist": "Dispense medications and provide pharmaceutical care",
+      "police_officer": "Maintain law and order and ensure public safety"
+    };
+    return descriptions[careerId] || "Professional role with growth opportunities";
+  };
+
+  const careerNodes = generateCareerNodes();
 
   const pathways = [
     { from: "center", to: "tech1", color: "stroke-blue-500" },
