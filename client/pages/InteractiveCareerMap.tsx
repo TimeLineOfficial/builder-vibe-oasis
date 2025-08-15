@@ -84,13 +84,13 @@ export default function InteractiveCareerMap() {
         subtitle: getCareerSubtitle(career.id),
         x: Math.max(10, Math.min(90, x)), // Keep within bounds
         y: Math.max(10, Math.min(90, y)), // Keep within bounds
-        type: "career",
+        type: "career" as const,
         field: getCareerField(career.preferred_stream),
         level: getCareerLevel(career.preferred_stream),
         color: `bg-gradient-to-r ${getGradientFromColor(stageColor)}`,
         salary: getCareerSalary(career.id),
-        growth: "High",
-        demand: "High",
+        growth: "High" as const,
+        demand: "High" as const,
         description: getCareerDescription(career.id),
         career: career
       };
