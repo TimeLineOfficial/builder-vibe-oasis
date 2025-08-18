@@ -19,6 +19,7 @@ import {
   DollarSign,
 } from "lucide-react";
 import AdvancedCareerMapping from "../components/AdvancedCareerMapping";
+import DynamicCareerMap from "../components/DynamicCareerMap";
 
 type Step = "stage" | "stream" | "course" | "results";
 
