@@ -105,7 +105,7 @@ export default function EnhancedNavigation() {
 
             {/* Dropdown Menu */}
             {hasDropdown && activeDropdown === item.id && (
-              <div className="absolute top-full left-0 mt-1 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+              <div className="absolute top-full left-0 mt-1 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-[100]">
                 <div className="p-2">
                   {item.subItems?.map((subItem, index) => (
                     <Link
