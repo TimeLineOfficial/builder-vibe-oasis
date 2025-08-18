@@ -393,7 +393,7 @@ export default function DynamicCareerMap({ currentStage, goal, onPathGenerated }
                 {/* Exams */}
                 {step.exams && step.exams.length > 0 && (
                   <div>
-                    <h5 className="font-semibold text-sm mb-2 text-gray-700">Key Exams:</h5>
+                    <h5 className="font-semibold text-sm mb-2 text-gray-700 dark:text-gray-200">Key Exams:</h5>
                     <div className="flex flex-wrap gap-2">
                       {step.exams.map((exam, i) => (
                         <Badge key={i} variant="destructive" className="text-xs">
