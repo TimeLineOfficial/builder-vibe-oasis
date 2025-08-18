@@ -328,10 +328,10 @@ export default function DynamicCareerMap({ currentStage, goal, onPathGenerated }
   return (
     <div className="space-y-6">
       <div className="text-center mb-6">
-        <h3 className="text-2xl font-bold text-gray-900 mb-2">
+        <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
           Your Personalized Career Map
         </h3>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-300">
           From {currentStage.replace('_', ' ')} to {goal}
         </p>
       </div>
