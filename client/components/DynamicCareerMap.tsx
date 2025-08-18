@@ -257,7 +257,9 @@ export default function DynamicCareerMap({ currentStage, goal, onPathGenerated }
       return careerMappings.class_10_below_doctor.slice(stage === 'class_11_12' ? 1 : 2);
     }
     
-    if (goal.toLowerCase().includes('engineer') || goal.toLowerCase().includes('technology')) {
+    // Engineering/Technology paths
+    if (goalLower.includes('engineer') || goalLower.includes('technology') || goalLower.includes('programming') ||
+        goalLower.includes('software') || goalLower.includes('computer') || goalLower.includes('tech')) {
       if (stage === 'class_11_12') {
         return careerMappings.class_11_12_engineer;
       }
@@ -265,8 +267,10 @@ export default function DynamicCareerMap({ currentStage, goal, onPathGenerated }
         return careerMappings.commerce_tech;
       }
     }
-    
-    if (goal.toLowerCase().includes('business') || goal.toLowerCase().includes('mba')) {
+
+    // Business/MBA paths
+    if (goalLower.includes('business') || goalLower.includes('mba') || goalLower.includes('management') ||
+        goalLower.includes('finance') || goalLower.includes('marketing') || goalLower.includes('commerce')) {
       return careerMappings.commerce_mba;
     }
     
