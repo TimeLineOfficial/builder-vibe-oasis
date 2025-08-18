@@ -364,7 +364,7 @@ export default function DynamicCareerMap({ currentStage, goal, onPathGenerated }
                 {/* Requirements */}
                 {step.requirements && step.requirements.length > 0 && (
                   <div>
-                    <h5 className="font-semibold text-sm mb-2 text-gray-700">Requirements:</h5>
+                    <h5 className="font-semibold text-sm mb-2 text-gray-700 dark:text-gray-200">Requirements:</h5>
                     <ul className="text-sm space-y-1">
                       {step.requirements.map((req, i) => (
                         <li key={i} className="flex items-start gap-2">
