@@ -265,9 +265,9 @@ export default function CareerByGoal() {
           <h2 className="text-2xl font-bold mb-2">
             Select your specific course/specialization
           </h2>
-          <p className="text-gray-600">
-            Choose the specific area within {selectedOptions.stream}
-          </p>
+          <p className="text-gray-600 dark:text-gray-300">
+          Choose the specific area within {selectedOptions.stream}
+        </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
