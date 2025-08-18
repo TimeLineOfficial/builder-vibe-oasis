@@ -369,7 +369,7 @@ export default function DynamicCareerMap({ currentStage, goal, onPathGenerated }
                       {step.requirements.map((req, i) => (
                         <li key={i} className="flex items-start gap-2">
                           <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                          <span className="text-gray-600">{req}</span>
+                          <span className="text-gray-600 dark:text-gray-300">{req}</span>
                         </li>
                       ))}
                     </ul>
