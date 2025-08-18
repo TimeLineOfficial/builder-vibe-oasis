@@ -35,7 +35,13 @@ import {
 import AdvancedCareerMapping from "../components/AdvancedCareerMapping";
 import DynamicCareerMap from "../components/DynamicCareerMap";
 
-type Step = "goal" | "stage" | "stream" | "course" | "personalization" | "results";
+type Step =
+  | "goal"
+  | "stage"
+  | "stream"
+  | "course"
+  | "personalization"
+  | "results";
 
 interface SelectedOptions {
   goal: string;
@@ -58,160 +64,217 @@ interface PersonalDetails {
 // Popular career goals with detailed information
 const careerGoals = [
   {
-    id: 'doctor',
-    title: 'Doctor / Medical Professional',
-    description: 'Healthcare, surgery, research, medical practice',
-    icon: '🩺',
+    id: "doctor",
+    title: "Doctor / Medical Professional",
+    description: "Healthcare, surgery, research, medical practice",
+    icon: "🩺",
     trending: true,
-    avgSalary: '₹8-50 LPA',
-    duration: '5.5-8 years',
-    difficulty: 'High',
-    demand: 'Very High'
+    avgSalary: "₹8-50 LPA",
+    duration: "5.5-8 years",
+    difficulty: "High",
+    demand: "Very High",
   },
   {
-    id: 'engineer',
-    title: 'Engineer / Technology Expert',
-    description: 'Software, mechanical, electrical, civil engineering',
-    icon: '⚙️',
+    id: "engineer",
+    title: "Engineer / Technology Expert",
+    description: "Software, mechanical, electrical, civil engineering",
+    icon: "⚙️",
     trending: true,
-    avgSalary: '₹5-80 LPA',
-    duration: '4-6 years',
-    difficulty: 'Medium-High',
-    demand: 'Very High'
+    avgSalary: "₹5-80 LPA",
+    duration: "4-6 years",
+    difficulty: "Medium-High",
+    demand: "Very High",
   },
   {
-    id: 'ias_civil_services',
-    title: 'IAS / Civil Services',
-    description: 'Government administration, policy making, public service',
-    icon: '🏛️',
+    id: "ias_civil_services",
+    title: "IAS / Civil Services",
+    description: "Government administration, policy making, public service",
+    icon: "🏛️",
     trending: false,
-    avgSalary: '₹56K-2.5L/month',
-    duration: '3-5 years prep',
-    difficulty: 'Very High',
-    demand: 'High'
+    avgSalary: "₹56K-2.5L/month",
+    duration: "3-5 years prep",
+    difficulty: "Very High",
+    demand: "High",
   },
   {
-    id: 'entrepreneur',
-    title: 'Entrepreneur / Business Owner',
-    description: 'Startup, business management, innovation',
-    icon: '🚀',
+    id: "entrepreneur",
+    title: "Entrepreneur / Business Owner",
+    description: "Startup, business management, innovation",
+    icon: "🚀",
     trending: true,
-    avgSalary: 'Variable (₹5L-50Cr+)',
-    duration: '2-10 years',
-    difficulty: 'High',
-    demand: 'High'
+    avgSalary: "Variable (₹5L-50Cr+)",
+    duration: "2-10 years",
+    difficulty: "High",
+    demand: "High",
   },
   {
-    id: 'researcher_scientist',
-    title: 'Researcher / Scientist',
-    description: 'Scientific research, R&D, academic career',
-    icon: '🔬',
+    id: "researcher_scientist",
+    title: "Researcher / Scientist",
+    description: "Scientific research, R&D, academic career",
+    icon: "🔬",
     trending: true,
-    avgSalary: '₹6-40 LPA',
-    duration: '6-12 years',
-    difficulty: 'High',
-    demand: 'Medium-High'
+    avgSalary: "₹6-40 LPA",
+    duration: "6-12 years",
+    difficulty: "High",
+    demand: "Medium-High",
   },
   {
-    id: 'teacher_professor',
-    title: 'Teacher / Professor',
-    description: 'Education, academic training, knowledge sharing',
-    icon: '👨‍🏫',
+    id: "teacher_professor",
+    title: "Teacher / Professor",
+    description: "Education, academic training, knowledge sharing",
+    icon: "👨‍🏫",
     trending: false,
-    avgSalary: '₹3-25 LPA',
-    duration: '4-8 years',
-    difficulty: 'Medium',
-    demand: 'Medium'
+    avgSalary: "₹3-25 LPA",
+    duration: "4-8 years",
+    difficulty: "Medium",
+    demand: "Medium",
   },
   {
-    id: 'lawyer',
-    title: 'Lawyer / Legal Expert',
-    description: 'Law practice, legal consulting, judiciary',
-    icon: '⚖️',
+    id: "lawyer",
+    title: "Lawyer / Legal Expert",
+    description: "Law practice, legal consulting, judiciary",
+    icon: "⚖️",
     trending: false,
-    avgSalary: '₹4-50 LPA',
-    duration: '5-7 years',
-    difficulty: 'High',
-    demand: 'Medium-High'
+    avgSalary: "₹4-50 LPA",
+    duration: "5-7 years",
+    difficulty: "High",
+    demand: "Medium-High",
   },
   {
-    id: 'data_scientist',
-    title: 'Data Scientist / AI Expert',
-    description: 'Machine learning, data analysis, artificial intelligence',
-    icon: '📊',
+    id: "data_scientist",
+    title: "Data Scientist / AI Expert",
+    description: "Machine learning, data analysis, artificial intelligence",
+    icon: "📊",
     trending: true,
-    avgSalary: '₹8-60 LPA',
-    duration: '3-5 years',
-    difficulty: 'High',
-    demand: 'Very High'
+    avgSalary: "₹8-60 LPA",
+    duration: "3-5 years",
+    difficulty: "High",
+    demand: "Very High",
   },
   {
-    id: 'finance_banker',
-    title: 'Finance Expert / Banker',
-    description: 'Investment banking, financial analysis, chartered accountancy',
-    icon: '💰',
+    id: "finance_banker",
+    title: "Finance Expert / Banker",
+    description:
+      "Investment banking, financial analysis, chartered accountancy",
+    icon: "💰",
     trending: true,
-    avgSalary: '₹6-80 LPA',
-    duration: '3-6 years',
-    difficulty: 'Medium-High',
-    demand: 'High'
+    avgSalary: "₹6-80 LPA",
+    duration: "3-6 years",
+    difficulty: "Medium-High",
+    demand: "High",
   },
   {
-    id: 'artist_creative',
-    title: 'Artist / Creative Professional',
-    description: 'Design, content creation, entertainment, media',
-    icon: '🎨',
+    id: "artist_creative",
+    title: "Artist / Creative Professional",
+    description: "Design, content creation, entertainment, media",
+    icon: "🎨",
     trending: true,
-    avgSalary: '₹3-50 LPA',
-    duration: '2-6 years',
-    difficulty: 'Medium',
-    demand: 'Medium-High'
+    avgSalary: "₹3-50 LPA",
+    duration: "2-6 years",
+    difficulty: "Medium",
+    demand: "Medium-High",
   },
   {
-    id: 'pilot_aviation',
-    title: 'Pilot / Aviation Expert',
-    description: 'Commercial pilot, air force, aviation management',
-    icon: '✈️',
+    id: "pilot_aviation",
+    title: "Pilot / Aviation Expert",
+    description: "Commercial pilot, air force, aviation management",
+    icon: "✈️",
     trending: false,
-    avgSalary: '₹15-80 LPA',
-    duration: '2-4 years',
-    difficulty: 'High',
-    demand: 'Medium'
+    avgSalary: "₹15-80 LPA",
+    duration: "2-4 years",
+    difficulty: "High",
+    demand: "Medium",
   },
   {
-    id: 'chef_culinary',
-    title: 'Chef / Culinary Expert',
-    description: 'Food industry, restaurant management, culinary arts',
-    icon: '👨‍🍳',
+    id: "chef_culinary",
+    title: "Chef / Culinary Expert",
+    description: "Food industry, restaurant management, culinary arts",
+    icon: "👨‍🍳",
     trending: false,
-    avgSalary: '₹3-30 LPA',
-    duration: '2-5 years',
-    difficulty: 'Medium',
-    demand: 'Medium'
-  }
+    avgSalary: "₹3-30 LPA",
+    duration: "2-5 years",
+    difficulty: "Medium",
+    demand: "Medium",
+  },
 ];
 
 const experienceLevels = [
-  { id: 'beginner', label: 'Complete Beginner', description: 'No prior experience' },
-  { id: 'some_knowledge', label: 'Some Knowledge', description: 'Basic understanding' },
-  { id: 'intermediate', label: 'Intermediate', description: '1-2 years experience' },
-  { id: 'experienced', label: 'Experienced', description: '3+ years experience' }
+  {
+    id: "beginner",
+    label: "Complete Beginner",
+    description: "No prior experience",
+  },
+  {
+    id: "some_knowledge",
+    label: "Some Knowledge",
+    description: "Basic understanding",
+  },
+  {
+    id: "intermediate",
+    label: "Intermediate",
+    description: "1-2 years experience",
+  },
+  {
+    id: "experienced",
+    label: "Experienced",
+    description: "3+ years experience",
+  },
 ];
 
 const internshipTypes = [
-  { id: 'none', label: 'No Internship Yet', description: 'Looking for first opportunity' },
-  { id: 'college', label: 'College Internship', description: 'Academic requirement' },
-  { id: 'industry', label: 'Industry Internship', description: 'Professional experience' },
-  { id: 'research', label: 'Research Internship', description: 'Academic/scientific research' },
-  { id: 'startup', label: 'Startup Internship', description: 'Early-stage company' },
-  { id: 'corporate', label: 'Corporate Internship', description: 'Large company' }
+  {
+    id: "none",
+    label: "No Internship Yet",
+    description: "Looking for first opportunity",
+  },
+  {
+    id: "college",
+    label: "College Internship",
+    description: "Academic requirement",
+  },
+  {
+    id: "industry",
+    label: "Industry Internship",
+    description: "Professional experience",
+  },
+  {
+    id: "research",
+    label: "Research Internship",
+    description: "Academic/scientific research",
+  },
+  {
+    id: "startup",
+    label: "Startup Internship",
+    description: "Early-stage company",
+  },
+  {
+    id: "corporate",
+    label: "Corporate Internship",
+    description: "Large company",
+  },
 ];
 
 const timeCommitments = [
-  { id: 'part_time', label: 'Part-time (10-20 hrs/week)', description: 'Flexible learning' },
-  { id: 'full_time', label: 'Full-time (40+ hrs/week)', description: 'Intensive learning' },
-  { id: 'weekend', label: 'Weekends Only', description: 'Working professional' },
-  { id: 'flexible', label: 'Flexible Schedule', description: 'As per availability' }
+  {
+    id: "part_time",
+    label: "Part-time (10-20 hrs/week)",
+    description: "Flexible learning",
+  },
+  {
+    id: "full_time",
+    label: "Full-time (40+ hrs/week)",
+    description: "Intensive learning",
+  },
+  {
+    id: "weekend",
+    label: "Weekends Only",
+    description: "Working professional",
+  },
+  {
+    id: "flexible",
+    label: "Flexible Schedule",
+    description: "As per availability",
+  },
 ];
 
 export default function CareerByGoal() {
@@ -243,7 +306,7 @@ export default function CareerByGoal() {
     interests: [],
     careerAspirations: "",
     timeCommitment: "",
-    preferredLocation: ""
+    preferredLocation: "",
   });
   const [careerPaths, setCareerPaths] = useState<any[]>([]);
   const [careerSwitchPaths, setCareerSwitchPaths] = useState<any[]>([]);
@@ -292,44 +355,51 @@ export default function CareerByGoal() {
   };
 
   const addSkill = () => {
-    if (skillInput.trim() && !personalDetails.currentSkills.includes(skillInput.trim())) {
-      setPersonalDetails(prev => ({
+    if (
+      skillInput.trim() &&
+      !personalDetails.currentSkills.includes(skillInput.trim())
+    ) {
+      setPersonalDetails((prev) => ({
         ...prev,
-        currentSkills: [...prev.currentSkills, skillInput.trim()]
+        currentSkills: [...prev.currentSkills, skillInput.trim()],
       }));
       setSkillInput("");
     }
   };
 
   const removeSkill = (skill: string) => {
-    setPersonalDetails(prev => ({
+    setPersonalDetails((prev) => ({
       ...prev,
-      currentSkills: prev.currentSkills.filter(s => s !== skill)
+      currentSkills: prev.currentSkills.filter((s) => s !== skill),
     }));
   };
 
   const addInterest = () => {
-    if (interestInput.trim() && !personalDetails.interests.includes(interestInput.trim())) {
-      setPersonalDetails(prev => ({
+    if (
+      interestInput.trim() &&
+      !personalDetails.interests.includes(interestInput.trim())
+    ) {
+      setPersonalDetails((prev) => ({
         ...prev,
-        interests: [...prev.interests, interestInput.trim()]
+        interests: [...prev.interests, interestInput.trim()],
       }));
       setInterestInput("");
     }
   };
 
   const removeInterest = (interest: string) => {
-    setPersonalDetails(prev => ({
+    setPersonalDetails((prev) => ({
       ...prev,
-      interests: prev.interests.filter(i => i !== interest)
+      interests: prev.interests.filter((i) => i !== interest),
     }));
   };
 
   const generateResults = () => {
     // Generate career paths based on all selections and personal details
-    const selectedGoal = careerGoals.find(g => g.id === selectedOptions.goal);
-    const goal = selectedGoal?.title || selectedOptions.course || selectedOptions.stream;
-    
+    const selectedGoal = careerGoals.find((g) => g.id === selectedOptions.goal);
+    const goal =
+      selectedGoal?.title || selectedOptions.course || selectedOptions.stream;
+
     const paths = generateCareerPath(selectedOptions.stage, goal);
     setCareerPaths(paths);
 
@@ -353,7 +423,7 @@ export default function CareerByGoal() {
       interests: [],
       careerAspirations: "",
       timeCommitment: "",
-      preferredLocation: ""
+      preferredLocation: "",
     });
     setCareerPaths([]);
     setCareerSwitchPaths([]);
@@ -362,35 +432,49 @@ export default function CareerByGoal() {
 
   const StepIndicator = () => (
     <div className="flex items-center justify-center mb-8 space-x-2 overflow-x-auto pb-2">
-      {(["goal", "stage", "stream", "course", "personalization", "results"] as Step[]).map(
-        (step, index) => {
-          const isActive = currentStep === step;
-          const isCompleted =
-            ["goal", "stage", "stream", "course", "personalization", "results"].indexOf(currentStep) >
-            index;
+      {(
+        [
+          "goal",
+          "stage",
+          "stream",
+          "course",
+          "personalization",
+          "results",
+        ] as Step[]
+      ).map((step, index) => {
+        const isActive = currentStep === step;
+        const isCompleted =
+          [
+            "goal",
+            "stage",
+            "stream",
+            "course",
+            "personalization",
+            "results",
+          ].indexOf(currentStep) > index;
 
-          // Skip course step for working professionals
-          if (
-            step === "course" &&
-            selectedOptions.stage === "working_professional"
-          ) {
-            return null;
-          }
+        // Skip course step for working professionals
+        if (
+          step === "course" &&
+          selectedOptions.stage === "working_professional"
+        ) {
+          return null;
+        }
 
-          const stepNames = {
-            goal: "Goal",
-            stage: "Stage", 
-            stream: "Stream",
-            course: "Course",
-            personalization: "Details",
-            results: "Results"
-          };
+        const stepNames = {
+          goal: "Goal",
+          stage: "Stage",
+          stream: "Stream",
+          course: "Course",
+          personalization: "Details",
+          results: "Results",
+        };
 
-          return (
-            <React.Fragment key={step}>
-              <div className="flex flex-col items-center">
-                <div
-                  className={`
+        return (
+          <React.Fragment key={step}>
+            <div className="flex flex-col items-center">
+              <div
+                className={`
                   w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm
                   ${
                     isActive
@@ -400,20 +484,19 @@ export default function CareerByGoal() {
                         : "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300"
                   }
                 `}
-                >
-                  {index + 1}
-                </div>
-                <span className="text-xs mt-1 text-gray-600 dark:text-gray-300">
-                  {stepNames[step]}
-                </span>
+              >
+                {index + 1}
               </div>
-              {index < 5 && step !== "course" ? (
-                <ArrowRight className="w-4 h-4 text-gray-400 mt-2" />
-              ) : null}
-            </React.Fragment>
-          );
-        },
-      )}
+              <span className="text-xs mt-1 text-gray-600 dark:text-gray-300">
+                {stepNames[step]}
+              </span>
+            </div>
+            {index < 5 && step !== "course" ? (
+              <ArrowRight className="w-4 h-4 text-gray-400 mt-2" />
+            ) : null}
+          </React.Fragment>
+        );
+      })}
     </div>
   );
 
@@ -424,7 +507,8 @@ export default function CareerByGoal() {
           What's your career goal?
         </h2>
         <p className="text-gray-600 dark:text-gray-300">
-          Select your dream career and we'll create a personalized roadmap to achieve it
+          Select your dream career and we'll create a personalized roadmap to
+          achieve it
         </p>
       </div>
 
@@ -442,7 +526,7 @@ export default function CareerByGoal() {
                     🔥 Trending
                   </Badge>
                 )}
-                
+
                 <div className="text-4xl mb-3">{goal.icon}</div>
                 <h3 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">
                   {goal.title}
@@ -450,37 +534,55 @@ export default function CareerByGoal() {
                 <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
                   {goal.description}
                 </p>
-                
+
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between">
-                    <span className="text-gray-500 dark:text-gray-400">Salary:</span>
-                    <span className="font-medium text-green-600">{goal.avgSalary}</span>
+                    <span className="text-gray-500 dark:text-gray-400">
+                      Salary:
+                    </span>
+                    <span className="font-medium text-green-600">
+                      {goal.avgSalary}
+                    </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500 dark:text-gray-400">Duration:</span>
-                    <span className="font-medium text-blue-600">{goal.duration}</span>
+                    <span className="text-gray-500 dark:text-gray-400">
+                      Duration:
+                    </span>
+                    <span className="font-medium text-blue-600">
+                      {goal.duration}
+                    </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500 dark:text-gray-400">Difficulty:</span>
-                    <span className={`font-medium ${
-                      goal.difficulty === 'High' || goal.difficulty === 'Very High' 
-                        ? 'text-red-600' 
-                        : goal.difficulty === 'Medium-High' || goal.difficulty === 'Medium'
-                        ? 'text-yellow-600'
-                        : 'text-green-600'
-                    }`}>
+                    <span className="text-gray-500 dark:text-gray-400">
+                      Difficulty:
+                    </span>
+                    <span
+                      className={`font-medium ${
+                        goal.difficulty === "High" ||
+                        goal.difficulty === "Very High"
+                          ? "text-red-600"
+                          : goal.difficulty === "Medium-High" ||
+                              goal.difficulty === "Medium"
+                            ? "text-yellow-600"
+                            : "text-green-600"
+                      }`}
+                    >
                       {goal.difficulty}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500 dark:text-gray-400">Demand:</span>
-                    <span className={`font-medium ${
-                      goal.demand === 'Very High' 
-                        ? 'text-green-600' 
-                        : goal.demand === 'High'
-                        ? 'text-blue-600'
-                        : 'text-yellow-600'
-                    }`}>
+                    <span className="text-gray-500 dark:text-gray-400">
+                      Demand:
+                    </span>
+                    <span
+                      className={`font-medium ${
+                        goal.demand === "Very High"
+                          ? "text-green-600"
+                          : goal.demand === "High"
+                            ? "text-blue-600"
+                            : "text-yellow-600"
+                      }`}
+                    >
                       {goal.demand}
                     </span>
                   </div>
@@ -494,8 +596,8 @@ export default function CareerByGoal() {
   );
 
   const renderStageSelection = () => {
-    const selectedGoal = careerGoals.find(g => g.id === selectedOptions.goal);
-    
+    const selectedGoal = careerGoals.find((g) => g.id === selectedOptions.goal);
+
     return (
       <div className="space-y-6">
         <div className="text-center">
@@ -503,7 +605,10 @@ export default function CareerByGoal() {
             What's your current education level?
           </h2>
           <p className="text-gray-600 dark:text-gray-300">
-            Selected Goal: <span className="font-semibold text-blue-600">{selectedGoal?.title}</span>
+            Selected Goal:{" "}
+            <span className="font-semibold text-blue-600">
+              {selectedGoal?.title}
+            </span>
           </p>
           <p className="text-gray-600 dark:text-gray-300">
             We'll tailor the roadmap based on your current stage
@@ -521,7 +626,9 @@ export default function CareerByGoal() {
                 <div className="mb-4">
                   <GraduationCap className="w-12 h-12 mx-auto text-blue-600 group-hover:text-blue-700" />
                 </div>
-                <h3 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">{stage.label}</h3>
+                <h3 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">
+                  {stage.label}
+                </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
                   {stage.id === "class_10_below" &&
                     "Foundation level guidance for future planning"}
@@ -551,7 +658,7 @@ export default function CareerByGoal() {
 
   const renderStreamSelection = () => {
     const streams = getStreamsByStage(selectedOptions.stage);
-    const selectedGoal = careerGoals.find(g => g.id === selectedOptions.goal);
+    const selectedGoal = careerGoals.find((g) => g.id === selectedOptions.goal);
 
     return (
       <div className="space-y-6">
@@ -562,8 +669,14 @@ export default function CareerByGoal() {
               : "Choose your stream/field"}
           </h2>
           <p className="text-gray-600 dark:text-gray-300">
-            Goal: <span className="font-semibold text-blue-600">{selectedGoal?.title}</span> | 
-            Stage: <span className="font-semibold text-green-600">{selectedOptions.stage.replace('_', ' ')}</span>
+            Goal:{" "}
+            <span className="font-semibold text-blue-600">
+              {selectedGoal?.title}
+            </span>{" "}
+            | Stage:{" "}
+            <span className="font-semibold text-green-600">
+              {selectedOptions.stage.replace("_", " ")}
+            </span>
           </p>
         </div>
 
@@ -578,7 +691,9 @@ export default function CareerByGoal() {
                 <div className="mb-4">
                   <Target className="w-12 h-12 mx-auto text-green-600 group-hover:text-green-700" />
                 </div>
-                <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100">{stream}</h3>
+                <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100">
+                  {stream}
+                </h3>
               </CardContent>
             </Card>
           ))}
@@ -595,7 +710,7 @@ export default function CareerByGoal() {
 
   const renderCourseSelection = () => {
     const courses = getCoursesByStream(selectedOptions.stream);
-    const selectedGoal = careerGoals.find(g => g.id === selectedOptions.goal);
+    const selectedGoal = careerGoals.find((g) => g.id === selectedOptions.goal);
 
     return (
       <div className="space-y-6">
@@ -604,8 +719,14 @@ export default function CareerByGoal() {
             Select your specific course/specialization
           </h2>
           <p className="text-gray-600 dark:text-gray-300">
-            Goal: <span className="font-semibold text-blue-600">{selectedGoal?.title}</span> | 
-            Stream: <span className="font-semibold text-green-600">{selectedOptions.stream}</span>
+            Goal:{" "}
+            <span className="font-semibold text-blue-600">
+              {selectedGoal?.title}
+            </span>{" "}
+            | Stream:{" "}
+            <span className="font-semibold text-green-600">
+              {selectedOptions.stream}
+            </span>
           </p>
         </div>
 
@@ -620,7 +741,9 @@ export default function CareerByGoal() {
                 <div className="mb-4">
                   <Users className="w-12 h-12 mx-auto text-purple-600 group-hover:text-purple-700" />
                 </div>
-                <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100">{course}</h3>
+                <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100">
+                  {course}
+                </h3>
               </CardContent>
             </Card>
           ))}
@@ -636,8 +759,8 @@ export default function CareerByGoal() {
   };
 
   const renderPersonalizationForm = () => {
-    const selectedGoal = careerGoals.find(g => g.id === selectedOptions.goal);
-    
+    const selectedGoal = careerGoals.find((g) => g.id === selectedOptions.goal);
+
     return (
       <div className="space-y-6">
         <div className="text-center">
@@ -665,7 +788,12 @@ export default function CareerByGoal() {
                 </label>
                 <Input
                   value={personalDetails.name}
-                  onChange={(e) => setPersonalDetails(prev => ({ ...prev, name: e.target.value }))}
+                  onChange={(e) =>
+                    setPersonalDetails((prev) => ({
+                      ...prev,
+                      name: e.target.value,
+                    }))
+                  }
                   placeholder="Enter your name"
                 />
               </div>
@@ -676,7 +804,12 @@ export default function CareerByGoal() {
                 </label>
                 <Textarea
                   value={personalDetails.careerAspirations}
-                  onChange={(e) => setPersonalDetails(prev => ({ ...prev, careerAspirations: e.target.value }))}
+                  onChange={(e) =>
+                    setPersonalDetails((prev) => ({
+                      ...prev,
+                      careerAspirations: e.target.value,
+                    }))
+                  }
                   placeholder="Describe what you want to achieve in your career..."
                   rows={3}
                 />
@@ -688,7 +821,12 @@ export default function CareerByGoal() {
                 </label>
                 <Input
                   value={personalDetails.preferredLocation}
-                  onChange={(e) => setPersonalDetails(prev => ({ ...prev, preferredLocation: e.target.value }))}
+                  onChange={(e) =>
+                    setPersonalDetails((prev) => ({
+                      ...prev,
+                      preferredLocation: e.target.value,
+                    }))
+                  }
                   placeholder="e.g., Mumbai, Delhi, Bangalore, USA, Remote"
                 />
               </div>
@@ -710,7 +848,12 @@ export default function CareerByGoal() {
                 </label>
                 <Select
                   value={personalDetails.experienceLevel}
-                  onValueChange={(value) => setPersonalDetails(prev => ({ ...prev, experienceLevel: value }))}
+                  onValueChange={(value) =>
+                    setPersonalDetails((prev) => ({
+                      ...prev,
+                      experienceLevel: value,
+                    }))
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select your experience level" />
@@ -720,7 +863,9 @@ export default function CareerByGoal() {
                       <SelectItem key={level.id} value={level.id}>
                         <div>
                           <div className="font-medium">{level.label}</div>
-                          <div className="text-sm text-gray-500">{level.description}</div>
+                          <div className="text-sm text-gray-500">
+                            {level.description}
+                          </div>
                         </div>
                       </SelectItem>
                     ))}
@@ -734,7 +879,12 @@ export default function CareerByGoal() {
                 </label>
                 <Select
                   value={personalDetails.internshipType}
-                  onValueChange={(value) => setPersonalDetails(prev => ({ ...prev, internshipType: value }))}
+                  onValueChange={(value) =>
+                    setPersonalDetails((prev) => ({
+                      ...prev,
+                      internshipType: value,
+                    }))
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select internship type" />
@@ -744,7 +894,9 @@ export default function CareerByGoal() {
                       <SelectItem key={type.id} value={type.id}>
                         <div>
                           <div className="font-medium">{type.label}</div>
-                          <div className="text-sm text-gray-500">{type.description}</div>
+                          <div className="text-sm text-gray-500">
+                            {type.description}
+                          </div>
                         </div>
                       </SelectItem>
                     ))}
@@ -761,7 +913,7 @@ export default function CareerByGoal() {
                     value={skillInput}
                     onChange={(e) => setSkillInput(e.target.value)}
                     placeholder="Add a skill (e.g., Python, Communication, etc.)"
-                    onKeyPress={(e) => e.key === 'Enter' && addSkill()}
+                    onKeyPress={(e) => e.key === "Enter" && addSkill()}
                   />
                   <Button type="button" onClick={addSkill} size="sm">
                     Add
@@ -790,7 +942,7 @@ export default function CareerByGoal() {
                     value={interestInput}
                     onChange={(e) => setInterestInput(e.target.value)}
                     placeholder="Add an interest (e.g., AI, Music, Sports, etc.)"
-                    onKeyPress={(e) => e.key === 'Enter' && addInterest()}
+                    onKeyPress={(e) => e.key === "Enter" && addInterest()}
                   />
                   <Button type="button" onClick={addInterest} size="sm">
                     Add
@@ -827,7 +979,12 @@ export default function CareerByGoal() {
                 </label>
                 <Select
                   value={personalDetails.timeCommitment}
-                  onValueChange={(value) => setPersonalDetails(prev => ({ ...prev, timeCommitment: value }))}
+                  onValueChange={(value) =>
+                    setPersonalDetails((prev) => ({
+                      ...prev,
+                      timeCommitment: value,
+                    }))
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="How much time can you dedicate?" />
@@ -837,7 +994,9 @@ export default function CareerByGoal() {
                       <SelectItem key={commitment.id} value={commitment.id}>
                         <div>
                           <div className="font-medium">{commitment.label}</div>
-                          <div className="text-sm text-gray-500">{commitment.description}</div>
+                          <div className="text-sm text-gray-500">
+                            {commitment.description}
+                          </div>
                         </div>
                       </SelectItem>
                     ))}
@@ -853,7 +1012,10 @@ export default function CareerByGoal() {
               🎯 Ready to Create Your Personalized Career Map?
             </h3>
             <p className="text-gray-700 dark:text-gray-300 mb-4">
-              Based on your goal: <span className="font-bold text-blue-600">{selectedGoal?.title}</span>
+              Based on your goal:{" "}
+              <span className="font-bold text-blue-600">
+                {selectedGoal?.title}
+              </span>
               {personalDetails.name && <span> for {personalDetails.name}</span>}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -866,7 +1028,11 @@ export default function CareerByGoal() {
               </Button>
               <Button
                 variant="outline"
-                onClick={() => selectedOptions.stage === "working_professional" ? setCurrentStep("stream") : setCurrentStep("course")}
+                onClick={() =>
+                  selectedOptions.stage === "working_professional"
+                    ? setCurrentStep("stream")
+                    : setCurrentStep("course")
+                }
               >
                 Back
               </Button>
@@ -878,8 +1044,8 @@ export default function CareerByGoal() {
   };
 
   const renderResults = () => {
-    const selectedGoal = careerGoals.find(g => g.id === selectedOptions.goal);
-    
+    const selectedGoal = careerGoals.find((g) => g.id === selectedOptions.goal);
+
     return (
       <div className="space-y-8">
         <div className="text-center">
@@ -887,7 +1053,10 @@ export default function CareerByGoal() {
             Your Personalized Career Roadmap
           </h2>
           <p className="text-gray-600 dark:text-gray-300">
-            Goal: <span className="font-bold text-blue-600">{selectedGoal?.title}</span>
+            Goal:{" "}
+            <span className="font-bold text-blue-600">
+              {selectedGoal?.title}
+            </span>
             {personalDetails.name && <span> for {personalDetails.name}</span>}
           </p>
           <p className="text-gray-600 dark:text-gray-300">
@@ -897,10 +1066,14 @@ export default function CareerByGoal() {
         </div>
 
         {/* Personal Summary */}
-        {(personalDetails.name || personalDetails.currentSkills.length > 0 || personalDetails.experienceLevel) && (
+        {(personalDetails.name ||
+          personalDetails.currentSkills.length > 0 ||
+          personalDetails.experienceLevel) && (
           <Card className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20">
             <CardHeader>
-              <CardTitle className="text-center">Personal Profile Summary</CardTitle>
+              <CardTitle className="text-center">
+                Personal Profile Summary
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid md:grid-cols-2 gap-4 text-sm">
@@ -911,45 +1084,69 @@ export default function CareerByGoal() {
                 )}
                 {personalDetails.experienceLevel && (
                   <div>
-                    <strong>Experience:</strong> {experienceLevels.find(e => e.id === personalDetails.experienceLevel)?.label}
+                    <strong>Experience:</strong>{" "}
+                    {
+                      experienceLevels.find(
+                        (e) => e.id === personalDetails.experienceLevel,
+                      )?.label
+                    }
                   </div>
                 )}
                 {personalDetails.internshipType && (
                   <div>
-                    <strong>Internship:</strong> {internshipTypes.find(i => i.id === personalDetails.internshipType)?.label}
+                    <strong>Internship:</strong>{" "}
+                    {
+                      internshipTypes.find(
+                        (i) => i.id === personalDetails.internshipType,
+                      )?.label
+                    }
                   </div>
                 )}
                 {personalDetails.timeCommitment && (
                   <div>
-                    <strong>Time Commitment:</strong> {timeCommitments.find(t => t.id === personalDetails.timeCommitment)?.label}
+                    <strong>Time Commitment:</strong>{" "}
+                    {
+                      timeCommitments.find(
+                        (t) => t.id === personalDetails.timeCommitment,
+                      )?.label
+                    }
                   </div>
                 )}
                 {personalDetails.preferredLocation && (
                   <div>
-                    <strong>Preferred Location:</strong> {personalDetails.preferredLocation}
+                    <strong>Preferred Location:</strong>{" "}
+                    {personalDetails.preferredLocation}
                   </div>
                 )}
               </div>
-              
+
               {personalDetails.currentSkills.length > 0 && (
                 <div className="mt-4">
                   <strong className="text-sm">Current Skills:</strong>
                   <div className="flex flex-wrap gap-1 mt-1">
                     {personalDetails.currentSkills.map((skill) => (
-                      <Badge key={skill} variant="secondary" className="text-xs">
+                      <Badge
+                        key={skill}
+                        variant="secondary"
+                        className="text-xs"
+                      >
                         {skill}
                       </Badge>
                     ))}
                   </div>
                 </div>
               )}
-              
+
               {personalDetails.interests.length > 0 && (
                 <div className="mt-4">
                   <strong className="text-sm">Interests:</strong>
                   <div className="flex flex-wrap gap-1 mt-1">
                     {personalDetails.interests.map((interest) => (
-                      <Badge key={interest} variant="outline" className="text-xs">
+                      <Badge
+                        key={interest}
+                        variant="outline"
+                        className="text-xs"
+                      >
                         {interest}
                       </Badge>
                     ))}
@@ -963,9 +1160,13 @@ export default function CareerByGoal() {
         {/* Dynamic Career Map */}
         <DynamicCareerMap
           currentStage={selectedOptions.stage}
-          goal={selectedGoal?.title || selectedOptions.course || selectedOptions.stream}
+          goal={
+            selectedGoal?.title ||
+            selectedOptions.course ||
+            selectedOptions.stream
+          }
           onPathGenerated={(path) => {
-            console.log('Career path generated:', path);
+            console.log("Career path generated:", path);
           }}
         />
 
@@ -989,12 +1190,18 @@ export default function CareerByGoal() {
                       {index + 1}
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-semibold text-lg text-gray-900 dark:text-gray-100">{step.title}</h4>
-                      <p className="text-gray-600 dark:text-gray-300 mb-2">{step.description}</p>
+                      <h4 className="font-semibold text-lg text-gray-900 dark:text-gray-100">
+                        {step.title}
+                      </h4>
+                      <p className="text-gray-600 dark:text-gray-300 mb-2">
+                        {step.description}
+                      </p>
 
                       {step.exams && step.exams.length > 0 && (
                         <div className="mb-2">
-                          <span className="text-sm font-medium">Key Exams: </span>
+                          <span className="text-sm font-medium">
+                            Key Exams:{" "}
+                          </span>
                           {step.exams.map((exam: string, i: number) => (
                             <Badge key={i} variant="outline" className="mr-1">
                               {exam}
@@ -1032,9 +1239,7 @@ export default function CareerByGoal() {
             >
               {showAdvancedMapping ? "Hide" : "Show"} Advanced Career Resources
             </Button>
-            <Button
-              onClick={() => setShowAdvancedCareerModal(true)}
-            >
+            <Button onClick={() => setShowAdvancedCareerModal(true)}>
               Get Complete Career Roadmap
             </Button>
             <Button onClick={resetFlow} variant="outline">
@@ -1053,11 +1258,15 @@ export default function CareerByGoal() {
               <CardContent>
                 {(() => {
                   const notes = getCareerNotes(
-                    selectedGoal?.title || selectedOptions.course || selectedOptions.stream,
+                    selectedGoal?.title ||
+                      selectedOptions.course ||
+                      selectedOptions.stream,
                   );
                   return (
                     <div className="space-y-4">
-                      <p className="text-gray-600 dark:text-gray-300">{notes.summary}</p>
+                      <p className="text-gray-600 dark:text-gray-300">
+                        {notes.summary}
+                      </p>
 
                       <div>
                         <h5 className="font-semibold mb-2">Key Topics:</h5>
@@ -1069,7 +1278,9 @@ export default function CareerByGoal() {
                       </div>
 
                       <div>
-                        <h5 className="font-semibold mb-2">Learning Timeline:</h5>
+                        <h5 className="font-semibold mb-2">
+                          Learning Timeline:
+                        </h5>
                         <div className="grid grid-cols-2 gap-2 text-sm">
                           <div>
                             <strong>Beginner:</strong> {notes.timeline.beginner}
@@ -1099,7 +1310,9 @@ export default function CareerByGoal() {
               <CardContent>
                 {(() => {
                   const lectures = getYouTubeLectures(
-                    selectedGoal?.title || selectedOptions.course || selectedOptions.stream,
+                    selectedGoal?.title ||
+                      selectedOptions.course ||
+                      selectedOptions.stream,
                   );
                   return (
                     <div className="space-y-3">
@@ -1187,8 +1400,10 @@ export default function CareerByGoal() {
               <div className="p-6">
                 <AdvancedCareerMapping
                   selectedField={
-                    careerGoals.find(g => g.id === selectedOptions.goal)?.title ||
-                    selectedOptions.course || selectedOptions.stream
+                    careerGoals.find((g) => g.id === selectedOptions.goal)
+                      ?.title ||
+                    selectedOptions.course ||
+                    selectedOptions.stream
                   }
                 />
               </div>

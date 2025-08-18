@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { ChevronDown, Briefcase, Target, MapPin, Search, Building2 } from 'lucide-react';
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  ChevronDown,
+  Briefcase,
+  Target,
+  MapPin,
+  Search,
+  Building2,
+} from "lucide-react";
 
 export default function EnhancedNavigation() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -8,51 +15,107 @@ export default function EnhancedNavigation() {
 
   const navigationItems = [
     {
-      id: 'jobs',
-      label: 'Jobs',
+      id: "jobs",
+      label: "Jobs",
       icon: Briefcase,
-      href: '/jobs',
+      href: "/jobs",
       subItems: [
-        { label: 'By Goal', href: '/jobs/by-goal', description: 'Find careers based on your current education and goals' },
-        { label: 'By Interest', href: '/jobs/by-interest', description: 'Discover careers matching your interests and passions' },
-        { label: 'Latest Vacancies', href: '/jobs/vacancies', description: 'Browse current job openings and opportunities' },
-        { label: 'All Jobs', href: '/latest-jobs', description: '100+ verified government and private jobs' }
-      ]
+        {
+          label: "By Goal",
+          href: "/jobs/by-goal",
+          description: "Find careers based on your current education and goals",
+        },
+        {
+          label: "By Interest",
+          href: "/jobs/by-interest",
+          description: "Discover careers matching your interests and passions",
+        },
+        {
+          label: "Latest Vacancies",
+          href: "/jobs/vacancies",
+          description: "Browse current job openings and opportunities",
+        },
+        {
+          label: "All Jobs",
+          href: "/latest-jobs",
+          description: "100+ verified government and private jobs",
+        },
+      ],
     },
     {
-      id: 'business',
-      label: 'Business',
+      id: "business",
+      label: "Business",
       icon: Building2,
-      href: '/business',
+      href: "/business",
       subItems: [
-        { label: 'Business Ideas', href: '/business/ideas', description: 'Profitable business opportunities with guides' },
-        { label: 'Startup Guide', href: '/business/guidance', description: 'Complete business setup tutorials' },
-        { label: 'Documentation', href: '/business/documentation', description: 'Legal docs and templates' },
-        { label: 'ROI Calculator', href: '/business/calculator', description: 'Calculate business investment returns' }
-      ]
+        {
+          label: "Business Ideas",
+          href: "/business/ideas",
+          description: "Profitable business opportunities with guides",
+        },
+        {
+          label: "Startup Guide",
+          href: "/business/guidance",
+          description: "Complete business setup tutorials",
+        },
+        {
+          label: "Documentation",
+          href: "/business/documentation",
+          description: "Legal docs and templates",
+        },
+        {
+          label: "ROI Calculator",
+          href: "/business/calculator",
+          description: "Calculate business investment returns",
+        },
+      ],
     },
     {
-      id: 'career-map',
-      label: 'Career Map',
+      id: "career-map",
+      label: "Career Map",
       icon: MapPin,
-      href: '/career-map',
+      href: "/career-map",
       subItems: [
-        { label: 'Interactive Map', href: '/career-map', description: 'Visual career progression paths' },
-        { label: 'Career Guidance', href: '/jobs/by-goal', description: 'Step-by-step career planning' },
-        { label: 'Skill Assessment', href: '/career-map#skills', description: 'Evaluate your current skills' }
-      ]
+        {
+          label: "Interactive Map",
+          href: "/career-map",
+          description: "Visual career progression paths",
+        },
+        {
+          label: "Career Guidance",
+          href: "/jobs/by-goal",
+          description: "Step-by-step career planning",
+        },
+        {
+          label: "Skill Assessment",
+          href: "/career-map#skills",
+          description: "Evaluate your current skills",
+        },
+      ],
     },
     {
-      id: 'vacancies',
-      label: 'Vacancies',
+      id: "vacancies",
+      label: "Vacancies",
       icon: Search,
-      href: '/vacancies',
+      href: "/vacancies",
       subItems: [
-        { label: 'Government Jobs', href: '/latest-jobs?type=government', description: '50+ verified government positions' },
-        { label: 'Private Jobs', href: '/latest-jobs?type=private', description: '50+ private sector opportunities' },
-        { label: 'Form Guides', href: '/vacancies#guides', description: 'Application form tutorials' }
-      ]
-    }
+        {
+          label: "Government Jobs",
+          href: "/latest-jobs?type=government",
+          description: "50+ verified government positions",
+        },
+        {
+          label: "Private Jobs",
+          href: "/latest-jobs?type=private",
+          description: "50+ private sector opportunities",
+        },
+        {
+          label: "Form Guides",
+          href: "/vacancies#guides",
+          description: "Application form tutorials",
+        },
+      ],
+    },
   ];
 
   const handleMouseEnter = (itemId: string) => {
@@ -72,7 +135,7 @@ export default function EnhancedNavigation() {
       {navigationItems.map((item) => {
         const isActive = location.pathname.startsWith(item.href);
         const hasDropdown = item.subItems && item.subItems.length > 0;
-        
+
         return (
           <div
             key={item.id}
@@ -86,19 +149,20 @@ export default function EnhancedNavigation() {
               className={`
                 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium 
                 transition-all duration-200 hover:bg-accent/10
-                ${isActive 
-                  ? 'bg-career-primary text-white shadow-md' 
-                  : 'text-muted-foreground hover:text-foreground'
+                ${
+                  isActive
+                    ? "bg-career-primary text-white shadow-md"
+                    : "text-muted-foreground hover:text-foreground"
                 }
               `}
             >
               <item.icon className="h-4 w-4" />
               <span>{item.label}</span>
               {hasDropdown && (
-                <ChevronDown 
+                <ChevronDown
                   className={`h-3 w-3 transition-transform duration-200 ${
-                    activeDropdown === item.id ? 'rotate-180' : ''
-                  }`} 
+                    activeDropdown === item.id ? "rotate-180" : ""
+                  }`}
                 />
               )}
             </Link>

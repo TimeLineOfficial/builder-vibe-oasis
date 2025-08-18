@@ -54,39 +54,40 @@ import {
   TrendingDown,
 } from "lucide-react";
 import { ExtendedInterest } from "../lib/extended-interests";
-import { 
-  indianSubjectsDataset, 
-  IndianSubject, 
-  getSubjectsByCategory, 
+import {
+  indianSubjectsDataset,
+  IndianSubject,
+  getSubjectsByCategory,
   getTrendingSubjects,
   getSubjectsByLevel,
   getSubjectsByType,
   searchSubjects,
-  getUniqueCategories 
+  getUniqueCategories,
 } from "../lib/indian-subjects-dataset";
 import AdvancedCareerMapping from "../components/AdvancedCareerMapping";
 
 const categoryIcons = {
-  'Science': FlaskConical,
-  'Technology': Code,
-  'Commerce': Calculator,
-  'Arts': Palette,
-  'Languages': Globe,
-  'Creative Arts': Camera,
-  'Sports': Dumbbell,
-  'Health Sciences': Stethoscope,
-  'Business': Briefcase,
-  'Media': Megaphone,
-  'Social Sciences': Users,
-  'Vocational': Award,
-  'Environmental': Leaf
+  Science: FlaskConical,
+  Technology: Code,
+  Commerce: Calculator,
+  Arts: Palette,
+  Languages: Globe,
+  "Creative Arts": Camera,
+  Sports: Dumbbell,
+  "Health Sciences": Stethoscope,
+  Business: Briefcase,
+  Media: Megaphone,
+  "Social Sciences": Users,
+  Vocational: Award,
+  Environmental: Leaf,
 };
 
 const difficultyColors = {
-  'Easy': 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400',
-  'Medium': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400',
-  'Hard': 'bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400',
-  'Very Hard': 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
+  Easy: "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400",
+  Medium:
+    "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400",
+  Hard: "bg-orange-100 text-orange-800 dark:bg-orange-900/20 dark:text-orange-400",
+  "Very Hard": "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400",
 };
 
 export default function CareerByInterest() {
@@ -101,15 +102,20 @@ export default function CareerByInterest() {
 
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredSubjects, setFilteredSubjects] = useState<IndianSubject[]>(indianSubjectsDataset);
+  const [filteredSubjects, setFilteredSubjects] = useState<IndianSubject[]>(
+    indianSubjectsDataset,
+  );
   const [careerMatches, setCareerMatches] = useState<any[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedLevel, setSelectedLevel] = useState<string>("all");
   const [selectedType, setSelectedType] = useState<string>("all");
   const [showResults, setShowResults] = useState(false);
   const [showAdvancedMapping, setShowAdvancedMapping] = useState(false);
-  const [selectedCareerForMapping, setSelectedCareerForMapping] = useState<string>("");
-  const [currentView, setCurrentView] = useState<'subjects' | 'interests'>('subjects');
+  const [selectedCareerForMapping, setSelectedCareerForMapping] =
+    useState<string>("");
+  const [currentView, setCurrentView] = useState<"subjects" | "interests">(
+    "subjects",
+  );
 
   const allExtendedInterests = getExtendedInterests();
   const trendingInterests = getTrendingInterests();
@@ -127,19 +133,22 @@ export default function CareerByInterest() {
 
     // Filter by category
     if (selectedCategory !== "all") {
-      subjects = subjects.filter(subject => subject.category === selectedCategory);
+      subjects = subjects.filter(
+        (subject) => subject.category === selectedCategory,
+      );
     }
 
     // Filter by level
     if (selectedLevel !== "all") {
-      subjects = subjects.filter(subject => 
-        subject.level === selectedLevel || subject.level === 'Both'
+      subjects = subjects.filter(
+        (subject) =>
+          subject.level === selectedLevel || subject.level === "Both",
       );
     }
 
     // Filter by type
     if (selectedType !== "all") {
-      subjects = subjects.filter(subject => subject.type === selectedType);
+      subjects = subjects.filter((subject) => subject.type === selectedType);
     }
 
     setFilteredSubjects(subjects);
@@ -162,10 +171,10 @@ export default function CareerByInterest() {
     }
 
     // Create comprehensive career matches based on selected subjects
-    const matches = selectedSubjects.flatMap(subjectName => {
-      const subject = indianSubjectsDataset.find(s => s.name === subjectName);
+    const matches = selectedSubjects.flatMap((subjectName) => {
+      const subject = indianSubjectsDataset.find((s) => s.name === subjectName);
       if (!subject) return [];
-      
+
       return subject.career_paths.map((path, index) => ({
         path: path,
         subject: subject.name,
@@ -176,42 +185,51 @@ export default function CareerByInterest() {
         skills: subject.related_skills,
         job_prospects: subject.job_prospects,
         education_requirements: [subject.level],
-        growth_potential: subject.trending ? 'high' : 'medium',
+        growth_potential: subject.trending ? "high" : "medium",
         salary_range: generateSalaryRange(path, subject.category),
-        match_score: calculateMatchScore(subject, selectedSubjects.length)
+        match_score: calculateMatchScore(subject, selectedSubjects.length),
       }));
     });
 
     // Remove duplicates and sort by match score
-    const uniqueMatches = matches.filter((match, index, self) => 
-      index === self.findIndex(m => m.path === match.path)
-    ).sort((a, b) => b.match_score - a.match_score);
+    const uniqueMatches = matches
+      .filter(
+        (match, index, self) =>
+          index === self.findIndex((m) => m.path === match.path),
+      )
+      .sort((a, b) => b.match_score - a.match_score);
 
     setCareerMatches(uniqueMatches.slice(0, 20)); // Top 20 matches
     setShowResults(true);
   };
 
-  const generateSalaryRange = (careerPath: string, category: string): string => {
+  const generateSalaryRange = (
+    careerPath: string,
+    category: string,
+  ): string => {
     const salaryRanges = {
-      'Technology': '₹6-80 LPA',
-      'Science': '₹4-60 LPA', 
-      'Commerce': '₹5-50 LPA',
-      'Health Sciences': '₹6-80 LPA',
-      'Creative Arts': '₹3-40 LPA',
-      'Business': '₹6-100 LPA',
-      'Media': '₹4-50 LPA',
-      'Sports': '₹3-50 LPA'
+      Technology: "₹6-80 LPA",
+      Science: "₹4-60 LPA",
+      Commerce: "₹5-50 LPA",
+      "Health Sciences": "₹6-80 LPA",
+      "Creative Arts": "₹3-40 LPA",
+      Business: "₹6-100 LPA",
+      Media: "₹4-50 LPA",
+      Sports: "₹3-50 LPA",
     };
-    return salaryRanges[category as keyof typeof salaryRanges] || '₹3-40 LPA';
+    return salaryRanges[category as keyof typeof salaryRanges] || "₹3-40 LPA";
   };
 
-  const calculateMatchScore = (subject: IndianSubject, totalSelected: number): number => {
+  const calculateMatchScore = (
+    subject: IndianSubject,
+    totalSelected: number,
+  ): number => {
     let score = 50; // Base score
     if (subject.trending) score += 20;
-    if (subject.difficulty === 'Easy') score += 10;
-    if (subject.difficulty === 'Medium') score += 15;
-    if (subject.difficulty === 'Hard') score += 5;
-    if (subject.type === 'Core') score += 15;
+    if (subject.difficulty === "Easy") score += 10;
+    if (subject.difficulty === "Medium") score += 15;
+    if (subject.difficulty === "Hard") score += 5;
+    if (subject.type === "Core") score += 15;
     score += Math.min(subject.career_paths.length * 2, 20);
     return Math.min(score, 100);
   };
@@ -235,8 +253,9 @@ export default function CareerByInterest() {
     isSelected: boolean;
     onClick: () => void;
   }) => {
-    const IconComponent = categoryIcons[subject.category as keyof typeof categoryIcons] || BookOpen;
-    
+    const IconComponent =
+      categoryIcons[subject.category as keyof typeof categoryIcons] || BookOpen;
+
     return (
       <Card
         className={`
@@ -259,7 +278,8 @@ export default function CareerByInterest() {
                 </h3>
               </div>
               <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">
-                {subject.category} {subject.subcategory && `• ${subject.subcategory}`}
+                {subject.category}{" "}
+                {subject.subcategory && `• ${subject.subcategory}`}
               </p>
               <p className="text-xs text-gray-600 dark:text-gray-400">
                 {subject.type} • {subject.level}
@@ -272,7 +292,9 @@ export default function CareerByInterest() {
                   Hot
                 </Badge>
               )}
-              <Badge className={`text-xs px-1.5 py-0.5 ${difficultyColors[subject.difficulty]}`}>
+              <Badge
+                className={`text-xs px-1.5 py-0.5 ${difficultyColors[subject.difficulty]}`}
+              >
                 {subject.difficulty}
               </Badge>
             </div>
@@ -301,7 +323,11 @@ export default function CareerByInterest() {
           <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
             <div className="flex flex-wrap gap-1">
               {subject.related_skills.slice(0, 2).map((skill, i) => (
-                <Badge key={i} variant="outline" className="text-xs px-1.5 py-0.5">
+                <Badge
+                  key={i}
+                  variant="outline"
+                  className="text-xs px-1.5 py-0.5"
+                >
                   {skill}
                 </Badge>
               ))}
@@ -349,11 +375,16 @@ export default function CareerByInterest() {
       <CardContent className="p-6">
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
-            <h3 className="font-bold text-lg text-blue-900 dark:text-blue-100">{match.path}</h3>
+            <h3 className="font-bold text-lg text-blue-900 dark:text-blue-100">
+              {match.path}
+            </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-              Based on: <span className="font-medium text-blue-600">{match.subject}</span>
+              Based on:{" "}
+              <span className="font-medium text-blue-600">{match.subject}</span>
             </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">{match.description}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              {match.description}
+            </p>
           </div>
           <div className="flex flex-col gap-1">
             <Badge variant="outline" className="font-semibold">
@@ -386,7 +417,9 @@ export default function CareerByInterest() {
           </div>
           <div className="flex items-center gap-2">
             <Award className="w-4 h-4 text-purple-600" />
-            <span className={`text-sm px-2 py-1 rounded-full ${difficultyColors[match.difficulty]}`}>
+            <span
+              className={`text-sm px-2 py-1 rounded-full ${difficultyColors[match.difficulty]}`}
+            >
               {match.difficulty}
             </span>
           </div>
@@ -397,7 +430,7 @@ export default function CareerByInterest() {
               <TrendingDown className="w-4 h-4 text-gray-400" />
             )}
             <span className="text-sm">
-              {match.trending ? 'Trending' : 'Stable'}
+              {match.trending ? "Trending" : "Stable"}
             </span>
           </div>
         </div>
@@ -425,13 +458,15 @@ export default function CareerByInterest() {
             Job Opportunities:
           </h4>
           <div className="text-sm text-gray-600 dark:text-gray-300">
-            {match.job_prospects.slice(0, 3).join(', ')}
-            {match.job_prospects.length > 3 && '...'}
+            {match.job_prospects.slice(0, 3).join(", ")}
+            {match.job_prospects.length > 3 && "..."}
           </div>
         </div>
 
         <div className="mb-4">
-          <h4 className="font-semibold text-sm mb-2 text-gray-800 dark:text-gray-200">Category:</h4>
+          <h4 className="font-semibold text-sm mb-2 text-gray-800 dark:text-gray-200">
+            Category:
+          </h4>
           <Badge variant="outline">{match.category}</Badge>
         </div>
 
@@ -465,7 +500,7 @@ export default function CareerByInterest() {
               🎯 Your Career Matches
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-2">
-              Based on your selected subjects: 
+              Based on your selected subjects:
             </p>
             <div className="flex flex-wrap justify-center gap-2 mb-4">
               {selectedSubjects.map((subject, i) => (
@@ -475,10 +510,7 @@ export default function CareerByInterest() {
               ))}
             </div>
             <div className="flex flex-wrap gap-3 justify-center">
-              <Button
-                onClick={() => setShowResults(false)}
-                variant="outline"
-              >
+              <Button onClick={() => setShowResults(false)} variant="outline">
                 Back to Selection
               </Button>
               <Button onClick={clearSelection} variant="outline">
@@ -548,10 +580,12 @@ export default function CareerByInterest() {
             🎓 Find Your Career by Interest & Subjects
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-4">
-            Select subjects you're passionate about and discover matching career paths
+            Select subjects you're passionate about and discover matching career
+            paths
           </p>
           <p className="text-gray-600 dark:text-gray-400">
-            Comprehensive database of Indian education subjects from school to college level
+            Comprehensive database of Indian education subjects from school to
+            college level
           </p>
         </div>
 
@@ -560,18 +594,18 @@ export default function CareerByInterest() {
           <div className="flex justify-center mb-6">
             <div className="bg-gray-100 dark:bg-gray-700 p-1 rounded-lg">
               <Button
-                variant={currentView === 'subjects' ? 'default' : 'ghost'}
+                variant={currentView === "subjects" ? "default" : "ghost"}
                 size="sm"
-                onClick={() => setCurrentView('subjects')}
+                onClick={() => setCurrentView("subjects")}
                 className="mr-1"
               >
                 <BookOpen className="w-4 h-4 mr-2" />
                 Indian Subjects
               </Button>
               <Button
-                variant={currentView === 'interests' ? 'default' : 'ghost'}
+                variant={currentView === "interests" ? "default" : "ghost"}
                 size="sm"
-                onClick={() => setCurrentView('interests')}
+                onClick={() => setCurrentView("interests")}
               >
                 <Star className="w-4 h-4 mr-2" />
                 General Interests
@@ -592,7 +626,10 @@ export default function CareerByInterest() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <Select
+                value={selectedCategory}
+                onValueChange={setSelectedCategory}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Category" />
                 </SelectTrigger>
@@ -626,14 +663,16 @@ export default function CareerByInterest() {
                   <SelectItem value="all">All Types</SelectItem>
                   <SelectItem value="Core">Core Subjects</SelectItem>
                   <SelectItem value="Elective">Elective Subjects</SelectItem>
-                  <SelectItem value="Vocational">Vocational Subjects</SelectItem>
+                  <SelectItem value="Vocational">
+                    Vocational Subjects
+                  </SelectItem>
                   <SelectItem value="Lab">Laboratory Subjects</SelectItem>
                   <SelectItem value="Co-curricular">Co-curricular</SelectItem>
                 </SelectContent>
               </Select>
 
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={clearSelection}
                 className="flex items-center gap-2"
               >
@@ -650,7 +689,11 @@ export default function CareerByInterest() {
                 <h3 className="font-semibold text-blue-900 dark:text-blue-100">
                   Selected Subjects ({selectedSubjects.length})
                 </h3>
-                <Button onClick={() => setSelectedSubjects([])} variant="outline" size="sm">
+                <Button
+                  onClick={() => setSelectedSubjects([])}
+                  variant="outline"
+                  size="sm"
+                >
                   Clear All
                 </Button>
               </div>
@@ -672,7 +715,8 @@ export default function CareerByInterest() {
                 disabled={selectedSubjects.length === 0}
               >
                 <Target className="w-5 h-5 mr-2" />
-                Find Career Matches ({selectedSubjects.length} subjects selected)
+                Find Career Matches ({selectedSubjects.length} subjects
+                selected)
               </Button>
             </div>
           )}
@@ -680,39 +724,70 @@ export default function CareerByInterest() {
           {/* Quick Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <div className="text-2xl font-bold text-blue-600">{filteredSubjects.length}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Total Subjects</div>
+              <div className="text-2xl font-bold text-blue-600">
+                {filteredSubjects.length}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Total Subjects
+              </div>
             </div>
             <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <div className="text-2xl font-bold text-green-600">{uniqueCategories.length}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Categories</div>
+              <div className="text-2xl font-bold text-green-600">
+                {uniqueCategories.length}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Categories
+              </div>
             </div>
             <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <div className="text-2xl font-bold text-purple-600">{trendingSubjects.length}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Trending</div>
+              <div className="text-2xl font-bold text-purple-600">
+                {trendingSubjects.length}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Trending
+              </div>
             </div>
             <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <div className="text-2xl font-bold text-orange-600">{selectedSubjects.length}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Selected</div>
+              <div className="text-2xl font-bold text-orange-600">
+                {selectedSubjects.length}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Selected
+              </div>
             </div>
           </div>
 
           {/* Subject Categories */}
-          <Tabs value={selectedCategory === "all" ? "trending" : selectedCategory} className="w-full">
+          <Tabs
+            value={selectedCategory === "all" ? "trending" : selectedCategory}
+            className="w-full"
+          >
             <TabsList className="grid w-full grid-cols-4 mb-6">
-              <TabsTrigger value="trending" onClick={() => setSelectedCategory("all")}>
+              <TabsTrigger
+                value="trending"
+                onClick={() => setSelectedCategory("all")}
+              >
                 <Zap className="w-4 h-4 mr-2" />
                 Trending
               </TabsTrigger>
-              <TabsTrigger value="Science" onClick={() => setSelectedCategory("Science")}>
+              <TabsTrigger
+                value="Science"
+                onClick={() => setSelectedCategory("Science")}
+              >
                 <FlaskConical className="w-4 h-4 mr-2" />
                 Science
               </TabsTrigger>
-              <TabsTrigger value="Technology" onClick={() => setSelectedCategory("Technology")}>
+              <TabsTrigger
+                value="Technology"
+                onClick={() => setSelectedCategory("Technology")}
+              >
                 <Code className="w-4 h-4 mr-2" />
                 Technology
               </TabsTrigger>
-              <TabsTrigger value="Commerce" onClick={() => setSelectedCategory("Commerce")}>
+              <TabsTrigger
+                value="Commerce"
+                onClick={() => setSelectedCategory("Commerce")}
+              >
                 <Calculator className="w-4 h-4 mr-2" />
                 Commerce
               </TabsTrigger>
@@ -727,7 +802,8 @@ export default function CareerByInterest() {
                   </Badge>
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  High-demand subjects with excellent career prospects and growth potential
+                  High-demand subjects with excellent career prospects and
+                  growth potential
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -749,7 +825,8 @@ export default function CareerByInterest() {
                     {category} Subjects
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Explore {category.toLowerCase()} subjects and their career opportunities
+                    Explore {category.toLowerCase()} subjects and their career
+                    opportunities
                   </p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -813,7 +890,8 @@ export default function CareerByInterest() {
               Start Exploring Your Academic Interests
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-4">
-              Select subjects you've studied or are interested in to discover matching career paths
+              Select subjects you've studied or are interested in to discover
+              matching career paths
             </p>
             <div className="flex flex-wrap justify-center gap-2 text-sm text-gray-500 dark:text-gray-400">
               <span>💡 Covers all major Indian education boards</span>
