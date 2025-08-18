@@ -236,6 +236,7 @@ interface DataStore {
   getExtendedInterests: () => ExtendedInterest[];
   searchExtendedInterests: (query: string) => ExtendedInterest[];
   getTrendingInterests: () => ExtendedInterest[];
+  findAdvancedCareersByInterests: (interests: string[], preferredLevel?: string) => any[];
 
   // Enhanced Job Functions
   getLatestJobs: (
