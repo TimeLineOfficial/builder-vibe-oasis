@@ -5,6 +5,7 @@
 /* Import mobile-first optimizations */
 @import "./styles/mobile-optimizations.css";
 @import "./styles/responsive-career-map.css";
+@import "./styles/career-map-buttons.css";
 
 @layer base {
   /**
