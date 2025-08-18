@@ -238,19 +238,23 @@ export default function DynamicCareerMap({ currentStage, goal, onPathGenerated }
 
   const generateCareerPath = (stage: string, goal: string): CareerStep[] => {
     const key = `${stage}_${goal}`.toLowerCase();
-    
+
     // Try exact match first
     if (careerMappings[key as keyof typeof careerMappings]) {
       return careerMappings[key as keyof typeof careerMappings];
     }
-    
-    // Try partial matches or generate dynamic path
-    if (goal.toLowerCase().includes('doctor') || goal.toLowerCase().includes('medical')) {
+
+    // Enhanced goal matching with multiple keywords
+    const goalLower = goal.toLowerCase();
+
+    // Medical/Doctor paths
+    if (goalLower.includes('doctor') || goalLower.includes('medical') || goalLower.includes('mbbs') ||
+        goalLower.includes('medicine') || goalLower.includes('physician') || goalLower.includes('surgeon')) {
       if (stage === 'class_10_below') {
         return careerMappings.class_10_below_doctor;
       }
-      // Adapt for other stages
-      return careerMappings.class_10_below_doctor.slice(1); // Skip 10th completion if already done
+      // Adapt for other stages - remove completed steps
+      return careerMappings.class_10_below_doctor.slice(stage === 'class_11_12' ? 1 : 2);
     }
     
     if (goal.toLowerCase().includes('engineer') || goal.toLowerCase().includes('technology')) {
