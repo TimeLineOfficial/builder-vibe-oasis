@@ -240,7 +240,7 @@ export default function CareerByGoal() {
             <Button
               onClick={() => setCurrentStep('results')}
               size="lg"
-              className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+              className="career-map-generate-btn bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
             >
               🚀 Generate Career Transition Map
             </Button>
