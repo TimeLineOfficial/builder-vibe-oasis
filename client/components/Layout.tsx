@@ -151,9 +151,7 @@ export default function Layout({ children }: LayoutProps) {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-2">
-            <NavLinks />
-          </nav>
+          <EnhancedNavigation />
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-2">
