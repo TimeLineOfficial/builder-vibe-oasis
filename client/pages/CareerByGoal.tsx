@@ -268,6 +268,25 @@ export default function CareerByGoal() {
           ))}
         </div>
 
+        {/* Generate Career Map Button */}
+        {selectedOptions.course && (
+          <div className="text-center bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg border-2 border-blue-200 dark:border-blue-700">
+            <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
+              Ready to See Your Career Path?
+            </h3>
+            <p className="text-blue-700 dark:text-blue-200 mb-4">
+              Generate a personalized roadmap based on your selections: {selectedOptions.stage} → {selectedOptions.stream} → {selectedOptions.course}
+            </p>
+            <Button
+              onClick={() => setCurrentStep('results')}
+              size="lg"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+            >
+              🗺️ Generate My Career Map
+            </Button>
+          </div>
+        )}
+
         <div className="text-center">
           <Button variant="outline" onClick={() => setCurrentStep("stream")}>
             Back to Stream Selection
