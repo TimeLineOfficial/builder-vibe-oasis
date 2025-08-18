@@ -165,7 +165,7 @@ export default function CareerByGoal() {
         {educationStages.map((stage) => (
           <Card
             key={stage.id}
-            className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:border-blue-500 group"
+            className="career-option-card cursor-pointer hover:shadow-lg transition-all duration-200 hover:border-blue-500 group"
             onClick={() => handleStageSelect(stage.id)}
           >
             <CardContent className="p-6 text-center">
@@ -215,7 +215,7 @@ export default function CareerByGoal() {
           {streams.map((stream) => (
             <Card
               key={stream}
-              className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:border-blue-500 group"
+              className="career-option-card cursor-pointer hover:shadow-lg transition-all duration-200 hover:border-blue-500 group"
               onClick={() => handleStreamSelect(stream)}
             >
               <CardContent className="p-6 text-center">
@@ -274,7 +274,7 @@ export default function CareerByGoal() {
           {courses.map((course) => (
             <Card
               key={course}
-              className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:border-blue-500 group"
+              className="career-option-card cursor-pointer hover:shadow-lg transition-all duration-200 hover:border-blue-500 group"
               onClick={() => handleCourseSelect(course)}
             >
               <CardContent className="p-6 text-center">
