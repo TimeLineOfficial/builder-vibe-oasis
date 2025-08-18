@@ -27,6 +27,7 @@ import {
   Bookmark,
   User,
 } from "lucide-react";
+import EnhancedNavigation from "./EnhancedNavigation";
 
 interface LayoutProps {
   children: React.ReactNode;
