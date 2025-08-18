@@ -379,7 +379,7 @@ export default function DynamicCareerMap({ currentStage, goal, onPathGenerated }
                 {/* Options */}
                 {step.options && step.options.length > 0 && (
                   <div>
-                    <h5 className="font-semibold text-sm mb-2 text-gray-700">Available Options:</h5>
+                    <h5 className="font-semibold text-sm mb-2 text-gray-700 dark:text-gray-200">Available Options:</h5>
                     <div className="flex flex-wrap gap-2">
                       {step.options.map((option, i) => (
                         <Badge key={i} variant="secondary" className="text-xs">
