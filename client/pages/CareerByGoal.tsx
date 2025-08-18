@@ -204,11 +204,11 @@ export default function CareerByGoal() {
               ? "What's your current industry/domain?"
               : "Choose your stream/field"}
           </h2>
-          <p className="text-gray-600">
-            {selectedOptions.stage === "working_professional"
-              ? "This helps us suggest relevant career transitions"
-              : "Select the area you want to pursue or are interested in"}
-          </p>
+          <p className="text-gray-600 dark:text-gray-300">
+          {selectedOptions.stage === "working_professional"
+            ? "This helps us suggest relevant career transitions"
+            : "Select the area you want to pursue or are interested in"}
+        </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
