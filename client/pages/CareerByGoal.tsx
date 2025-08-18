@@ -290,6 +290,15 @@ export default function CareerByGoal() {
         </p>
       </div>
 
+      {/* Dynamic Career Map */}
+      <DynamicCareerMap
+        currentStage={selectedOptions.stage}
+        goal={selectedOptions.course || selectedOptions.stream}
+        onPathGenerated={(path) => {
+          console.log('Career path generated:', path);
+        }}
+      />
+
       {/* Career Path Steps */}
       {careerPaths.length > 0 && (
         <Card>
