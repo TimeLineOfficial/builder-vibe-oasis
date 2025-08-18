@@ -228,6 +228,25 @@ export default function CareerByGoal() {
           ))}
         </div>
 
+        {/* Generate Career Map Button for Working Professionals */}
+        {selectedOptions.stage === 'working_professional' && selectedOptions.stream && (
+          <div className="text-center bg-green-50 dark:bg-green-900/20 p-6 rounded-lg border-2 border-green-200 dark:border-green-700">
+            <h3 className="text-lg font-semibold text-green-900 dark:text-green-100 mb-2">
+              Ready to Explore Career Transitions?
+            </h3>
+            <p className="text-green-700 dark:text-green-200 mb-4">
+              Generate career switch pathways from {selectedOptions.stream} to trending fields
+            </p>
+            <Button
+              onClick={() => setCurrentStep('results')}
+              size="lg"
+              className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+            >
+              🚀 Generate Career Transition Map
+            </Button>
+          </div>
+        )}
+
         <div className="text-center">
           <Button variant="outline" onClick={resetFlow}>
             Back to Education Level
