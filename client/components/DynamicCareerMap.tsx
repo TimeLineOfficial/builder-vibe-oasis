@@ -408,8 +408,8 @@ export default function DynamicCareerMap({ currentStage, goal, onPathGenerated }
                 {/* Next Steps Preview */}
                 {step.nextSteps && step.nextSteps.length > 0 && (
                   <div className="pt-2 border-t border-gray-100">
-                    <h5 className="font-semibold text-sm mb-2 text-gray-700">Next Steps:</h5>
-                    <div className="text-sm text-gray-600">
+                    <h5 className="font-semibold text-sm mb-2 text-gray-700 dark:text-gray-200">Next Steps:</h5>
+                    <div className="text-sm text-gray-600 dark:text-gray-300">
                       {step.nextSteps.slice(0, 2).map((next, i) => (
                         <span key={i} className="inline-flex items-center mr-4">
                           <ArrowRight className="w-3 h-3 mr-1" />
